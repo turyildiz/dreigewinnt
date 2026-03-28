@@ -26,12 +26,12 @@ export function GalleryLightbox({ images, altPrefix }: Props) {
 
       {/* Thumbnails */}
       {images.length > 1 && (
-        <div className="flex gap-3">
+        <div className="flex gap-3 overflow-x-auto scrollbar-none pb-1">
           {images.map((src, i) => (
             <button
               key={i}
               onClick={() => setActive(i)}
-              className={`flex-1 aspect-square overflow-hidden transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary ${
+              className={`flex-shrink-0 w-24 h-24 sm:flex-1 sm:w-auto sm:h-auto sm:aspect-square overflow-hidden transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary ${
                 i === active
                   ? "ring-2 ring-secondary opacity-100"
                   : "opacity-50 hover:opacity-80"

@@ -1,91 +1,7 @@
 import Link from "next/link";
 import { GalleryLightbox } from "@/components/ui/GalleryLightbox";
-
-const businesses: Record<string, {
-  id: string;
-  name: string;
-  category: string;
-  town: string;
-  tier: "free" | "standard" | "premium";
-  description: string;
-  fullDescription: string;
-  address: string;
-  phone: string;
-  website: string;
-  email: string;
-  openingHours: { day: string; hours: string }[];
-  imageUrl: string;
-  galleryImages: string[];
-}> = {
-  "main-studio-gmbh": {
-    id: "main-studio-gmbh",
-    name: "Main-Studio GmbH",
-    category: "Architektur & Design",
-    town: "Raunheim",
-    tier: "premium",
-    description: "Exzellente Raumgestaltung und zukunftsweisende Bürokonzepte für den Main-Taunus-Kreis.",
-    fullDescription: "Main-Studio GmbH steht seit über 15 Jahren für erstklassige Innenarchitektur und Bürokonzepte im Main-Taunus-Kreis. Unser Team aus erfahrenen Architekten und Designern entwickelt maßgeschneiderte Lösungen für Gewerbeflächen, Büros und öffentliche Räume. Wir verbinden ästhetische Perfektion mit funktionaler Exzellenz und begleiten unsere Kunden vom ersten Entwurf bis zur schlüsselfertigen Übergabe.",
-    address: "Industriestraße 24, 65479 Raunheim",
-    phone: "+49 6142 123456",
-    website: "www.main-studio.de",
-    email: "info@main-studio.de",
-    openingHours: [
-      { day: "Montag – Freitag", hours: "08:00 – 18:00 Uhr" },
-      { day: "Samstag", hours: "09:00 – 13:00 Uhr" },
-      { day: "Sonntag", hours: "Geschlossen" },
-    ],
-    imageUrl: "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1600&auto=format&fit=crop",
-    galleryImages: [
-      "https://images.unsplash.com/photo-1497366754035-f200581399c2?q=80&w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=800&auto=format&fit=crop",
-    ],
-  },
-  "lumina-fine-dining": {
-    id: "lumina-fine-dining",
-    name: "Lumina Fine Dining",
-    category: "Gastronomie",
-    town: "Rüsselsheim",
-    tier: "premium",
-    description: "Kulinarische Erlebnisse auf Sterneniveau im Herzen von Rüsselsheim. Regional & Saisonal.",
-    fullDescription: "Lumina Fine Dining vereint moderne Küche mit regionalen Produkten zu einem unvergleichlichen kulinarischen Erlebnis. Unser Küchenchef setzt auf saisonale Zutaten aus der unmittelbaren Umgebung und interpretiert klassische Gerichte auf zeitgenössische Art. Das Ambiente verbindet historische Architektur mit modernem Design und schafft eine einzigartige Atmosphäre für besondere Anlässe.",
-    address: "Opelstraße 8, 65428 Rüsselsheim am Rhein",
-    phone: "+49 6142 987654",
-    website: "www.lumina-dining.de",
-    email: "reservierung@lumina-dining.de",
-    openingHours: [
-      { day: "Dienstag – Freitag", hours: "12:00 – 14:30 & 18:00 – 22:30 Uhr" },
-      { day: "Samstag", hours: "18:00 – 23:00 Uhr" },
-      { day: "Sonntag & Montag", hours: "Geschlossen" },
-    ],
-    imageUrl: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=1600&auto=format&fit=crop",
-    galleryImages: [
-      "https://images.unsplash.com/photo-1424847651672-bf20a4b0982b?q=80&w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?q=80&w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=800&auto=format&fit=crop",
-    ],
-  },
-  "handwerksbetrieb-mueller": {
-    id: "handwerksbetrieb-mueller",
-    name: "Handwerksbetrieb Müller",
-    category: "Sanitär & Heizung",
-    town: "Kelsterbach",
-    tier: "standard",
-    description: "Zuverlässige Sanitär- und Heizungsarbeiten für Privat- und Gewerbekunden.",
-    fullDescription: "Handwerksbetrieb Müller ist seit 1985 Ihr verlässlicher Partner für alle Sanitär- und Heizungsarbeiten im Kreis Groß-Gerau. Ob Neuinstallation, Wartung oder Notdienst – wir sind schnell, sauber und fair. Alle Arbeiten werden von qualifizierten Fachkräften ausgeführt.",
-    address: "Kelsterbacher Straße 45, 65451 Kelsterbach",
-    phone: "+49 6107 234567",
-    website: "www.mueller-sanitaer.de",
-    email: "info@mueller-sanitaer.de",
-    openingHours: [
-      { day: "Montag – Freitag", hours: "07:00 – 17:00 Uhr" },
-      { day: "Samstag", hours: "08:00 – 12:00 Uhr (Notdienst)" },
-      { day: "Sonntag", hours: "Notdienst auf Anfrage" },
-    ],
-    imageUrl: "",
-    galleryImages: [],
-  },
-};
+import { supabase } from "@/lib/supabase";
+import { toDisplayTown } from "@/lib/towns";
 
 const tierLabels: Record<string, { label: string; classes: string }> = {
   premium: { label: "Premium Partner", classes: "bg-tertiary text-on-tertiary" },
@@ -99,7 +15,13 @@ export default async function BusinessDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const business = businesses[id];
+
+  const { data: business } = await supabase
+    .from("businesses")
+    .select("*")
+    .eq("slug", id)
+    .eq("status", "active")
+    .single();
 
   if (!business) {
     return (
@@ -112,16 +34,24 @@ export default async function BusinessDetailPage({
     );
   }
 
+  const { data: photos } = await supabase
+    .from("business_photos")
+    .select("url")
+    .eq("business_id", business.id)
+    .order("sort_order");
+
+  const galleryImages = photos?.map((p) => p.url) ?? [];
   const tier = tierLabels[business.tier];
+  const openingHours: { day: string; hours: string }[] = business.opening_hours ?? [];
 
   return (
     <main className="w-full pb-16">
 
       {/* ── Hero ── */}
       <div className="relative h-[35vw] min-h-[220px] max-h-[440px] bg-surface-container-high overflow-hidden">
-        {business.imageUrl ? (
+        {business.hero_image_url ? (
           <img
-            src={business.imageUrl}
+            src={business.hero_image_url}
             alt={business.name}
             className="w-full h-full object-cover"
           />
@@ -131,7 +61,6 @@ export default async function BusinessDetailPage({
           </div>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-primary/50 via-primary/5 to-transparent" />
-
         {business.tier === "premium" && (
           <div className="absolute top-4 right-4 sm:top-6 sm:right-6 lg:top-8 lg:right-12 bg-tertiary text-on-tertiary text-[10px] font-bold px-3 py-1 tracking-widest uppercase">
             TOP-PARTNER
@@ -142,7 +71,6 @@ export default async function BusinessDetailPage({
       {/* ── Content ── */}
       <div className="px-4 sm:px-8 lg:px-12 pt-8 lg:pt-12">
 
-        {/* Back link */}
         <Link
           href="/gewerbe"
           className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors mb-6 lg:mb-8"
@@ -156,7 +84,6 @@ export default async function BusinessDetailPage({
           {/* ── Left: description + gallery ── */}
           <div className="lg:col-span-2 flex flex-col gap-8 lg:gap-12">
 
-            {/* Name + category */}
             <div>
               <div className="flex items-center gap-2 flex-wrap mb-3">
                 <span className={`text-[10px] font-bold px-2 py-0.5 uppercase tracking-widest ${tier.classes}`}>
@@ -169,22 +96,26 @@ export default async function BusinessDetailPage({
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-headline font-black tracking-tighter text-primary leading-tight mb-4">
                 {business.name}
               </h1>
-              <p className="text-on-surface-variant text-base sm:text-lg leading-relaxed mb-3">
-                {business.description}
-              </p>
-              <p className="text-on-surface-variant text-sm sm:text-base leading-relaxed">
-                {business.fullDescription}
-              </p>
+              {business.description && (
+                <p className="text-on-surface-variant text-base sm:text-lg leading-relaxed mb-3">
+                  {business.description}
+                </p>
+              )}
+              {business.full_description && (
+                <p className="text-on-surface-variant text-sm sm:text-base leading-relaxed">
+                  {business.full_description}
+                </p>
+              )}
             </div>
 
-            {/* Photo gallery */}
-            {business.galleryImages.length > 0 && (
+            {/* Gallery */}
+            {galleryImages.length > 0 && (
               <div>
                 <h2 className="text-[12px] font-black tracking-[0.1em] text-primary uppercase mb-4 lg:mb-6 flex items-center gap-3">
                   <span className="w-5 h-[2px] bg-outline-variant flex-shrink-0" />
                   Galerie
                 </h2>
-                <GalleryLightbox images={business.galleryImages} altPrefix={business.name} />
+                <GalleryLightbox images={galleryImages} altPrefix={business.name} />
               </div>
             )}
 
@@ -207,55 +138,54 @@ export default async function BusinessDetailPage({
           {/* ── Right: contact sidebar ── */}
           <aside className="flex flex-col gap-4">
 
-            {/* Address */}
             <div className="bg-surface-container-lowest border border-outline-variant/10 p-5 lg:p-6">
               <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-3">Adresse</p>
               <div className="flex items-start gap-3">
                 <span className="material-symbols-outlined text-secondary text-xl flex-shrink-0">location_on</span>
                 <div>
-                  <p className="font-bold text-primary text-sm">{business.town}</p>
+                  <p className="font-bold text-primary text-sm">{toDisplayTown(business.town)}</p>
                   <p className="text-on-surface-variant text-xs mt-0.5">{business.address}</p>
                 </div>
               </div>
             </div>
 
-            {/* Contact */}
-            <div className="bg-surface-container-lowest border border-outline-variant/10 p-5 lg:p-6 flex flex-col gap-3">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1">Kontakt</p>
-              <a href={`tel:${business.phone}`} className="flex items-center gap-3 group">
-                <span className="material-symbols-outlined text-secondary text-xl flex-shrink-0">call</span>
-                <span className="text-sm font-bold text-primary group-hover:text-secondary transition-colors">{business.phone}</span>
-              </a>
-              <a href={`mailto:${business.email}`} className="flex items-center gap-3 group">
-                <span className="material-symbols-outlined text-secondary text-xl flex-shrink-0">mail</span>
-                <span className="text-sm text-on-surface-variant group-hover:text-primary transition-colors truncate">{business.email}</span>
-              </a>
-              <a href={`https://${business.website}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 group">
-                <span className="material-symbols-outlined text-secondary text-xl flex-shrink-0">language</span>
-                <span className="text-sm text-on-surface-variant group-hover:text-primary transition-colors truncate">{business.website}</span>
-              </a>
-            </div>
-
-            {/* Opening hours */}
-            <div className="bg-surface-container-lowest border border-outline-variant/10 p-5 lg:p-6">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-4">Öffnungszeiten</p>
-              <div className="flex flex-col gap-2.5">
-                {business.openingHours.map((row) => (
-                  <div key={row.day} className="flex justify-between items-start gap-4">
-                    <span className="text-xs font-bold text-primary flex-shrink-0">{row.day}</span>
-                    <span className="text-xs text-on-surface-variant text-right">{row.hours}</span>
-                  </div>
-                ))}
+            {(business.phone || business.email || business.website) && (
+              <div className="bg-surface-container-lowest border border-outline-variant/10 p-5 lg:p-6 flex flex-col gap-3">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1">Kontakt</p>
+                {business.phone && (
+                  <a href={`tel:${business.phone}`} className="flex items-center gap-3 group">
+                    <span className="material-symbols-outlined text-secondary text-xl flex-shrink-0">call</span>
+                    <span className="text-sm font-bold text-primary group-hover:text-secondary transition-colors">{business.phone}</span>
+                  </a>
+                )}
+                {business.email && (
+                  <a href={`mailto:${business.email}`} className="flex items-center gap-3 group">
+                    <span className="material-symbols-outlined text-secondary text-xl flex-shrink-0">mail</span>
+                    <span className="text-sm text-on-surface-variant group-hover:text-primary transition-colors truncate">{business.email}</span>
+                  </a>
+                )}
+                {business.website && (
+                  <a href={`https://${business.website}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 group">
+                    <span className="material-symbols-outlined text-secondary text-xl flex-shrink-0">language</span>
+                    <span className="text-sm text-on-surface-variant group-hover:text-primary transition-colors truncate">{business.website}</span>
+                  </a>
+                )}
               </div>
-            </div>
+            )}
 
-            {/* Map placeholder */}
-            <div className="bg-surface-container-high h-36 lg:h-44 flex items-center justify-center">
-              <div className="text-center">
-                <span className="material-symbols-outlined text-outline/40 text-3xl block mb-1">map</span>
-                <p className="text-[10px] text-on-surface-variant uppercase tracking-widest font-bold">Karte folgt</p>
+            {openingHours.length > 0 && (
+              <div className="bg-surface-container-lowest border border-outline-variant/10 p-5 lg:p-6">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-4">Öffnungszeiten</p>
+                <div className="flex flex-col gap-2.5">
+                  {openingHours.map((row) => (
+                    <div key={row.day} className="flex justify-between items-start gap-4">
+                      <span className="text-xs font-bold text-primary flex-shrink-0">{row.day}</span>
+                      <span className="text-xs text-on-surface-variant text-right">{row.hours}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
           </aside>
         </div>

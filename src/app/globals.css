@@ -84,6 +84,14 @@
 }
 
 @layer utilities {
+  .scrollbar-none {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+
   .signature-gradient {
     background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-secondary-fixed-dim) 100%);
   }
