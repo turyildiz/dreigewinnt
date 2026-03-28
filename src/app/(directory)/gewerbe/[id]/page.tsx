@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { GalleryLightbox } from "@/components/ui/GalleryLightbox";
 
 const businesses: Record<string, {
   id: string;
@@ -183,17 +184,7 @@ export default async function BusinessDetailPage({
                   <span className="w-5 h-[2px] bg-outline-variant flex-shrink-0" />
                   Galerie
                 </h2>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 lg:gap-4">
-                  {business.galleryImages.map((src, i) => (
-                    <div key={i} className="aspect-square bg-surface-container-high overflow-hidden">
-                      <img
-                        src={src}
-                        alt={`${business.name} – Foto ${i + 1}`}
-                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                      />
-                    </div>
-                  ))}
-                </div>
+                <GalleryLightbox images={business.galleryImages} altPrefix={business.name} />
               </div>
             )}
 
