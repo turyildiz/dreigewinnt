@@ -35,6 +35,7 @@ const featuredEvents = [
 const upcomingEvents = [
   {
     id: "krimidinner-stadtbuecherei",
+    town: "Rüsselsheim",
     category: "Lesung",
     title: "Krimidinner in der Stadtbücherei",
     locationTime: "Rüsselsheim · 19:00 Uhr",
@@ -44,6 +45,7 @@ const upcomingEvents = [
   },
   {
     id: "digital-hub-networking",
+    town: "Rüsselsheim",
     category: "Gewerbe",
     title: "Digital Hub: Main-Taunus Networking",
     locationTime: "Technologiezentrum · 18:30 Uhr",
@@ -53,6 +55,7 @@ const upcomingEvents = [
   },
   {
     id: "lichterfest-stadtpark",
+    town: "Kelsterbach",
     category: "Stadtfest",
     title: "Lichterfest im Stadtpark",
     locationTime: "Kelsterbach · Ganztägig",
@@ -62,7 +65,28 @@ const upcomingEvents = [
   }
 ];
 
-export default function EventsPage() {
+const townLabels: Record<string, string> = {
+  raunheim: "Raunheim",
+  kelsterbach: "Kelsterbach",
+  ruesselsheim: "Rüsselsheim",
+};
+
+export default async function EventsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ town?: string }>;
+}) {
+  const { town } = await searchParams;
+  const townLabel = town ? townLabels[town] : null;
+
+  const visibleFeatured = town
+    ? featuredEvents.filter(e => e.town.toLowerCase() === townLabel?.toLowerCase())
+    : featuredEvents;
+
+  const visibleUpcoming = town
+    ? upcomingEvents.filter(e => e.town.toLowerCase() === townLabel?.toLowerCase())
+    : upcomingEvents;
+
   return (
     <main className="w-full">
 
@@ -70,7 +94,7 @@ export default function EventsPage() {
       <header className="px-4 sm:px-8 lg:px-12 pt-6 lg:pt-14 pb-8 lg:pb-10">
         <div className="flex items-center gap-2 mb-3 flex-wrap">
           <span className="bg-surface-container-highest text-primary px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase">
-            Rüsselsheim
+            {townLabel ?? "Dreigewinnt Region"}
           </span>
           <span className="text-on-surface-variant/40 text-sm italic">— Lokal Kuratiert</span>
         </div>
@@ -78,13 +102,15 @@ export default function EventsPage() {
           Was ist los?
         </h1>
         <p className="text-on-surface-variant mt-3 text-sm sm:text-base lg:text-lg leading-relaxed max-w-lg">
-          Entdecken Sie die wichtigsten kulturellen Highlights in Ihrer Region.
+          {townLabel
+            ? `Kulturelle Highlights in ${townLabel}.`
+            : "Entdecken Sie die wichtigsten kulturellen Highlights in Ihrer Region."}
         </p>
       </header>
 
       {/* ── Featured Boost ── */}
+      {visibleFeatured.length > 0 && (
       <section className="mb-10 lg:mb-20">
-        {/* Section label */}
         <div className="px-4 sm:px-8 lg:px-12 flex items-center justify-between mb-5 lg:mb-8">
           <h2 className="font-headline font-bold text-sm sm:text-base uppercase tracking-widest text-primary flex items-center gap-3">
             <span className="w-6 h-[2px] bg-tertiary-container flex-shrink-0"></span>
@@ -93,20 +119,19 @@ export default function EventsPage() {
           <span className="text-tertiary font-bold text-[10px] tracking-widest uppercase italic">Premium</span>
         </div>
 
-        {/* Mobile: single-column stacked list (clean, no overflow) */}
         <div className="lg:hidden flex flex-col gap-4 px-4 sm:px-8">
-          {featuredEvents.map(event => (
+          {visibleFeatured.map(event => (
             <EventCard key={event.id} {...event} variant="directory" />
           ))}
         </div>
 
-        {/* Desktop: 3-col grid */}
         <div className="hidden lg:grid lg:grid-cols-3 lg:gap-8 px-12">
-          {featuredEvents.map(event => (
+          {visibleFeatured.map(event => (
             <EventCard key={event.id} {...event} variant="directory" />
           ))}
         </div>
       </section>
+      )}
 
       {/* ── Aktuelle Termine ── */}
       <section className="px-4 sm:px-8 lg:px-12 pb-16">
@@ -125,8 +150,14 @@ export default function EventsPage() {
           </div>
         </div>
 
+        {visibleUpcoming.length === 0 && (
+          <p className="text-on-surface-variant text-sm py-8 text-center">
+            Keine Termine in {townLabel} gefunden.
+          </p>
+        )}
+
         <div className="flex flex-col gap-2 lg:gap-3">
-          {upcomingEvents.map((event) => (
+          {visibleUpcoming.map((event) => (
             <Link
               key={event.id}
               href={`/events/${event.id}`}

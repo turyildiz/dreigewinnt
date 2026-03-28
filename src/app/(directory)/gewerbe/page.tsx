@@ -59,7 +59,28 @@ const standardBusinesses = [
   },
 ];
 
-export default function GewerbePage() {
+const townLabels: Record<string, string> = {
+  raunheim: "Raunheim",
+  kelsterbach: "Kelsterbach",
+  ruesselsheim: "Rüsselsheim",
+};
+
+export default async function GewerbePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ town?: string }>;
+}) {
+  const { town } = await searchParams;
+  const townLabel = town ? townLabels[town] : null;
+
+  const visiblePremium = town
+    ? premiumBusinesses.filter(b => b.town.toLowerCase() === townLabel?.toLowerCase())
+    : premiumBusinesses;
+
+  const visibleStandard = town
+    ? standardBusinesses.filter(b => b.town.toLowerCase() === townLabel?.toLowerCase())
+    : standardBusinesses;
+
   return (
     <main className="w-full">
 
@@ -67,7 +88,7 @@ export default function GewerbePage() {
       <header className="px-4 sm:px-8 lg:px-12 pt-6 lg:pt-14 pb-10 lg:pb-16">
         <div className="flex items-center gap-3 mb-4 flex-wrap">
           <span className="bg-surface-container-highest text-primary px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase">
-            Region
+            {townLabel ?? "Region"}
           </span>
           <span className="text-on-surface-variant font-medium text-xs tracking-widest uppercase">
             Gewerbeindex 2025
@@ -77,11 +98,14 @@ export default function GewerbePage() {
           Gewerbeverzeichnis
         </h1>
         <p className="text-on-surface-variant text-base sm:text-lg lg:text-xl max-w-2xl leading-relaxed">
-          Entdecken Sie die architektonische Vielfalt und das wirtschaftliche Herz der Region Main-Taunus. Kuratierte Qualität aus Ihrer Nachbarschaft.
+          {townLabel
+            ? `Unternehmen in ${townLabel} — kuratierte Qualität aus Ihrer Nachbarschaft.`
+            : "Entdecken Sie die architektonische Vielfalt und das wirtschaftliche Herz der Region Main-Taunus. Kuratierte Qualität aus Ihrer Nachbarschaft."}
         </p>
       </header>
 
       {/* ── Premium Partner ── */}
+      {visiblePremium.length > 0 && (
       <section className="px-4 sm:px-8 lg:px-12 mb-16 lg:mb-20">
         <div className="flex items-center gap-4 mb-6 lg:mb-8">
           <h2 className="text-[12px] font-black tracking-[0.1em] text-tertiary uppercase flex items-center gap-2 flex-shrink-0">
@@ -92,7 +116,7 @@ export default function GewerbePage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
-          {premiumBusinesses.map((business) => (
+          {visiblePremium.map((business) => (
             <Link
               key={business.id}
               href={`/gewerbe/${business.id}`}
@@ -136,12 +160,13 @@ export default function GewerbePage() {
           ))}
         </div>
       </section>
+      )}
 
       {/* ── Alle Unternehmen ── */}
       <section className="px-4 sm:px-8 lg:px-12 pb-16">
         <div className="flex items-center justify-between mb-8 lg:mb-10 gap-3 flex-wrap">
           <h2 className="text-[12px] font-black tracking-[0.1em] text-primary uppercase">
-            Alle Unternehmen
+            {townLabel ? `Unternehmen in ${townLabel}` : "Alle Unternehmen"}
           </h2>
           <div className="flex gap-4">
             <button className="text-[10px] font-bold border-b border-primary pb-1 tracking-widest uppercase">
@@ -153,8 +178,14 @@ export default function GewerbePage() {
           </div>
         </div>
 
+        {visibleStandard.length === 0 && visiblePremium.length === 0 && (
+          <p className="text-on-surface-variant text-sm py-8 text-center">
+            Keine Einträge in {townLabel} gefunden.
+          </p>
+        )}
+
         <div className="flex flex-col gap-2 lg:gap-3">
-          {standardBusinesses.map((business) => (
+          {visibleStandard.map((business) => (
             <Link
               key={business.id}
               href={`/gewerbe/${business.id}`}

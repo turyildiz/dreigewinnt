@@ -75,10 +75,27 @@ const townColors: Record<string, string> = {
   Rüsselsheim: "bg-tertiary-fixed text-on-tertiary-container",
 };
 
-const featured = articles.find((a) => a.isFeatured)!;
-const rest = articles.filter((a) => !a.isFeatured);
+const townLabels: Record<string, string> = {
+  raunheim: "Raunheim",
+  kelsterbach: "Kelsterbach",
+  ruesselsheim: "Rüsselsheim",
+};
 
-export default function NewsPage() {
+export default async function NewsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ town?: string }>;
+}) {
+  const { town } = await searchParams;
+  const townLabel = town ? townLabels[town] : null;
+
+  const filtered = townLabel
+    ? articles.filter((a) => a.town === townLabel)
+    : articles;
+
+  const featured = filtered.find((a) => a.isFeatured) ?? filtered[0];
+  const rest = filtered.filter((a) => a !== featured);
+
   return (
     <main className="w-full pb-16">
 
@@ -86,7 +103,7 @@ export default function NewsPage() {
       <header className="px-4 sm:px-8 lg:px-12 pt-6 lg:pt-14 pb-8 lg:pb-12">
         <div className="flex items-center gap-2 mb-3 flex-wrap">
           <span className="bg-surface-container-highest text-primary px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase">
-            Dreigewinnt Region
+            {townLabel ?? "Dreigewinnt Region"}
           </span>
           <span className="text-on-surface-variant/40 text-sm italic">— Lokal Kuratiert</span>
         </div>
@@ -94,7 +111,9 @@ export default function NewsPage() {
           Nachrichten
         </h1>
         <p className="text-on-surface-variant mt-3 text-sm sm:text-base lg:text-lg leading-relaxed max-w-lg">
-          Geprüfte Berichte aus Raunheim, Kelsterbach und Rüsselsheim.
+          {townLabel
+            ? `Aktuelle Berichte aus ${townLabel}.`
+            : "Geprüfte Berichte aus Raunheim, Kelsterbach und Rüsselsheim."}
         </p>
       </header>
 
