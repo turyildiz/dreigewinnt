@@ -10,9 +10,9 @@ const towns = [
 ];
 
 const categories = [
-  { label: "Gastronomie", section: "/gewerbe", value: "gastronomie", icon: "restaurant" },
-  { label: "Handwerk", section: "/gewerbe", value: "handwerk", icon: "build" },
-  { label: "Kultur", section: "/events", value: "kultur", icon: "theater_comedy" },
+  { label: "Gastronomie", value: "gastronomie", icon: "restaurant" },
+  { label: "Handwerk", value: "handwerk", icon: "build" },
+  { label: "Kultur", value: "kultur", icon: "theater_comedy" },
 ];
 
 function getSection(pathname: string) {
@@ -70,10 +70,10 @@ export function SideNavBar() {
         <div className="h-[1px] bg-outline-variant/10 my-4 mx-8" />
 
         {categories.map((cat) => {
-          const isCatActive = activeCategory === cat.value && section === cat.section;
+          const isCatActive = activeCategory === cat.value;
           const href = activeTown
-            ? `${cat.section}?town=${activeTown}&category=${cat.value}`
-            : `${cat.section}?category=${cat.value}`;
+            ? `${section}?town=${activeTown}&category=${cat.value}`
+            : `${section}?category=${cat.value}`;
           return (
             <Link
               key={cat.value}
