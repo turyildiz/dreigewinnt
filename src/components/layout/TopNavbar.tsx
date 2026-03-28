@@ -11,10 +11,12 @@ const quickLinks = [
   { label: "Gewerbe", href: "/gewerbe", icon: "storefront" },
   { label: "Events", href: "/events", icon: "event" },
   { label: "News", href: "/news", icon: "newspaper" },
+  { label: "Jobs", href: "/jobs", icon: "work" },
 ];
 
 export function TopNavbar() {
   const pathname = usePathname();
+  if (pathname?.startsWith("/admin")) return null;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -130,6 +132,12 @@ export function TopNavbar() {
             >
               News
             </Link>
+            <Link
+              className={`transition-colors duration-200 ${pathname?.startsWith("/jobs") ? "text-primary border-b-2 border-primary pb-1" : "text-on-surface-variant hover:text-primary"}`}
+              href="/jobs"
+            >
+              Jobs
+            </Link>
           </div>
         </div>
 
@@ -159,6 +167,13 @@ export function TopNavbar() {
               href="/news"
             >
               News
+              <span className="material-symbols-outlined text-outline">arrow_forward_ios</span>
+            </Link>
+            <Link
+              className={`transition-colors duration-200 text-2xl font-headline tracking-tight font-bold flex justify-between items-center ${pathname?.startsWith("/jobs") ? "text-primary" : "text-on-surface-variant"}`}
+              href="/jobs"
+            >
+              Jobs
               <span className="material-symbols-outlined text-outline">arrow_forward_ios</span>
             </Link>
 

@@ -1,110 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-
-const articles: Record<string, {
-  slug: string;
-  title: string;
-  excerpt: string;
-  body: string[];
-  town: string;
-  category: string;
-  date: string;
-  dateFormatted: string;
-  readingTime: string;
-  imageUrl: string;
-  relatedSlugs: string[];
-}> = {
-  "neues-gewerbegebiet-raunheim-2025": {
-    slug: "neues-gewerbegebiet-raunheim-2025",
-    title: "Raunheim plant neues Gewerbegebiet am Stadtrand",
-    excerpt: "Die Stadt Raunheim hat grünes Licht für ein 12 Hektar großes Gewerbegebiet im Norden gegeben. Ansiedlungen aus Logistik und Leichtindustrie sind vorgesehen.",
-    body: [
-      "Der Stadtrat Raunheim hat in seiner Sitzung vom 15. September einstimmig den Aufstellungsbeschluss für ein neues Gewerbegebiet im nördlichen Stadtgebiet verabschiedet. Das rund 12 Hektar große Areal soll vorrangig für Betriebe aus Logistik, Leichtindustrie und dem Dienstleistungssektor erschlossen werden.",
-      "Bürgermeisterin Andrea Klein zeigte sich erfreut über das Ergebnis: \"Dieses Gewerbegebiet ist ein wichtiger Schritt für die wirtschaftliche Entwicklung Raunheims. Wir schaffen damit attraktive Flächen für lokale Unternehmen und neue Arbeitsplätze für unsere Bürgerinnen und Bürger.\"",
-      "Der Bebauungsplan sieht eine Mischung aus kleinen und mittelgroßen Parzellen vor. Ein besonderes Augenmerk liegt auf der Ansiedlung von Unternehmen, die bereits in der Region verwurzelt sind und Expansionsflächen suchen. Großflächige Einzelhandel und Verbrauchermärkte sind ausdrücklich ausgeschlossen.",
-      "Die Erschließung soll schrittweise ab dem zweiten Quartal 2026 beginnen. Parallel laufen Gespräche mit mehreren Interessenten aus dem Logistikbereich. Anwohner werden im Rahmen einer öffentlichen Auslegung des Bebauungsplanentwurfs in das Verfahren einbezogen.",
-    ],
-    town: "Raunheim",
-    category: "Wirtschaft",
-    date: "2025-09-18",
-    dateFormatted: "18. September 2025",
-    readingTime: "3 Min.",
-    imageUrl: "https://images.unsplash.com/photo-1486325212027-8081e485255e?q=80&w=1600&auto=format&fit=crop",
-    relatedSlugs: ["main-taunus-gastro-award-2025", "kelsterbach-fahrradwege-ausbau"],
-  },
-  "kelsterbach-fahrradwege-ausbau": {
-    slug: "kelsterbach-fahrradwege-ausbau",
-    title: "Kelsterbach erweitert sein Fahrradwegenetz deutlich",
-    excerpt: "Bis 2026 sollen 8 Kilometer neue Radwege entstehen. Das Projekt verbindet erstmals alle Stadtteile mit dem Mainufer.",
-    body: [
-      "Die Stadt Kelsterbach investiert in den kommenden zwei Jahren rund 2,4 Millionen Euro in den Ausbau ihres Fahrradwegenetzes. Insgesamt sollen 8 Kilometer neue, teils baulich getrennte Radwege entstehen, die alle Stadtteile miteinander und mit dem Mainufer verbinden.",
-      "Das Herzstück des Projekts ist eine neue Fahrradachse vom Bahnhof Kelsterbach bis zum Rhein-Main-Radweg entlang des Mains. Dieser Abschnitt wird als zwei Meter breiter, beleuchteter Radweg ausgebaut und soll auch in den Abendstunden sicher befahrbar sein.",
-      "\"Wir möchten das Fahrrad als echte Alternative zum Auto stärken\", erklärt Stadtrat Jochen Burkhardt. \"Mit diesem Ausbau schaffen wir die Grundlage dafür, dass mehr Menschen sicher und komfortabel mit dem Rad zur Arbeit, zur Schule oder an den Main fahren können.\"",
-      "Die Arbeiten beginnen voraussichtlich im Frühjahr 2026. Anwohner der betroffenen Straßen werden rechtzeitig über Bauzeiträume und Umleitungen informiert.",
-    ],
-    town: "Kelsterbach",
-    category: "Stadtentwicklung",
-    date: "2025-09-14",
-    dateFormatted: "14. September 2025",
-    readingTime: "2 Min.",
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=1600&auto=format&fit=crop",
-    relatedSlugs: ["kelsterbach-fluglaerm-initiative", "neues-gewerbegebiet-raunheim-2025"],
-  },
-  "ruesselsheim-opel-museum-erweiterung": {
-    slug: "ruesselsheim-opel-museum-erweiterung",
-    title: "Opel-Museum Rüsselsheim: Neue Dauerausstellung zur Elektromobilität",
-    excerpt: "Das Museum zeigt ab Oktober eine umfassende Schau zur Geschichte und Zukunft des Elektroantriebs — von den Anfängen bis zur Gegenwart.",
-    body: [
-      "Das Opel-Museum in Rüsselsheim eröffnet am 1. Oktober eine neue Dauerausstellung, die sich der Geschichte und Zukunft der Elektromobilität widmet. Auf 800 Quadratmetern beleuchtet die Schau die Entwicklung des Elektroantriebs vom frühen 20. Jahrhundert bis zu den modernsten Modellen der Gegenwart.",
-      "Besonderes Highlight ist ein restaurierter Opel P4 Elektro aus dem Jahr 1936, der erstmals öffentlich ausgestellt wird. Daneben zeigt die Ausstellung historische Patente, Prototypen und interaktive Stationen, an denen Besucher die Funktionsweise von Elektromotoren selbst erfahren können.",
-      "Museumsleiter Dr. Klaus Hofmann betont die Bedeutung der Ausstellung: \"Rüsselsheim hat eine einzigartige Automobilgeschichte. Mit dieser Schau zeigen wir, dass die Zukunft des Elektroantriebs hier schon vor fast hundert Jahren begann.\"",
-      "Die Ausstellung ist dienstags bis sonntags von 10 bis 18 Uhr geöffnet. Der Eintritt beträgt 9 Euro, ermäßigt 6 Euro. Führungen können unter museum@ruesselsheim.de gebucht werden.",
-    ],
-    town: "Rüsselsheim",
-    category: "Kultur",
-    date: "2025-09-10",
-    dateFormatted: "10. September 2025",
-    readingTime: "4 Min.",
-    imageUrl: "https://images.unsplash.com/photo-1553440569-bcc63803a83d?q=80&w=1600&auto=format&fit=crop",
-    relatedSlugs: ["main-taunus-gastro-award-2025", "kelsterbach-fahrradwege-ausbau"],
-  },
-  "main-taunus-gastro-award-2025": {
-    slug: "main-taunus-gastro-award-2025",
-    title: "Main-Taunus Gastro Award: Drei lokale Betriebe ausgezeichnet",
-    excerpt: "Beim diesjährigen Gastronomiepreis des Kreises konnten sich Betriebe aus allen drei Dreigewinnt-Städten durchsetzen.",
-    body: [
-      "Der Main-Taunus Gastro Award, der jährlich vom Kreisverband Gastronomie und Tourismus vergeben wird, ging in diesem Jahr an drei Betriebe aus der Dreigewinnt-Region. Die Preisverleihung fand im Rahmen eines festlichen Abendessens in Hofheim statt.",
-      "In der Kategorie \"Beste regionale Küche\" überzeugte das Restaurant Zum Goldenen Anker in Raunheim die Jury mit seinem konsequent regionalen Speiseangebot. Das Gourmet Eck Kelsterbach wurde für seinen exzellenten Service mit dem Publikumspreis ausgezeichnet. Den Sonderpreis Innovation erhielt das Lumina Fine Dining in Rüsselsheim für sein innovatives Konzept saisonaler Degustationsmenüs.",
-      "\"Diese Auszeichnungen zeigen, wie lebendig die Gastronomiekultur in unserer Region ist\", sagte Kreisbeigeordneter Ralf Hemberger bei der Verleihung. \"Wir sind stolz auf die Vielfalt und Qualität, die unsere lokalen Betriebe bieten.\"",
-      "Alle Preisträger erhalten neben der Urkunde eine Präsenz in den touristischen Marketingmaterialien des Kreises sowie eine Listung auf der regionalen Gastronomieplatform.",
-    ],
-    town: "Raunheim",
-    category: "Gastronomie",
-    date: "2025-09-05",
-    dateFormatted: "5. September 2025",
-    readingTime: "3 Min.",
-    imageUrl: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=1600&auto=format&fit=crop",
-    relatedSlugs: ["neues-gewerbegebiet-raunheim-2025", "ruesselsheim-opel-museum-erweiterung"],
-  },
-  "kelsterbach-fluglaerm-initiative": {
-    slug: "kelsterbach-fluglaerm-initiative",
-    title: "Bürgerinitiative gegen Fluglärm übergibt 4.000 Unterschriften",
-    excerpt: "Die Initiative Leiser Kelsterbach hat ihre Petition an den Kreistag übergeben. Eine Anhörung ist für November geplant.",
-    body: [
-      "Die Bürgerinitiative Leiser Kelsterbach hat am vergangenen Freitag dem Vorsitzenden des Kreistags Groß-Gerau eine Petition mit 4.217 Unterschriften übergeben. Die Initiative fordert eine Reduktion der Nachtflugbewegungen über Kelsterbach sowie eine Überprüfung der bestehenden Flugrouten.",
-      "\"4.000 Unterschriften in weniger als drei Monaten zeigen, wie ernst das Problem von unseren Mitbürgerinnen und Mitbürgern genommen wird\", erklärte Initiativensprecherin Monika Schwarz bei der Übergabe. \"Wir erwarten eine ehrliche Auseinandersetzung mit unseren Forderungen.\"",
-      "Der Kreistag hat zugesagt, die Petition in seiner November-Sitzung zu behandeln. Eine öffentliche Anhörung, zu der auch Vertreter der Fraport AG eingeladen werden, ist für den 12. November geplant.",
-      "Die Initiative hatte sich im Juni gegründet, nachdem eine Änderung von Abflugrouten zu einer messbaren Zunahme des Fluglärms über dem südlichen Stadtgebiet geführt hatte. Lärmschutzmessungen der Stadt ergaben in Spitzenzeiten Werte von bis zu 72 Dezibel.",
-    ],
-    town: "Kelsterbach",
-    category: "Bürger & Politik",
-    date: "2025-08-28",
-    dateFormatted: "28. August 2025",
-    readingTime: "2 Min.",
-    imageUrl: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1600&auto=format&fit=crop",
-    relatedSlugs: ["kelsterbach-fahrradwege-ausbau", "neues-gewerbegebiet-raunheim-2025"],
-  },
-};
+import { supabase } from "@/lib/supabase";
 
 const townColors: Record<string, string> = {
   Raunheim: "bg-surface-container-highest text-primary",
@@ -112,13 +8,32 @@ const townColors: Record<string, string> = {
   Rüsselsheim: "bg-tertiary-fixed text-on-tertiary-container",
 };
 
+function formatDate(dateStr: string) {
+  return new Date(dateStr).toLocaleDateString("de-DE", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
+
+function bodyToParagraphs(body: string): string[] {
+  const byDoubleNewline = body.split(/\n\n+/).map((p) => p.trim()).filter(Boolean);
+  if (byDoubleNewline.length > 1) return byDoubleNewline;
+  return body.split(/\n/).map((p) => p.trim()).filter(Boolean);
+}
+
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const article = articles[slug];
+  const { data: article } = await supabase
+    .from("articles")
+    .select("title, excerpt, hero_image_url, published_at")
+    .eq("slug", slug)
+    .eq("status", "published")
+    .single();
 
   if (!article) {
     return { title: "Artikel nicht gefunden | DREIGEWINNT.COM" };
@@ -129,11 +44,10 @@ export async function generateMetadata({
     description: article.excerpt,
     openGraph: {
       title: article.title,
-      description: article.excerpt,
-      images: [{ url: article.imageUrl }],
+      description: article.excerpt ?? undefined,
+      images: article.hero_image_url ? [{ url: article.hero_image_url }] : [],
       type: "article",
-      publishedTime: article.date,
-      tags: [article.town, article.category],
+      publishedTime: article.published_at ?? undefined,
     },
   };
 }
@@ -144,7 +58,13 @@ export default async function ArticlePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const article = articles[slug];
+
+  const { data: article } = await supabase
+    .from("articles")
+    .select("id, slug, title, excerpt, body, hero_image_url, towns, published_at")
+    .eq("slug", slug)
+    .eq("status", "published")
+    .single();
 
   if (!article) {
     return (
@@ -157,31 +77,41 @@ export default async function ArticlePage({
     );
   }
 
-  const related = article.relatedSlugs
-    .map((s) => articles[s])
-    .filter(Boolean);
+  const primaryTown = article.towns?.[0] ?? null;
+  const paragraphs = article.body ? bodyToParagraphs(article.body) : [];
+
+  // Fetch 2 other recent published articles for related sidebar
+  const { data: related } = await supabase
+    .from("articles")
+    .select("slug, title, hero_image_url, towns")
+    .eq("status", "published")
+    .neq("slug", slug)
+    .order("published_at", { ascending: false })
+    .limit(2);
 
   return (
     <main className="w-full pb-16">
 
       {/* ── Hero ── */}
       <div className="relative h-[40vw] min-h-[240px] max-h-[500px] overflow-hidden bg-surface-container-high">
-        <img
-          src={article.imageUrl}
-          alt={article.title}
-          className="w-full h-full object-cover"
-        />
+        {article.hero_image_url ? (
+          <img
+            src={article.hero_image_url}
+            alt={article.title}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <div className="w-full h-full bg-surface-container-high" />
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-primary/70 via-primary/20 to-transparent" />
 
-        {/* Town + category over image */}
-        <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 lg:bottom-8 lg:left-12 flex items-center gap-2 flex-wrap">
-          <span className={`px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase ${townColors[article.town]}`}>
-            {article.town}
-          </span>
-          <span className="text-on-primary/80 font-bold text-[10px] tracking-widest uppercase">
-            {article.category}
-          </span>
-        </div>
+        {primaryTown && (
+          <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 lg:bottom-8 lg:left-12 flex items-center gap-2 flex-wrap">
+            <span className={`px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase ${townColors[primaryTown] ?? "bg-surface-container-highest text-primary"}`}>
+              {primaryTown}
+            </span>
+          </div>
+        )}
       </div>
 
       {/* ── Article content ── */}
@@ -202,9 +132,7 @@ export default async function ArticlePage({
           <article className="lg:col-span-2">
             {/* Meta */}
             <div className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-5">
-              <span>{article.dateFormatted}</span>
-              <span className="w-1 h-1 rounded-full bg-outline-variant" />
-              <span>{article.readingTime} Lesezeit</span>
+              {article.published_at && <span>{formatDate(article.published_at)}</span>}
             </div>
 
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-headline font-black tracking-tighter text-primary leading-tight mb-8">
@@ -212,13 +140,15 @@ export default async function ArticlePage({
             </h1>
 
             {/* Lead paragraph */}
-            <p className="text-base sm:text-lg text-on-surface-variant leading-relaxed mb-6 font-medium border-l-2 border-secondary pl-4 lg:pl-6">
-              {article.excerpt}
-            </p>
+            {article.excerpt && (
+              <p className="text-base sm:text-lg text-on-surface-variant leading-relaxed mb-6 font-medium border-l-2 border-secondary pl-4 lg:pl-6">
+                {article.excerpt}
+              </p>
+            )}
 
             {/* Body paragraphs */}
             <div className="flex flex-col gap-5">
-              {article.body.map((paragraph, i) => (
+              {paragraphs.map((paragraph, i) => (
                 <p key={i} className="text-on-surface text-sm sm:text-base leading-relaxed lg:leading-loose">
                   {paragraph}
                 </p>
@@ -253,36 +183,47 @@ export default async function ArticlePage({
             </div>
 
             {/* Related articles */}
-            {related.length > 0 && (
+            {related && related.length > 0 && (
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-4 flex items-center gap-3">
                   <span className="w-5 h-[2px] bg-outline-variant flex-shrink-0" />
                   Weitere Berichte
                 </p>
                 <div className="flex flex-col gap-3">
-                  {related.map((rel) => (
-                    <Link
-                      key={rel.slug}
-                      href={`/news/${rel.slug}`}
-                      className="group flex gap-3 bg-surface-container-lowest border border-outline-variant/10 p-3 hover:shadow-md transition-all"
-                    >
-                      <div className="w-16 h-16 flex-shrink-0 overflow-hidden bg-surface-container-high">
-                        <img
-                          src={rel.imageUrl}
-                          alt={rel.title}
-                          className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
-                        />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <span className={`inline-block px-1.5 py-0.5 rounded-full text-[8px] font-bold tracking-wider uppercase mb-1 ${townColors[rel.town]}`}>
-                          {rel.town}
-                        </span>
-                        <p className="text-xs font-bold text-primary leading-tight group-hover:text-secondary transition-colors line-clamp-2">
-                          {rel.title}
-                        </p>
-                      </div>
-                    </Link>
-                  ))}
+                  {related.map((rel) => {
+                    const relTown = rel.towns?.[0] ?? null;
+                    return (
+                      <Link
+                        key={rel.slug}
+                        href={`/news/${rel.slug}`}
+                        className="group flex gap-3 bg-surface-container-lowest border border-outline-variant/10 p-3 hover:shadow-md transition-all"
+                      >
+                        <div className="w-16 h-16 flex-shrink-0 overflow-hidden bg-surface-container-high">
+                          {rel.hero_image_url ? (
+                            <img
+                              src={rel.hero_image_url}
+                              alt={rel.title}
+                              className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center">
+                              <span className="material-symbols-outlined text-2xl text-on-surface-variant/20">article</span>
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          {relTown && (
+                            <span className={`inline-block px-1.5 py-0.5 rounded-full text-[8px] font-bold tracking-wider uppercase mb-1 ${townColors[relTown] ?? "bg-surface-container-highest text-primary"}`}>
+                              {relTown}
+                            </span>
+                          )}
+                          <p className="text-xs font-bold text-primary leading-tight group-hover:text-secondary transition-colors line-clamp-2">
+                            {rel.title}
+                          </p>
+                        </div>
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
             )}

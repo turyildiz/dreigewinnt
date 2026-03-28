@@ -1,14 +1,45 @@
 import Link from "next/link";
-import Image from "next/image";
 import { TownTag } from "@/components/ui/TownTag";
 import { Footer } from "@/components/layout/Footer";
 import { SearchBar } from "@/components/ui/SearchBar";
+import { supabase } from "@/lib/supabase";
 
-export default function Home() {
+const townLabels: Record<string, "Raunheim" | "Kelsterbach" | "Rüsselsheim"> = {
+  raunheim: "Raunheim",
+  kelsterbach: "Kelsterbach",
+  ruesselsheim: "Rüsselsheim",
+};
+
+function formatEventDate(dateStr: string) {
+  return new Date(dateStr).toLocaleDateString("de-DE", {
+    day: "numeric",
+    month: "long",
+  });
+}
+
+export default async function Home() {
+  const now = new Date().toISOString();
+
+  const [{ data: partners }, { data: events }] = await Promise.all([
+    supabase
+      .from("businesses")
+      .select("id, slug, name, town, category, description, hero_image_url")
+      .eq("status", "active")
+      .eq("tier", "premium")
+      .limit(4),
+    supabase
+      .from("events")
+      .select("id, slug, title, town, category, start_date, description, hero_image_url, is_featured")
+      .eq("status", "active")
+      .gte("start_date", now)
+      .order("start_date", { ascending: true })
+      .limit(2),
+  ]);
+
   return (
     <>
     <main className="pt-16 md:pt-20 max-w-[1440px] w-full mx-auto overflow-hidden">
-      
+
       {/* Hero Section */}
       <section className="px-6 md:px-12 pt-12 md:pt-16 pb-12 md:pb-16 border-b border-outline-variant/10 relative overflow-hidden">
 
@@ -77,95 +108,57 @@ export default function Home() {
           <Link href="/gewerbe" className="text-[10px] md:text-sm font-bold uppercase tracking-widest border-b-2 border-secondary pb-1 hover:text-secondary transition-colors">Alle Unternehmen ansehen</Link>
         </div>
 
-        {/* Row 1: tall LEFT + full-height RIGHT */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
-
-          {/* Card 1 — tall left */}
-          <Link href="/gewerbe/main-studio-gmbh" className="group relative overflow-hidden h-[480px] md:h-[600px] block md:col-span-1">
-            <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=1200&auto=format&fit=crop" alt="Gourmet Eck Raunheim" className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700" />
-            <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/30 to-transparent" />
-            <div className="absolute top-4 left-4 flex items-center gap-1.5 bg-tertiary px-3 py-1">
-              <span className="material-symbols-outlined text-white text-xs" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-              <span className="text-white text-[10px] font-black uppercase tracking-widest">Top-Partner</span>
-            </div>
-            <div className="absolute top-4 right-4"><TownTag town="Raunheim" /></div>
-            <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-              <span className="text-secondary-fixed text-[10px] font-bold uppercase tracking-widest block mb-2">Gastronomie</span>
-              <h3 className="text-2xl md:text-3xl font-black text-white tracking-tight leading-tight mb-3 group-hover:text-secondary-fixed transition-colors">Gourmet Eck Raunheim</h3>
-              <p className="text-white/70 text-sm leading-relaxed line-clamp-2 mb-5">Exzellente deutsche Küche mit regionalen Zutaten. Ein Muss für jeden Feinschmecker in der Region.</p>
-              <div className="flex items-center gap-2 text-white/50 text-[10px] font-bold uppercase tracking-widest group-hover:text-secondary-fixed transition-colors">
-                <span>Zum Profil</span>
-                <span className="material-symbols-outlined text-sm -translate-x-1 group-hover:translate-x-0 transition-transform duration-300">arrow_forward</span>
-              </div>
-            </div>
-          </Link>
-
-          {/* Card 2 — full height right */}
-          <Link href="/gewerbe/lederwerk-taunus" className="group relative overflow-hidden h-[480px] md:h-[600px] block md:col-span-2">
-            <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1400&auto=format&fit=crop" alt="Power Hub Kelsterbach" className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700" />
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/80 via-primary/40 to-transparent" />
-            <div className="absolute top-4 left-4 flex items-center gap-1.5 bg-tertiary px-3 py-1">
-              <span className="material-symbols-outlined text-white text-xs" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-              <span className="text-white text-[10px] font-black uppercase tracking-widest">Top-Partner</span>
-            </div>
-            <div className="absolute top-4 right-4"><TownTag town="Kelsterbach" /></div>
-            <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10 md:max-w-lg">
-              <span className="text-secondary-fixed text-[10px] font-bold uppercase tracking-widest block mb-2">Sport & Fitness</span>
-              <h3 className="text-2xl md:text-4xl font-black text-white tracking-tight leading-tight mb-3 group-hover:text-secondary-fixed transition-colors">Power Hub Kelsterbach</h3>
-              <p className="text-white/70 text-sm leading-relaxed line-clamp-2 mb-5">Modernstes Fitnessstudio der Region mit 24/7 Zugang und persönlicher Betreuung durch Experten.</p>
-              <div className="flex items-center gap-2 text-white/50 text-[10px] font-bold uppercase tracking-widest group-hover:text-secondary-fixed transition-colors">
-                <span>Zum Profil</span>
-                <span className="material-symbols-outlined text-sm -translate-x-1 group-hover:translate-x-0 transition-transform duration-300">arrow_forward</span>
-              </div>
-            </div>
-          </Link>
-        </div>
-
-        {/* Row 2: small LEFT + tall RIGHT (mirrored) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
-
-          {/* Cards 4 stacked left */}
-          <div className="md:col-span-2 grid grid-cols-1 md:grid-rows-1 gap-0">
-            <Link href="/gewerbe/handwerksbetrieb-mueller" className="group relative overflow-hidden h-[480px] md:h-[600px] block">
-              <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=1400&auto=format&fit=crop" alt="Handwerksbetrieb Müller" className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700" />
-              <div className="absolute inset-0 bg-gradient-to-l from-primary/80 via-primary/40 to-transparent" />
-              <div className="absolute top-4 left-4 flex items-center gap-1.5 bg-tertiary px-3 py-1">
-                <span className="material-symbols-outlined text-white text-xs" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-                <span className="text-white text-[10px] font-black uppercase tracking-widest">Top-Partner</span>
-              </div>
-              <div className="absolute top-4 right-4"><TownTag town="Kelsterbach" /></div>
-              <div className="absolute bottom-0 right-0 left-0 p-6 md:p-8 md:text-right">
-                <span className="text-secondary-fixed text-[10px] font-bold uppercase tracking-widest block mb-1.5">Handwerk & Bau</span>
-                <h3 className="text-2xl md:text-3xl font-black text-white tracking-tight leading-tight mb-3 group-hover:text-secondary-fixed transition-colors">Handwerksbetrieb Müller</h3>
-                <p className="text-white/70 text-sm leading-relaxed line-clamp-2 mb-5 hidden md:block">Sanitär, Heizung und Klimatechnik — seit über 20 Jahren der verlässliche Partner im Main-Taunus-Kreis.</p>
-                <div className="flex items-center gap-2 text-white/50 text-[10px] font-bold uppercase tracking-widest group-hover:text-secondary-fixed transition-colors md:justify-end">
-                  <span>Zum Profil</span>
-                  <span className="material-symbols-outlined text-sm -translate-x-1 group-hover:translate-x-0 transition-transform duration-300">arrow_forward</span>
-                </div>
-              </div>
-            </Link>
+        {!partners || partners.length === 0 ? (
+          <div className="bg-surface-container-lowest p-16 text-center">
+            <span className="material-symbols-outlined text-5xl text-on-surface-variant/20 mb-4 block" style={{ fontVariationSettings: "'FILL' 1" }}>storefront</span>
+            <p className="text-on-surface-variant text-sm mb-1">Noch keine Premium-Partner.</p>
+            <p className="text-on-surface-variant/60 text-xs">Demnächst stellen sich lokale Unternehmen vor.</p>
           </div>
+        ) : (
+          <>
+            {/* Row 1 */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
+              {partners[0] && (
+                <PartnerCard
+                  business={partners[0]}
+                  className="md:col-span-1"
+                  gradientClass="bg-gradient-to-t from-primary/90 via-primary/30 to-transparent"
+                  textAlign="left"
+                />
+              )}
+              {partners[1] && (
+                <PartnerCard
+                  business={partners[1]}
+                  className="md:col-span-2"
+                  gradientClass="bg-gradient-to-r from-primary/80 via-primary/40 to-transparent"
+                  textAlign="left"
+                />
+              )}
+            </div>
 
-          {/* Card 4 — tall right */}
-          <Link href="/gewerbe/main-gym-fitness" className="group relative overflow-hidden h-[480px] md:h-[600px] block md:col-span-1">
-            <img src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=1200&auto=format&fit=crop" alt="Main-Gym Fitness" className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700" />
-            <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/30 to-transparent" />
-            <div className="absolute top-4 left-4 flex items-center gap-1.5 bg-tertiary px-3 py-1">
-              <span className="material-symbols-outlined text-white text-xs" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-              <span className="text-white text-[10px] font-black uppercase tracking-widest">Top-Partner</span>
-            </div>
-            <div className="absolute top-4 right-4"><TownTag town="Raunheim" /></div>
-            <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-              <span className="text-secondary-fixed text-[10px] font-bold uppercase tracking-widest block mb-2">Sport & Freizeit</span>
-              <h3 className="text-2xl md:text-3xl font-black text-white tracking-tight leading-tight mb-3 group-hover:text-secondary-fixed transition-colors">Main-Gym Fitness</h3>
-              <p className="text-white/70 text-sm leading-relaxed line-clamp-2 mb-5">Modern ausgestattetes Fitnesscenter mit Kursen für alle Altersgruppen — direkt im Herzen von Raunheim.</p>
-              <div className="flex items-center gap-2 text-white/50 text-[10px] font-bold uppercase tracking-widest group-hover:text-secondary-fixed transition-colors">
-                <span>Zum Profil</span>
-                <span className="material-symbols-outlined text-sm -translate-x-1 group-hover:translate-x-0 transition-transform duration-300">arrow_forward</span>
+            {/* Row 2 (only if we have 3+ partners) */}
+            {partners.length > 2 && (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
+                {partners[2] && (
+                  <PartnerCard
+                    business={partners[2]}
+                    className="md:col-span-2"
+                    gradientClass="bg-gradient-to-l from-primary/80 via-primary/40 to-transparent"
+                    textAlign="right"
+                  />
+                )}
+                {partners[3] && (
+                  <PartnerCard
+                    business={partners[3]}
+                    className="md:col-span-1"
+                    gradientClass="bg-gradient-to-t from-primary/90 via-primary/30 to-transparent"
+                    textAlign="left"
+                  />
+                )}
               </div>
-            </div>
-          </Link>
-        </div>
+            )}
+          </>
+        )}
       </section>
 
       {/* Event-Highlights Section */}
@@ -175,66 +168,111 @@ export default function Home() {
           <h2 className="text-4xl md:text-5xl font-black text-primary tracking-tighter">Veranstaltungen</h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
+        {!events || events.length === 0 ? (
+          <div className="bg-surface-container-lowest p-16 text-center">
+            <span className="material-symbols-outlined text-5xl text-on-surface-variant/20 mb-4 block" style={{ fontVariationSettings: "'FILL' 1" }}>event_busy</span>
+            <p className="text-on-surface-variant text-sm mb-1">Aktuell keine kommenden Veranstaltungen.</p>
+            <p className="text-on-surface-variant/60 text-xs">Schau bald wieder rein.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
+            {events[0] && (
+              <Link href={`/events/${events[0].slug}`} className="group relative overflow-hidden h-[420px] md:h-[540px] block md:col-span-2">
+                {events[0].hero_image_url ? (
+                  <img
+                    src={events[0].hero_image_url}
+                    alt={events[0].title}
+                    className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-surface-container-high" />
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/30 to-transparent" />
+                {events[0].is_featured && (
+                  <div className="absolute top-4 left-4 bg-primary/60 backdrop-blur-sm px-3 py-1">
+                    <span className="text-white text-[10px] font-black uppercase tracking-widest">Featured</span>
+                  </div>
+                )}
+                {events[0].town && (
+                  <div className="absolute top-4 right-4">
+                    <TownTag town={townLabels[events[0].town] ?? events[0].town as "Raunheim"} />
+                  </div>
+                )}
+                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10">
+                  <span className="text-secondary-fixed text-[10px] font-bold uppercase tracking-widest block mb-2">
+                    {events[0].start_date && formatEventDate(events[0].start_date)}
+                    {events[0].category && ` · ${events[0].category}`}
+                  </span>
+                  <h3 className="text-2xl md:text-4xl font-black text-white tracking-tight leading-tight mb-3 group-hover:text-secondary-fixed transition-colors">
+                    {events[0].title}
+                  </h3>
+                  {events[0].description && (
+                    <p className="text-white/70 text-sm leading-relaxed line-clamp-2 mb-5 max-w-lg">
+                      {events[0].description}
+                    </p>
+                  )}
+                  <div className="flex items-center gap-2 text-white/50 text-[10px] font-bold uppercase tracking-widest group-hover:text-secondary-fixed transition-colors">
+                    <span>Zur Veranstaltung</span>
+                    <span className="material-symbols-outlined text-sm -translate-x-1 group-hover:translate-x-0 transition-transform duration-300">arrow_forward</span>
+                  </div>
+                </div>
+              </Link>
+            )}
 
-          {/* Event 1 — wide left */}
-          <Link href="/events/jazz-im-rathausgarten" className="group relative overflow-hidden h-[420px] md:h-[540px] block md:col-span-2">
-            <img
-              src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1400&auto=format&fit=crop"
-              alt="Main-Ufer Sommerfest"
-              className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/30 to-transparent" />
-            <div className="absolute top-4 left-4 bg-primary/60 backdrop-blur-sm px-3 py-1">
-              <span className="text-white text-[10px] font-black uppercase tracking-widest">Featured Boost</span>
-            </div>
-            <div className="absolute top-4 right-4">
-              <TownTag town="Kelsterbach" />
-            </div>
-            <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10">
-              <span className="text-secondary-fixed text-[10px] font-bold uppercase tracking-widest block mb-2">24. August · Stadtfest</span>
-              <h3 className="text-2xl md:text-4xl font-black text-white tracking-tight leading-tight mb-3 group-hover:text-secondary-fixed transition-colors">
-                Main-Ufer Sommerfest
-              </h3>
-              <p className="text-white/70 text-sm leading-relaxed line-clamp-2 mb-5 max-w-lg">
-                Live-Musik, kulinarische Köstlichkeiten und ein spektakuläres Feuerwerk direkt am Mainufer von Kelsterbach.
-              </p>
-              <div className="flex items-center gap-2 text-white/50 text-[10px] font-bold uppercase tracking-widest group-hover:text-secondary-fixed transition-colors">
-                <span>Zur Veranstaltung</span>
-                <span className="material-symbols-outlined text-sm -translate-x-1 group-hover:translate-x-0 transition-transform duration-300">arrow_forward</span>
-              </div>
-            </div>
-          </Link>
+            {events[1] && (
+              <Link href={`/events/${events[1].slug}`} className="group relative overflow-hidden h-[420px] md:h-[540px] block md:col-span-1">
+                {events[1].hero_image_url ? (
+                  <img
+                    src={events[1].hero_image_url}
+                    alt={events[1].title}
+                    className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-surface-container-high" />
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/40 to-transparent" />
+                {events[1].is_featured && (
+                  <div className="absolute top-4 left-4 bg-primary/60 backdrop-blur-sm px-3 py-1">
+                    <span className="text-white text-[10px] font-black uppercase tracking-widest">Featured</span>
+                  </div>
+                )}
+                {events[1].town && (
+                  <div className="absolute top-4 right-4">
+                    <TownTag town={townLabels[events[1].town] ?? events[1].town as "Raunheim"} />
+                  </div>
+                )}
+                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                  <span className="text-secondary-fixed text-[10px] font-bold uppercase tracking-widest block mb-2">
+                    {events[1].start_date && formatEventDate(events[1].start_date)}
+                    {events[1].category && ` · ${events[1].category}`}
+                  </span>
+                  <h3 className="text-xl md:text-2xl font-black text-white tracking-tight leading-tight mb-3 group-hover:text-secondary-fixed transition-colors">
+                    {events[1].title}
+                  </h3>
+                  {events[1].description && (
+                    <p className="text-white/70 text-sm leading-relaxed line-clamp-2 mb-5">
+                      {events[1].description}
+                    </p>
+                  )}
+                  <div className="flex items-center gap-2 text-white/50 text-[10px] font-bold uppercase tracking-widest group-hover:text-secondary-fixed transition-colors">
+                    <span>Zur Veranstaltung</span>
+                    <span className="material-symbols-outlined text-sm -translate-x-1 group-hover:translate-x-0 transition-transform duration-300">arrow_forward</span>
+                  </div>
+                </div>
+              </Link>
+            )}
 
-          {/* Event 2 — tall right */}
-          <Link href="/events/main-taunus-genussmarkt" className="group relative overflow-hidden h-[420px] md:h-[540px] block md:col-span-1">
-            <img
-              src="https://images.unsplash.com/photo-1467810563316-b5476525c0f9?q=80&w=800&auto=format&fit=crop"
-              alt="Industrie-Kultur Tage"
-              className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/40 to-transparent" />
-            <div className="absolute top-4 left-4 bg-primary/60 backdrop-blur-sm px-3 py-1">
-              <span className="text-white text-[10px] font-black uppercase tracking-widest">Featured Boost</span>
-            </div>
-            <div className="absolute top-4 right-4">
-              <TownTag town="Rüsselsheim" />
-            </div>
-            <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-              <span className="text-secondary-fixed text-[10px] font-bold uppercase tracking-widest block mb-2">12. September · Kultur</span>
-              <h3 className="text-xl md:text-2xl font-black text-white tracking-tight leading-tight mb-3 group-hover:text-secondary-fixed transition-colors">
-                Industrie-Kultur Tage
-              </h3>
-              <p className="text-white/70 text-sm leading-relaxed line-clamp-2 mb-5">
-                Erleben Sie die faszinierende Geschichte der Opel-Stadt durch exklusive Führungen.
-              </p>
-              <div className="flex items-center gap-2 text-white/50 text-[10px] font-bold uppercase tracking-widest group-hover:text-secondary-fixed transition-colors">
-                <span>Zur Veranstaltung</span>
-                <span className="material-symbols-outlined text-sm -translate-x-1 group-hover:translate-x-0 transition-transform duration-300">arrow_forward</span>
+            {/* If only 1 event, fill the right column with a CTA */}
+            {events.length === 1 && (
+              <div className="md:col-span-1 bg-surface-container-lowest flex items-center justify-center h-[420px] md:h-[540px]">
+                <div className="text-center p-8">
+                  <span className="material-symbols-outlined text-5xl text-on-surface-variant/20 mb-4 block" style={{ fontVariationSettings: "'FILL' 1" }}>event</span>
+                  <p className="text-on-surface-variant text-sm">Weitere Veranstaltungen folgen.</p>
+                </div>
               </div>
-            </div>
-          </Link>
-        </div>
+            )}
+          </div>
+        )}
 
         <div className="mt-10 md:mt-12 text-center">
           <Link href="/events" className="inline-block bg-primary text-on-primary px-8 md:px-12 py-4 font-black uppercase text-[10px] md:text-xs tracking-[0.2em] md:tracking-[0.3em] hover:bg-on-surface-variant transition-colors w-full md:w-auto">
@@ -261,5 +299,68 @@ export default function Home() {
     </main>
     <Footer />
     </>
+  );
+}
+
+interface Business {
+  id: string;
+  slug: string;
+  name: string;
+  town: string;
+  category: string | null;
+  description: string | null;
+  hero_image_url: string | null;
+}
+
+function PartnerCard({
+  business,
+  className,
+  gradientClass,
+  textAlign,
+}: {
+  business: Business;
+  className?: string;
+  gradientClass: string;
+  textAlign: "left" | "right";
+}) {
+  const displayTown = townLabels[business.town] ?? business.town;
+
+  return (
+    <Link href={`/gewerbe/${business.slug}`} className={`group relative overflow-hidden h-[480px] md:h-[600px] block ${className ?? ""}`}>
+      {business.hero_image_url ? (
+        <img
+          src={business.hero_image_url}
+          alt={business.name}
+          className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700"
+        />
+      ) : (
+        <div className="w-full h-full bg-surface-container-high" />
+      )}
+      <div className={`absolute inset-0 ${gradientClass}`} />
+      <div className="absolute top-4 left-4 flex items-center gap-1.5 bg-tertiary px-3 py-1">
+        <span className="material-symbols-outlined text-white text-xs" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+        <span className="text-white text-[10px] font-black uppercase tracking-widest">Top-Partner</span>
+      </div>
+      <div className="absolute top-4 right-4">
+        <TownTag town={displayTown as "Raunheim" | "Kelsterbach" | "Rüsselsheim"} />
+      </div>
+      <div className={`absolute bottom-0 left-0 right-0 p-6 md:p-8 ${textAlign === "right" ? "md:text-right" : ""}`}>
+        {business.category && (
+          <span className="text-secondary-fixed text-[10px] font-bold uppercase tracking-widest block mb-2">{business.category}</span>
+        )}
+        <h3 className="text-2xl md:text-3xl font-black text-white tracking-tight leading-tight mb-3 group-hover:text-secondary-fixed transition-colors">
+          {business.name}
+        </h3>
+        {business.description && (
+          <p className="text-white/70 text-sm leading-relaxed line-clamp-2 mb-5 hidden md:block">
+            {business.description}
+          </p>
+        )}
+        <div className={`flex items-center gap-2 text-white/50 text-[10px] font-bold uppercase tracking-widest group-hover:text-secondary-fixed transition-colors ${textAlign === "right" ? "md:justify-end" : ""}`}>
+          <span>Zum Profil</span>
+          <span className="material-symbols-outlined text-sm -translate-x-1 group-hover:translate-x-0 transition-transform duration-300">arrow_forward</span>
+        </div>
+      </div>
+    </Link>
   );
 }
