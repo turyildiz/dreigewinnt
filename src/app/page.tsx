@@ -10,48 +10,51 @@ export default function Home() {
     <main className="pt-16 md:pt-20 max-w-[1440px] w-full mx-auto overflow-hidden">
       
       {/* Hero Section */}
-      <section className="relative px-6 md:px-12 pt-16 md:pt-24 pb-20 md:pb-32 min-h-[80vh] flex flex-col justify-center border-b border-outline-variant/10">
-        
-        {/* Abstract Background Base */}
-        <div className="absolute top-0 right-0 w-full md:w-2/3 h-full -z-20 opacity-[0.03] pointer-events-none bg-primary" 
-             style={{ maskImage: "radial-gradient(circle at right, black, transparent 80%)", WebkitMaskImage: "radial-gradient(circle at right, black, transparent 80%)" }}></div>
-             
-        <div className="w-full flex flex-col lg:flex-row justify-between items-center relative z-10 gap-12">
-          
-          {/* Left Content */}
-          <div className="flex-1 max-w-2xl relative z-20 w-full">
-            <div className="flex flex-wrap items-center gap-2 md:gap-3 mb-6 md:mb-8">
-              <TownTag town="Raunheim" />
-              <TownTag town="Kelsterbach" />
-              <TownTag town="Rüsselsheim" />
-            </div>
-            <h1 className="text-5xl md:text-6xl lg:text-[5.5rem] font-black text-primary tracking-tighter leading-[1] md:leading-[0.9] mb-6 md:mb-8 relative">
-              Drei Städte.<br />Eine Plattform.<br />Drei Gewinner.
-            </h1>
-            <p className="text-lg md:text-xl text-on-surface-variant max-w-xl font-medium leading-relaxed">
-              Entdecke die besten Unternehmen und Events in Raunheim, Kelsterbach und Rüsselsheim.
-            </p>
-          </div>
+      <section className="px-6 md:px-12 pt-12 md:pt-16 pb-12 md:pb-16 border-b border-outline-variant/10 relative overflow-hidden">
 
-          {/* Right Content: The Three Pillars */}
-          <div className="hidden lg:flex flex-1 justify-end items-center gap-4 h-[550px] relative z-0 pr-8 w-full">
-            <div className="w-24 xl:w-32 h-[80%] rounded-full overflow-hidden shadow-2xl mt-20 relative group">
-              <div className="absolute inset-0 bg-primary/20 mix-blend-overlay z-10 group-hover:bg-transparent transition-all duration-700"></div>
-              <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=600&auto=format&fit=crop" className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-all duration-700" alt="Cafe in Raunheim" />
-            </div>
-            <div className="w-32 xl:w-40 h-[100%] rounded-full overflow-hidden shadow-2xl relative group">
-              <div className="absolute inset-0 bg-tertiary/20 mix-blend-overlay z-10 group-hover:bg-transparent transition-all duration-700"></div>
-              <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=600&auto=format&fit=crop" className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-all duration-700" alt="Tech Hub in Kelsterbach" />
-            </div>
-            <div className="w-24 xl:w-32 h-[80%] rounded-full overflow-hidden shadow-2xl -mt-20 relative group">
-              <div className="absolute inset-0 bg-secondary/20 mix-blend-overlay z-10 group-hover:bg-transparent transition-all duration-700"></div>
-              <img src="https://images.unsplash.com/photo-1540039155733-d730a53ca30f?q=80&w=600&auto=format&fit=crop" className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-all duration-700" alt="Concert in Rüsselsheim" />
-            </div>
-          </div>
+        {/* Decorative large background text — purely CSS, never breaks */}
+        <div className="absolute inset-0 flex items-center justify-end pointer-events-none select-none overflow-hidden" aria-hidden="true">
+          <span className="text-[20vw] font-black text-primary/[0.03] tracking-tighter leading-none whitespace-nowrap pr-8">
+            3GW
+          </span>
         </div>
 
-        <SearchBar />
+        <div className="relative z-10 grid lg:grid-cols-[2fr_1fr] items-stretch gap-0">
+
+          {/* Left: text */}
+          <div className="flex flex-col justify-between gap-8">
+            <h1 className="text-[clamp(3rem,8vw,6.5rem)] font-black text-primary tracking-tighter leading-[0.9]">
+              Drei Städte.<br />
+              <span className="text-secondary">Eine</span> Plattform.<br />
+              Drei Gewinner.
+            </h1>
+
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8">
+              <p className="text-base md:text-lg text-on-surface-variant font-medium leading-relaxed max-w-xs">
+                Das lokale Verzeichnis für Raunheim, Kelsterbach und Rüsselsheim.
+              </p>
+              <div className="flex items-center gap-2 flex-wrap">
+                <TownTag town="Raunheim" />
+                <TownTag town="Kelsterbach" />
+                <TownTag town="Rüsselsheim" />
+              </div>
+            </div>
+          </div>
+
+          {/* Right: logo mark — centered in the right grid column */}
+          <div className="hidden lg:flex items-center justify-center gap-10 self-stretch">
+            <span className="w-[6px] h-[55%] bg-primary" />
+            <span className="w-[6px] self-stretch bg-secondary" />
+            <span className="w-[6px] h-[70%] bg-tertiary" />
+          </div>
+
+        </div>
       </section>
+
+      {/* Full-width Search Bar */}
+      <div className="px-6 md:px-12 py-5 bg-surface-container-low border-b border-outline-variant/10 relative z-20">
+        <SearchBar />
+      </div>
 
       {/* Trust Bar */}
       <section className="bg-surface-container-low py-4 md:py-6 px-6 md:px-12 flex flex-col md:flex-row justify-center items-center gap-2 md:gap-4 text-center md:text-left overflow-hidden">
@@ -124,7 +127,7 @@ export default function Home() {
           {/* Cards 4 stacked left */}
           <div className="md:col-span-2 grid grid-cols-1 md:grid-rows-1 gap-0">
             <Link href="/gewerbe/handwerksbetrieb-mueller" className="group relative overflow-hidden h-[480px] md:h-[600px] block">
-              <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?q=80&w=1400&auto=format&fit=crop" alt="Handwerksbetrieb Müller" className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700" />
+              <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=1400&auto=format&fit=crop" alt="Handwerksbetrieb Müller" className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700" />
               <div className="absolute inset-0 bg-gradient-to-l from-primary/80 via-primary/40 to-transparent" />
               <div className="absolute top-4 left-4 flex items-center gap-1.5 bg-tertiary px-3 py-1">
                 <span className="material-symbols-outlined text-white text-xs" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
@@ -145,7 +148,7 @@ export default function Home() {
 
           {/* Card 4 — tall right */}
           <Link href="/gewerbe/main-gym-fitness" className="group relative overflow-hidden h-[480px] md:h-[600px] block md:col-span-1">
-            <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=1200&auto=format&fit=crop" alt="Trattoria del Sole" className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700" />
+            <img src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=1200&auto=format&fit=crop" alt="Main-Gym Fitness" className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700" />
             <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/30 to-transparent" />
             <div className="absolute top-4 left-4 flex items-center gap-1.5 bg-tertiary px-3 py-1">
               <span className="material-symbols-outlined text-white text-xs" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
@@ -172,48 +175,69 @@ export default function Home() {
           <h2 className="text-4xl md:text-5xl font-black text-primary tracking-tighter">Veranstaltungen</h2>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16 lg:gap-12">
-          {/* Featured Event 1 */}
-          <div className="relative group mb-8 md:mb-0">
-            <div className="aspect-[4/3] md:aspect-[16/9] overflow-hidden rounded-sm bg-surface-container-highest flex items-center justify-center">
-              <img 
-                src="https://images.unsplash.com/photo-1540039155733-d730a53ca30f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
-                alt="Vibrant outdoor summer festival" 
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
-              />
-            </div>
-            <div className="absolute -bottom-8 md:-bottom-6 left-4 right-4 md:left-6 md:right-12 bg-surface-container-lowest p-6 md:p-8 shadow-xl">
-              <div className="flex justify-between items-start mb-4">
-                <span className="text-secondary font-bold text-[10px] md:text-xs uppercase tracking-widest">24. August • Kelsterbach</span>
-                <div className="bg-primary text-white text-[8px] md:text-[10px] px-2 py-0.5 uppercase font-bold tracking-tighter shadow-sm">Featured Boost</div>
-              </div>
-              <h3 className="text-2xl md:text-3xl font-black text-primary leading-tight mb-3 md:mb-4 group-hover:text-secondary transition-colors">Main-Ufer Sommerfest</h3>
-              <p className="text-on-surface-variant text-xs md:text-sm line-clamp-2 md:line-clamp-3 leading-relaxed">Live-Musik, kulinarische Köstlichkeiten und ein spektakuläres Feuerwerk direkt am Mainufer von Kelsterbach.</p>
-            </div>
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
 
-          {/* Featured Event 2 */}
-          <div className="relative group mt-8 md:mt-0">
-            <div className="aspect-[4/3] md:aspect-[16/9] overflow-hidden rounded-sm bg-surface-container-highest flex items-center justify-center">
-              <img 
-                src="https://images.unsplash.com/photo-1536924940846-227afb31e2a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
-                alt="Modern art gallery interior" 
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
-              />
+          {/* Event 1 — wide left */}
+          <Link href="/events/jazz-im-rathausgarten" className="group relative overflow-hidden h-[420px] md:h-[540px] block md:col-span-2">
+            <img
+              src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1400&auto=format&fit=crop"
+              alt="Main-Ufer Sommerfest"
+              className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/30 to-transparent" />
+            <div className="absolute top-4 left-4 bg-primary/60 backdrop-blur-sm px-3 py-1">
+              <span className="text-white text-[10px] font-black uppercase tracking-widest">Featured Boost</span>
             </div>
-            <div className="absolute -bottom-8 md:-bottom-6 left-4 right-4 md:left-6 md:right-12 bg-surface-container-lowest p-6 md:p-8 shadow-xl">
-              <div className="flex justify-between items-start mb-4">
-                <span className="text-secondary font-bold text-[10px] md:text-xs uppercase tracking-widest">12. September • Rüsselsheim</span>
-                <div className="bg-primary text-white text-[8px] md:text-[10px] px-2 py-0.5 uppercase font-bold tracking-tighter shadow-sm">Featured Boost</div>
+            <div className="absolute top-4 right-4">
+              <TownTag town="Kelsterbach" />
+            </div>
+            <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10">
+              <span className="text-secondary-fixed text-[10px] font-bold uppercase tracking-widest block mb-2">24. August · Stadtfest</span>
+              <h3 className="text-2xl md:text-4xl font-black text-white tracking-tight leading-tight mb-3 group-hover:text-secondary-fixed transition-colors">
+                Main-Ufer Sommerfest
+              </h3>
+              <p className="text-white/70 text-sm leading-relaxed line-clamp-2 mb-5 max-w-lg">
+                Live-Musik, kulinarische Köstlichkeiten und ein spektakuläres Feuerwerk direkt am Mainufer von Kelsterbach.
+              </p>
+              <div className="flex items-center gap-2 text-white/50 text-[10px] font-bold uppercase tracking-widest group-hover:text-secondary-fixed transition-colors">
+                <span>Zur Veranstaltung</span>
+                <span className="material-symbols-outlined text-sm -translate-x-1 group-hover:translate-x-0 transition-transform duration-300">arrow_forward</span>
               </div>
-              <h3 className="text-2xl md:text-3xl font-black text-primary leading-tight mb-3 md:mb-4 group-hover:text-secondary transition-colors">Industrie-Kultur Tage</h3>
-              <p className="text-on-surface-variant text-xs md:text-sm line-clamp-2 md:line-clamp-3 leading-relaxed">Erleben Sie die faszinierende Geschichte der Opel-Stadt durch exklusive Führungen und Ausstellungen.</p>
             </div>
-          </div>
+          </Link>
+
+          {/* Event 2 — tall right */}
+          <Link href="/events/main-taunus-genussmarkt" className="group relative overflow-hidden h-[420px] md:h-[540px] block md:col-span-1">
+            <img
+              src="https://images.unsplash.com/photo-1467810563316-b5476525c0f9?q=80&w=800&auto=format&fit=crop"
+              alt="Industrie-Kultur Tage"
+              className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/40 to-transparent" />
+            <div className="absolute top-4 left-4 bg-primary/60 backdrop-blur-sm px-3 py-1">
+              <span className="text-white text-[10px] font-black uppercase tracking-widest">Featured Boost</span>
+            </div>
+            <div className="absolute top-4 right-4">
+              <TownTag town="Rüsselsheim" />
+            </div>
+            <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+              <span className="text-secondary-fixed text-[10px] font-bold uppercase tracking-widest block mb-2">12. September · Kultur</span>
+              <h3 className="text-xl md:text-2xl font-black text-white tracking-tight leading-tight mb-3 group-hover:text-secondary-fixed transition-colors">
+                Industrie-Kultur Tage
+              </h3>
+              <p className="text-white/70 text-sm leading-relaxed line-clamp-2 mb-5">
+                Erleben Sie die faszinierende Geschichte der Opel-Stadt durch exklusive Führungen.
+              </p>
+              <div className="flex items-center gap-2 text-white/50 text-[10px] font-bold uppercase tracking-widest group-hover:text-secondary-fixed transition-colors">
+                <span>Zur Veranstaltung</span>
+                <span className="material-symbols-outlined text-sm -translate-x-1 group-hover:translate-x-0 transition-transform duration-300">arrow_forward</span>
+              </div>
+            </div>
+          </Link>
         </div>
 
-        <div className="mt-20 md:mt-24 text-center">
-          <Link href="/events" className="inline-block bg-primary text-on-primary px-8 md:px-12 py-4 rounded-sm font-black uppercase text-[10px] md:text-xs tracking-[0.2em] md:tracking-[0.3em] hover:bg-on-surface-variant transition-colors w-full md:w-auto">
+        <div className="mt-10 md:mt-12 text-center">
+          <Link href="/events" className="inline-block bg-primary text-on-primary px-8 md:px-12 py-4 font-black uppercase text-[10px] md:text-xs tracking-[0.2em] md:tracking-[0.3em] hover:bg-on-surface-variant transition-colors w-full md:w-auto">
             Alle Veranstaltungen entdecken
           </Link>
         </div>

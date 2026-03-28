@@ -21,7 +21,7 @@ export function SearchBar() {
   }, []);
 
   return (
-    <div className="mt-12 md:mt-16 w-full relative z-10 glass-morphism bg-surface/85 p-2 rounded-lg shadow-[0_40px_40px_rgba(2,5,17,0.06)] border border-outline-variant/20">
+    <div className="w-full relative z-10 glass-morphism bg-surface/85 p-2 rounded-lg shadow-[0_40px_40px_rgba(2,5,17,0.06)] border border-outline-variant/20">
       <div className="flex flex-col md:flex-row items-stretch md:items-center gap-2">
 
         {/* Custom City Picker */}
