@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { EventCard } from "@/components/ui/EventCard";
 import { EventSubmitModal } from "@/components/ui/EventSubmitModal";
+import { TownTag } from "@/components/ui/TownTag";
 
 const featuredEvents = [
   {
@@ -179,9 +180,12 @@ export default async function EventsPage({
 
               {/* Info */}
               <div className="flex-1 min-w-0 flex flex-col justify-center px-3 sm:px-5 lg:px-8 py-3 lg:py-4">
-                <span className="text-secondary font-bold text-[9px] sm:text-[10px] tracking-widest uppercase mb-0.5 block">
-                  {event.category}
-                </span>
+                <div className="flex items-center gap-2 mb-0.5 flex-wrap">
+                  <TownTag town={event.town as "Raunheim" | "Kelsterbach" | "Rüsselsheim"} />
+                  <span className="text-secondary font-bold text-[9px] sm:text-[10px] tracking-widest uppercase">
+                    {event.category}
+                  </span>
+                </div>
                 <h4 className="text-sm sm:text-base lg:text-lg font-headline font-bold text-primary leading-tight line-clamp-1">
                   {event.title}
                 </h4>

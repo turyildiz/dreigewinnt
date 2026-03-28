@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { TownTag } from "@/components/ui/TownTag";
 
 export const metadata: Metadata = {
   title: "Lokale Nachrichten | DREIGEWINNT.COM",
@@ -69,12 +70,6 @@ const articles = [
   },
 ];
 
-const townColors: Record<string, string> = {
-  Raunheim: "bg-surface-container-highest text-primary",
-  Kelsterbach: "bg-secondary-container text-on-secondary-container",
-  Rüsselsheim: "bg-tertiary-fixed text-on-tertiary-container",
-};
-
 const townLabels: Record<string, string> = {
   raunheim: "Raunheim",
   kelsterbach: "Kelsterbach",
@@ -134,9 +129,7 @@ export default async function NewsPage({
             <div className="p-6 sm:p-8 lg:p-12 flex flex-col justify-between">
               <div>
                 <div className="flex items-center gap-2 mb-4 flex-wrap">
-                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase ${townColors[featured.town]}`}>
-                    {featured.town}
-                  </span>
+                  <TownTag town={featured.town as "Raunheim" | "Kelsterbach" | "Rüsselsheim"} />
                   <span className="text-secondary font-bold text-[10px] tracking-widest uppercase">
                     {featured.category}
                   </span>
@@ -194,9 +187,7 @@ export default async function NewsPage({
             <div className="flex-1 min-w-0 flex flex-col justify-between px-4 sm:px-6 lg:px-8 py-4 lg:py-6">
               <div>
                 <div className="flex items-center gap-2 mb-2 flex-wrap">
-                  <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold tracking-wider uppercase ${townColors[article.town]}`}>
-                    {article.town}
-                  </span>
+                  <TownTag town={article.town as "Raunheim" | "Kelsterbach" | "Rüsselsheim"} />
                   <span className="text-secondary font-bold text-[9px] sm:text-[10px] tracking-widest uppercase">
                     {article.category}
                   </span>

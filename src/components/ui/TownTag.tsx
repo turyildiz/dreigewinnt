@@ -7,7 +7,7 @@ interface TownTagProps {
 
 export function TownTag({ town, className = "" }: TownTagProps) {
   const colorMap = {
-    Raunheim: "bg-surface-container-highest text-primary",
+    Raunheim: "bg-primary-fixed text-on-primary-fixed",
     Kelsterbach: "bg-secondary-container text-on-secondary-container",
     Rüsselsheim: "bg-tertiary-fixed text-on-tertiary-container",
   };

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { TownName } from "./TownTag";
+import { TownTag, TownName } from "./TownTag";
 
 export interface EventCardProps {
   id: string;
@@ -94,9 +94,10 @@ export function EventCard({
         
         <div className="absolute -bottom-6 left-6 right-6 md:right-12 bg-surface-container-lowest p-8 shadow-xl">
           <div className="flex justify-between items-start mb-4">
-            <span className="text-secondary font-bold text-[10px] md:text-xs uppercase tracking-widest">
-              {dateStr} • {town}
-            </span>
+            <div className="flex items-center gap-2 flex-wrap">
+              <TownTag town={town} />
+              <span className="text-on-surface-variant font-bold text-[10px] uppercase tracking-widest">{dateStr}</span>
+            </div>
             {isFeatured && (
               <div className="bg-primary text-white text-[10px] px-2 py-0.5 uppercase font-bold tracking-tighter">
                 Featured Boost

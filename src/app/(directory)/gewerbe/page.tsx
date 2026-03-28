@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BusinessSubmitModal } from "@/components/ui/BusinessSubmitModal";
+import { TownTag } from "@/components/ui/TownTag";
 
 const premiumBusinesses = [
   {
@@ -154,10 +155,7 @@ export default async function GewerbePage({
                   {business.description}
                 </p>
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-bold text-primary flex items-center gap-1 uppercase tracking-tighter">
-                    <span className="material-symbols-outlined text-xs">location_on</span>
-                    {business.town}
-                  </span>
+                  <TownTag town={business.town as "Raunheim" | "Kelsterbach" | "Rüsselsheim"} />
                   <span className="material-symbols-outlined text-secondary opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all duration-300">
                     arrow_forward
                   </span>
@@ -215,8 +213,8 @@ export default async function GewerbePage({
                     {business.category}
                   </p>
                 </div>
-                <div className="hidden sm:block text-[10px] font-bold text-on-surface-variant uppercase tracking-tighter">
-                  {business.town}
+                <div className="hidden sm:block">
+                  <TownTag town={business.town as "Raunheim" | "Kelsterbach" | "Rüsselsheim"} />
                 </div>
                 <div className="hidden sm:flex justify-end">
                   <span className="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">
