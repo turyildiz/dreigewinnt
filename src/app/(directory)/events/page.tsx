@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { EventCard } from "@/components/ui/EventCard";
+import { EventSubmitModal } from "@/components/ui/EventSubmitModal";
 
 const featuredEvents = [
   {
@@ -167,15 +168,7 @@ export default function EventsPage() {
         </div>
       </section>
 
-      {/* ── FAB ── */}
-      <div className="fixed bottom-6 right-6 lg:bottom-12 lg:right-12 z-50">
-        <button
-          className="editorial-gradient text-white w-12 h-12 lg:w-16 lg:h-16 rounded-full shadow-2xl flex items-center justify-center hover:scale-105 active:scale-95 transition-transform"
-          aria-label="Event hinzufügen"
-        >
-          <span className="material-symbols-outlined text-xl lg:text-3xl">add</span>
-        </button>
-      </div>
+      <EventSubmitModal />
 
     </main>
   );

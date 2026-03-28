@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BusinessSubmitModal } from "@/components/ui/BusinessSubmitModal";
 
 const premiumBusinesses = [
   {
@@ -197,16 +198,7 @@ export default function GewerbePage() {
         </div>
       </section>
 
-      {/* ── Map FAB ── */}
-      <div className="fixed bottom-6 right-6 lg:bottom-10 lg:right-10 z-50">
-        <button
-          className="premium-gradient text-on-secondary flex items-center gap-2 lg:gap-3 px-4 lg:px-6 py-3 lg:py-4 rounded-sm shadow-2xl hover:scale-105 active:scale-95 transition-transform"
-          aria-label="Kartenansicht"
-        >
-          <span className="material-symbols-outlined text-xl">map</span>
-          <span className="hidden sm:inline font-bold text-xs tracking-widest uppercase">Kartenansicht</span>
-        </button>
-      </div>
+      <BusinessSubmitModal />
 
     </main>
   );
