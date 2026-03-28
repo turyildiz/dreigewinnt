@@ -53,15 +53,20 @@ export function MobileFilterBar() {
     <div className="lg:hidden sticky top-20 z-30 bg-surface/90 backdrop-blur-[12px] border-b border-outline-variant/10">
 
       {/* Town pills row */}
-      <div className="flex items-center gap-2 px-4 pt-2.5 pb-2 overflow-x-auto scrollbar-none">
-        {activeTown && (
-          <Link
-            href={activeCategory ? `${section}?category=${activeCategory}` : section}
-            className="flex-shrink-0 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider border border-outline-variant/30 text-on-surface-variant"
-          >
-            Alle
-          </Link>
-        )}
+      <div className="flex items-center gap-2 px-4 pt-2.5 pb-2">
+        {/* Home / Alle */}
+        <Link
+          href={activeCategory ? `${section}?category=${activeCategory}` : section}
+          className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
+            !activeTown
+              ? "bg-primary text-on-primary"
+              : "bg-surface-container-low text-on-surface-variant"
+          }`}
+          aria-label="Alle Städte"
+        >
+          <span className="material-symbols-outlined text-base">home</span>
+        </Link>
+
         {towns.map((town) => {
           const isActive = activeTown === town.value;
           const href = activeCategory
