@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
 
 const towns = [
   { label: "Raunheim", value: "raunheim" },
@@ -13,6 +13,10 @@ const categories = [
   { label: "Gastronomie", value: "gastronomie" },
   { label: "Handwerk", value: "handwerk" },
   { label: "Kultur", value: "kultur" },
+  { label: "Einzelhandel", value: "einzelhandel" },
+  { label: "Sport & Freizeit", value: "sport" },
+  { label: "Gesundheit", value: "gesundheit" },
+  { label: "Dienstleistungen", value: "dienstleistungen" },
 ];
 
 const townActiveClass = {
@@ -29,19 +33,30 @@ function getSection(pathname: string) {
 }
 
 export function MobileFilterBar() {
+  const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const section = getSection(pathname);
   const activeTown = searchParams.get("town");
   const activeCategory = searchParams.get("category");
 
+  function handleCategoryChange(e: React.ChangeEvent<HTMLSelectElement>) {
+    const val = e.target.value;
+    if (!val) {
+      router.push(activeTown ? `${section}?town=${activeTown}` : section);
+    } else {
+      router.push(activeTown ? `${section}?town=${activeTown}&category=${val}` : `${section}?category=${val}`);
+    }
+  }
+
   return (
     <div className="lg:hidden sticky top-20 z-30 bg-surface/90 backdrop-blur-[12px] border-b border-outline-variant/10">
-      {/* Town row */}
-      <div className="flex items-center gap-2 px-4 py-2.5 overflow-x-auto scrollbar-none">
+
+      {/* Town pills row */}
+      <div className="flex items-center gap-2 px-4 pt-2.5 pb-2 overflow-x-auto scrollbar-none">
         {activeTown && (
           <Link
-            href={section}
+            href={activeCategory ? `${section}?category=${activeCategory}` : section}
             className="flex-shrink-0 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider border border-outline-variant/30 text-on-surface-variant"
           >
             Alle
@@ -66,27 +81,29 @@ export function MobileFilterBar() {
             </Link>
           );
         })}
-        <span className="flex-shrink-0 w-[1px] h-4 bg-outline-variant/30 mx-1" />
-        {categories.map((cat) => {
-          const isActive = activeCategory === cat.value;
-          const href = activeTown
-            ? `${section}?town=${activeTown}&category=${cat.value}`
-            : `${section}?category=${cat.value}`;
-          return (
-            <Link
-              key={cat.value}
-              href={href}
-              className={`flex-shrink-0 px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider transition-colors ${
-                isActive
-                  ? "bg-secondary text-on-secondary"
-                  : "bg-surface-container-low text-on-surface-variant"
-              }`}
-            >
-              {cat.label}
-            </Link>
-          );
-        })}
       </div>
+
+      {/* Category select row */}
+      <div className="px-4 pb-2.5">
+        <div className="relative">
+          <select
+            value={activeCategory ?? ""}
+            onChange={handleCategoryChange}
+            className="w-full bg-surface-container-low text-on-surface-variant text-[11px] font-bold uppercase tracking-wider px-3 py-2 appearance-none outline-none focus:ring-1 focus:ring-secondary/30 pr-8"
+          >
+            <option value="">Alle Kategorien</option>
+            {categories.map((cat) => (
+              <option key={cat.value} value={cat.value}>
+                {cat.label}
+              </option>
+            ))}
+          </select>
+          <span className="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-on-surface-variant text-base pointer-events-none">
+            expand_more
+          </span>
+        </div>
+      </div>
+
     </div>
   );
 }
