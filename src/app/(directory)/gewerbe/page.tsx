@@ -68,18 +68,20 @@ const townLabels: Record<string, string> = {
 export default async function GewerbePage({
   searchParams,
 }: {
-  searchParams: Promise<{ town?: string }>;
+  searchParams: Promise<{ town?: string; category?: string }>;
 }) {
-  const { town } = await searchParams;
+  const { town, category } = await searchParams;
   const townLabel = town ? townLabels[town] : null;
 
-  const visiblePremium = town
-    ? premiumBusinesses.filter(b => b.town.toLowerCase() === townLabel?.toLowerCase())
-    : premiumBusinesses;
+  const matchesTown = (t: string) => !townLabel || t.toLowerCase() === townLabel.toLowerCase();
+  const matchesCategory = (cat: string) => !category || cat.toLowerCase() === category.toLowerCase();
 
-  const visibleStandard = town
-    ? standardBusinesses.filter(b => b.town.toLowerCase() === townLabel?.toLowerCase())
-    : standardBusinesses;
+  const visiblePremium = premiumBusinesses.filter(
+    b => matchesTown(b.town) && matchesCategory(b.category)
+  );
+  const visibleStandard = standardBusinesses.filter(
+    b => matchesTown(b.town) && matchesCategory(b.category)
+  );
 
   return (
     <main className="w-full">
@@ -90,6 +92,11 @@ export default async function GewerbePage({
           <span className="bg-surface-container-highest text-primary px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase">
             {townLabel ?? "Region"}
           </span>
+          {category && (
+            <span className="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase">
+              {category}
+            </span>
+          )}
           <span className="text-on-surface-variant font-medium text-xs tracking-widest uppercase">
             Gewerbeindex 2025
           </span>

@@ -74,18 +74,18 @@ const townLabels: Record<string, string> = {
 export default async function EventsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ town?: string }>;
+  searchParams: Promise<{ town?: string; category?: string }>;
 }) {
-  const { town } = await searchParams;
+  const { town, category } = await searchParams;
   const townLabel = town ? townLabels[town] : null;
 
-  const visibleFeatured = town
-    ? featuredEvents.filter(e => e.town.toLowerCase() === townLabel?.toLowerCase())
-    : featuredEvents;
+  const matchesTown = (t: string) => !townLabel || t.toLowerCase() === townLabel.toLowerCase();
+  const matchesCategory = (cat: string) => !category || cat.toLowerCase() === category.toLowerCase();
 
-  const visibleUpcoming = town
-    ? upcomingEvents.filter(e => e.town.toLowerCase() === townLabel?.toLowerCase())
-    : upcomingEvents;
+  const visibleFeatured = featuredEvents.filter(e => matchesTown(e.town));
+  const visibleUpcoming = upcomingEvents.filter(
+    e => matchesTown(e.town) && matchesCategory(e.category)
+  );
 
   return (
     <main className="w-full">
@@ -96,6 +96,11 @@ export default async function EventsPage({
           <span className="bg-surface-container-highest text-primary px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase">
             {townLabel ?? "Dreigewinnt Region"}
           </span>
+          {category && (
+            <span className="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase">
+              {category}
+            </span>
+          )}
           <span className="text-on-surface-variant/40 text-sm italic">— Lokal Kuratiert</span>
         </div>
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-headline font-black tracking-tighter text-primary leading-none">

@@ -10,9 +10,9 @@ const towns = [
 ];
 
 const categories = [
-  { label: "Gastronomie", href: "/gewerbe?category=gastronomie", icon: "restaurant" },
-  { label: "Handwerk", href: "/gewerbe?category=handwerk", icon: "build" },
-  { label: "Kultur", href: "/events?category=kultur", icon: "theater_comedy" },
+  { label: "Gastronomie", section: "/gewerbe", value: "gastronomie", icon: "restaurant" },
+  { label: "Handwerk", section: "/gewerbe", value: "handwerk", icon: "build" },
+  { label: "Kultur", section: "/events", value: "kultur", icon: "theater_comedy" },
 ];
 
 function getSection(pathname: string) {
@@ -27,6 +27,7 @@ export function SideNavBar() {
   const searchParams = useSearchParams();
   const section = getSection(pathname);
   const activeTown = searchParams.get("town");
+  const activeCategory = searchParams.get("category");
 
   return (
     <aside className="fixed hidden lg:flex h-[calc(100vh-80px)] w-72 bg-surface-container-lowest border-r border-outline-variant/15 flex-col py-10 z-40 overflow-y-auto mt-20 left-[max(0px,calc((100vw-1440px)/2))]">
@@ -68,16 +69,26 @@ export function SideNavBar() {
 
         <div className="h-[1px] bg-outline-variant/10 my-4 mx-8" />
 
-        {categories.map((cat) => (
-          <Link
-            key={cat.href}
-            href={cat.href}
-            className="flex items-center gap-4 py-3 px-8 text-on-surface-variant opacity-70 hover:opacity-100 hover:bg-surface-container-low transition-all font-headline uppercase tracking-[0.05em] text-[12px] font-bold"
-          >
-            <span className="material-symbols-outlined text-xl">{cat.icon}</span>
-            <span>{cat.label}</span>
-          </Link>
-        ))}
+        {categories.map((cat) => {
+          const isCatActive = activeCategory === cat.value && section === cat.section;
+          const href = activeTown
+            ? `${cat.section}?town=${activeTown}&category=${cat.value}`
+            : `${cat.section}?category=${cat.value}`;
+          return (
+            <Link
+              key={cat.value}
+              href={href}
+              className={`flex items-center gap-4 py-3 px-8 transition-all font-headline uppercase tracking-[0.05em] text-[12px] font-bold ${
+                isCatActive
+                  ? "text-secondary border-l-4 border-secondary bg-surface-container-low/30"
+                  : "text-on-surface-variant opacity-70 hover:opacity-100 hover:bg-surface-container-low"
+              }`}
+            >
+              <span className="material-symbols-outlined text-xl">{cat.icon}</span>
+              <span>{cat.label}</span>
+            </Link>
+          );
+        })}
       </nav>
 
       <div className="mt-auto px-8 pt-6">
