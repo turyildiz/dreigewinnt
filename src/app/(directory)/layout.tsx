@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { SideNavBar } from "@/components/layout/SideNavBar";
+import { MobileFilterBar } from "@/components/layout/MobileFilterBar";
 import { Footer } from "@/components/layout/Footer";
 
 export default function DirectoryLayout({
@@ -13,6 +14,9 @@ export default function DirectoryLayout({
         <SideNavBar />
       </Suspense>
       <div className="flex-1 min-w-0 lg:ml-72 flex flex-col pt-20">
+        <Suspense>
+          <MobileFilterBar />
+        </Suspense>
         {children}
         <Footer />
       </div>
