@@ -1,9 +1,14 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export function TopNavbar() {
+  const pathname = usePathname();
+
   return (
     <nav className="fixed top-0 w-full z-50 bg-surface/80 dark:bg-primary/80 backdrop-blur-xl border-b border-outline-variant/15 shadow-[0_40px_40px_rgba(2,5,17,0.06)]">
-      <div className="max-w-[1280px] mx-auto flex justify-between items-center h-20 px-8">
+      <div className="max-w-[1440px] mx-auto flex justify-between items-center h-20 px-12">
         
         <div className="flex items-center gap-4">
           <Link href="/" className="flex items-center gap-4">
@@ -19,13 +24,25 @@ export function TopNavbar() {
           </Link>
         </div>
         
-        <div className="hidden md:flex items-center gap-8 font-headline tracking-tight font-bold uppercase text-sm">
-          <Link className="text-on-surface-variant dark:text-inverse-surface hover:text-primary transition-colors duration-200" href="/gewerbe">Gewerbe</Link>
-          <Link className="text-on-surface-variant dark:text-inverse-surface hover:text-primary transition-colors duration-200" href="/events">Events</Link>
-          <Link className="text-on-surface-variant dark:text-inverse-surface hover:text-primary transition-colors duration-200" href="/news">News</Link>
-          <Link className="text-on-surface-variant dark:text-inverse-surface hover:text-primary transition-colors duration-200" href="/region/raunheim">Raunheim</Link>
-          <Link className="text-on-surface-variant dark:text-inverse-surface hover:text-primary transition-colors duration-200" href="/region/kelsterbach">Kelsterbach</Link>
-          <Link className="text-on-surface-variant dark:text-inverse-surface hover:text-primary transition-colors duration-200" href="/region/ruesselsheim">Rüsselsheim</Link>
+        <div className="hidden md:flex items-center gap-8 font-headline tracking-tight font-bold text-sm">
+          <Link 
+            className={`transition-colors duration-200 ${pathname?.startsWith('/gewerbe') ? 'text-primary border-b-2 border-primary pb-1' : 'text-on-surface-variant hover:text-primary dark:text-inverse-surface'}`} 
+            href="/gewerbe"
+          >
+            Gewerbe
+          </Link>
+          <Link 
+            className={`transition-colors duration-200 ${pathname?.startsWith('/events') ? 'text-primary border-b-2 border-primary pb-1' : 'text-on-surface-variant hover:text-primary dark:text-inverse-surface'}`} 
+            href="/events"
+          >
+            Events
+          </Link>
+          <Link 
+            className={`transition-colors duration-200 ${pathname?.startsWith('/news') ? 'text-primary border-b-2 border-primary pb-1' : 'text-on-surface-variant hover:text-primary dark:text-inverse-surface'}`} 
+            href="/news"
+          >
+            News
+          </Link>
         </div>
         
         <div className="flex items-center gap-4">

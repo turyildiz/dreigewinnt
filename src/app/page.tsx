@@ -1,17 +1,18 @@
 import Link from "next/link";
 import Image from "next/image";
+import { TownTag } from "@/components/ui/TownTag";
 
 export default function Home() {
   return (
-    <main className="pt-20 max-w-[1280px] w-full mx-auto overflow-hidden">
+    <main className="pt-20 max-w-[1440px] w-full mx-auto overflow-hidden">
       
       {/* Hero Section */}
-      <section className="relative px-8 pt-24 pb-32">
+      <section className="relative px-12 pt-24 pb-32">
         <div className="max-w-4xl">
           <div className="flex items-center gap-3 mb-8">
-            <span className="px-4 py-1 rounded-full bg-surface-container-highest text-primary text-[10px] font-black uppercase tracking-[0.2em]">Raunheim</span>
-            <span className="px-4 py-1 rounded-full bg-secondary-container text-on-secondary-container text-[10px] font-black uppercase tracking-[0.2em]">Kelsterbach</span>
-            <span className="px-4 py-1 rounded-full bg-tertiary-fixed text-on-tertiary-container text-[10px] font-black uppercase tracking-[0.2em]">Rüsselsheim</span>
+            <TownTag town="Raunheim" />
+            <TownTag town="Kelsterbach" />
+            <TownTag town="Rüsselsheim" />
           </div>
           <h1 className="text-6xl md:text-8xl font-black text-primary tracking-tighter leading-[0.9] mb-8">
             Drei Städte.<br />Eine Plattform.<br />Drei Gewinner.
@@ -50,7 +51,7 @@ export default function Home() {
       </section>
 
       {/* Trust Bar */}
-      <section className="bg-surface-container-low py-6 px-8 flex justify-center items-center gap-4 overflow-hidden whitespace-nowrap">
+      <section className="bg-surface-container-low py-6 px-12 flex justify-center items-center gap-4 overflow-hidden whitespace-nowrap">
         <span className="material-symbols-outlined text-secondary" style={{ fontVariationSettings: "'FILL' 1" }}>verified_user</span>
         <p className="text-xs font-bold uppercase tracking-[0.15em] text-on-surface-variant">
           Trust First: Alle Inhalte werden von Menschen geprüft. Echte Empfehlungen, kein Algorithmus.
@@ -60,7 +61,7 @@ export default function Home() {
       </section>
 
       {/* Top-Partner Section */}
-      <section className="py-24 px-8">
+      <section className="py-24 px-12">
         <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
           <div>
             <span className="text-tertiary font-black text-xs uppercase tracking-[0.3em] block mb-4">Gewerbeverzeichnis</span>
@@ -115,7 +116,7 @@ export default function Home() {
       </section>
 
       {/* Event-Highlights Section */}
-      <section className="py-24 px-8 bg-surface-container-low">
+      <section className="py-24 px-12 bg-surface-container-low">
         <div className="mb-16">
           <span className="text-secondary font-black text-xs uppercase tracking-[0.3em] block mb-4">Stadtleben</span>
           <h2 className="text-5xl font-black text-primary tracking-tighter">Veranstaltungen</h2>
@@ -169,7 +170,7 @@ export default function Home() {
       </section>
 
       {/* Newsletter Section */}
-      <section className="py-32 px-8">
+      <section className="py-32 px-12">
         <div className="bg-primary text-on-primary p-12 md:p-24 relative overflow-hidden">
           <div className="relative z-10 max-w-2xl">
             <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-8 leading-tight">Bleibe informiert über deine Heimat.</h2>
