@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+
+<html class="light" lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gewerbeverzeichnis | DREIGEWINNT.COM</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "error-container": "#ffdad6",
+              "on-secondary": "#ffffff",
+              "primary-container": "#1a1e2c",
+              "on-surface": "#111c2c",
+              "on-secondary-fixed": "#002110",
+              "on-background": "#111c2c",
+              "surface-dim": "#cfdaf1",
+              "on-tertiary-fixed-variant": "#574500",
+              "on-primary": "#ffffff",
+              "surface-container-high": "#dee8ff",
+              "primary-fixed": "#dfe1f5",
+              "on-error-container": "#93000a",
+              "on-primary-fixed-variant": "#424656",
+              "tertiary-container": "#cca830",
+              "primary": "#020511",
+              "on-tertiary": "#ffffff",
+              "primary-fixed-dim": "#c3c5d9",
+              "secondary-fixed-dim": "#74db9f",
+              "on-tertiary-fixed": "#241a00",
+              "tertiary-fixed-dim": "#e9c349",
+              "error": "#ba1a1a",
+              "on-tertiary-container": "#4f3e00",
+              "inverse-primary": "#c3c5d9",
+              "surface-variant": "#d8e3fa",
+              "surface-container": "#e7eeff",
+              "surface-bright": "#f9f9ff",
+              "outline": "#76767d",
+              "tertiary-fixed": "#ffe088",
+              "on-error": "#ffffff",
+              "surface-tint": "#5a5e6e",
+              "surface-container-highest": "#d8e3fa",
+              "surface-container-lowest": "#ffffff",
+              "on-primary-fixed": "#171b29",
+              "outline-variant": "#c7c6cc",
+              "on-surface-variant": "#46464c",
+              "surface": "#f9f9ff",
+              "secondary": "#006d42",
+              "secondary-fixed": "#90f8ba",
+              "on-secondary-container": "#007346",
+              "tertiary": "#735c00",
+              "secondary-container": "#90f8ba",
+              "inverse-surface": "#263142",
+              "on-secondary-fixed-variant": "#005230",
+              "on-primary-container": "#828597",
+              "background": "#f9f9ff",
+              "surface-container-low": "#f0f3ff",
+              "inverse-on-surface": "#ebf1ff"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .premium-gradient {
+            background: linear-gradient(135deg, #006d42 0%, #74db9f 100%);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9f9ff;
+            color: #020511;
+        }
+    </style>
+</head>
+<body class="bg-surface text-primary">
+<!-- Navigation Outer Wrapper -->
+<div class="fixed top-0 w-full z-50 bg-[#f9f9ff]/80 backdrop-blur-xl shadow-[0_40px_40px_-15px_rgba(2,5,17,0.06)]">
+<nav class="max-w-[1440px] mx-auto flex justify-between items-center h-20 px-12">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1.5 h-6">
+<span class="w-[2px] h-[16px] bg-[#020511]"></span>
+<span class="w-[2px] h-[24px] bg-[#006d42]"></span>
+<span class="w-[2px] h-[20px] bg-[#735c00]"></span>
+</div>
+<div class="text-2xl font-['Inter'] tracking-tighter uppercase flex items-baseline">
+<span class="font-bold text-[#020511]">DREIGEWINNT</span>
+<span class="font-light text-[#735c00]">.COM</span>
+</div>
+</div>
+<div class="hidden md:flex gap-x-8 items-center font-bold tracking-tight">
+<a class="text-[#006d42] border-b-2 border-[#006d42] pb-1" href="#">Gewerbe</a>
+<a class="text-[#46464c] hover:text-[#020511] transition-colors duration-200" href="#">Events</a>
+<a class="text-[#46464c] hover:text-[#020511] transition-colors duration-200" href="#">News</a>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative hidden lg:block">
+<input class="bg-surface-container-low border-none rounded-sm px-4 py-2 text-sm focus:ring-1 focus:ring-primary/20 w-64" placeholder="Suchen..." type="text"/>
+<span class="material-symbols-outlined absolute right-3 top-2 text-on-surface-variant text-sm">search</span>
+</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-primary cursor-pointer hover:bg-surface-container-low p-2 rounded-full transition-colors">notifications</span>
+<span class="material-symbols-outlined text-primary cursor-pointer hover:bg-surface-container-low p-2 rounded-full transition-colors">account_circle</span>
+</div>
+</div>
+</nav>
+</div>
+<!-- Main Centered Layout Container -->
+<div class="max-w-[1440px] mx-auto relative min-h-screen pt-20">
+<!-- SideNavBar (Pinned to left of container) -->
+<aside class="fixed h-[calc(100vh-80px)] w-72 bg-surface-container-lowest border-r border-outline-variant/15 flex flex-col py-10 z-40">
+<div class="px-8 mb-8">
+<h3 class="text-[12px] font-bold tracking-[0.05em] text-primary uppercase mb-1">LOKALER FILTER</h3>
+<p class="text-[10px] text-on-surface-variant font-medium tracking-widest opacity-70">DREIGEWINNT REGION</p>
+</div>
+<nav class="flex flex-col gap-y-1">
+<a class="flex items-center gap-4 py-3 px-8 text-[#006d42] font-black border-l-4 border-[#006d42] bg-surface-container-low/30" href="#">
+<span class="material-symbols-outlined text-xl">location_city</span>
+<span class="text-[12px] tracking-[0.05em] uppercase">Raunheim</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-8 text-[#46464c] opacity-70 hover:opacity-100 hover:bg-surface-container-low transition-all" href="#">
+<span class="material-symbols-outlined text-xl">apartment</span>
+<span class="text-[12px] tracking-[0.05em] uppercase">Kelsterbach</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-8 text-[#46464c] opacity-70 hover:opacity-100 hover:bg-surface-container-low transition-all" href="#">
+<span class="material-symbols-outlined text-xl">corporate_fare</span>
+<span class="text-[12px] tracking-[0.05em] uppercase">Rüsselsheim</span>
+</a>
+<div class="h-[1px] bg-outline-variant/10 my-4 mx-8"></div>
+<a class="flex items-center gap-4 py-3 px-8 text-[#46464c] opacity-70 hover:opacity-100 hover:bg-surface-container-low transition-all" href="#">
+<span class="material-symbols-outlined text-xl">restaurant</span>
+<span class="text-[12px] tracking-[0.05em] uppercase">Gastronomie</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-8 text-[#46464c] opacity-70 hover:opacity-100 hover:bg-surface-container-low transition-all" href="#">
+<span class="material-symbols-outlined text-xl">build</span>
+<span class="text-[12px] tracking-[0.05em] uppercase">Handwerk</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-8 text-[#46464c] opacity-70 hover:opacity-100 hover:bg-surface-container-low transition-all" href="#">
+<span class="material-symbols-outlined text-xl">theater_comedy</span>
+<span class="text-[12px] tracking-[0.05em] uppercase">Kultur</span>
+</a>
+</nav>
+<div class="mt-auto px-8">
+<button class="w-full premium-gradient text-white text-[11px] font-bold py-4 rounded-sm tracking-widest uppercase shadow-lg shadow-secondary/20">
+                Premium Partner
+            </button>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="ml-72 p-12">
+<!-- Header -->
+<header class="mb-16">
+<div class="flex items-center gap-3 mb-4">
+<span class="bg-surface-container-highest text-primary px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase">Region</span>
+<span class="text-on-surface-variant font-medium text-xs tracking-widest uppercase">Gewerbeindex 2024</span>
+</div>
+<h1 class="text-6xl font-black tracking-tighter text-primary mb-4 leading-none">Gewerbeverzeichnis</h1>
+<p class="text-on-surface-variant text-xl max-w-2xl leading-relaxed">
+                Entdecken Sie die architektonische Vielfalt und das wirtschaftliche Herz der Region Main-Taunus. Kuratierte Qualität aus Ihrer Nachbarschaft.
+            </p>
+</header>
+<!-- Premium Listings -->
+<section class="mb-20">
+<div class="flex justify-between items-end mb-8">
+<h2 class="text-[12px] font-black tracking-[0.1em] text-tertiary uppercase flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+                    Premium Partner
+                </h2>
+<div class="h-[1px] flex-grow mx-6 bg-tertiary-container/30"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+<!-- Premium Card 1 -->
+<div class="group relative bg-surface-container-lowest p-8 border border-tertiary-container/40 hover:bg-surface-bright transition-all duration-300">
+<div class="absolute -top-3 right-6 bg-tertiary text-white text-[10px] font-bold px-3 py-1 tracking-widest uppercase">TOP-PARTNER</div>
+<div class="mb-6 h-48 overflow-hidden bg-surface-container-high">
+<img alt="luxury boutique storefront" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 scale-105 group-hover:scale-100" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA88GMvFmlxKx-qJnEwiyRRNzgntr4qGz-khqJTq5JMQZOoP0bmvSOzsOMt9Mi9cSGE9NocvWw8MJZvpU8_2_1bqMf2B5bcWng_4RDxjspVhVouic2oSAfFHTtl9-PQBsFEbkTGPM9GYbiN5XjuUDLrrP5C-Tu9jIKR0OToh3NRlMLp3GElk4q6RpWN03mSjlMIUOlb-wJ4aSovrubhzzXvNo9yCVy9yA8zMRf96FnKTfCxB0GbwIdv4uCpgYyXu1Nm--3_cHxW2pg"/>
+</div>
+<div class="mb-4">
+<span class="text-secondary font-bold text-[10px] tracking-widest uppercase">Architektur &amp; Design</span>
+<h3 class="text-2xl font-black tracking-tight text-primary mt-1">Main-Studio GmbH</h3>
+</div>
+<p class="text-on-surface-variant text-sm mb-6 leading-relaxed">Exzellente Raumgestaltung und zukunftsweisende Bürokonzepte für den Main-Taunus-Kreis.</p>
+<div class="flex items-center justify-between mt-auto">
+<span class="text-[10px] font-bold text-primary flex items-center gap-1 uppercase tracking-tighter">
+<span class="material-symbols-outlined text-xs">location_on</span> Raunheim
+                        </span>
+<span class="material-symbols-outlined text-secondary opacity-0 group-hover:opacity-100 transform translate-x-[-10px] group-hover:translate-x-0 transition-all">arrow_forward</span>
+</div>
+</div>
+<!-- Premium Card 2 -->
+<div class="group relative bg-surface-container-lowest p-8 border border-tertiary-container/40 hover:bg-surface-bright transition-all duration-300">
+<div class="absolute -top-3 right-6 bg-tertiary text-white text-[10px] font-bold px-3 py-1 tracking-widest uppercase">TOP-PARTNER</div>
+<div class="mb-6 h-48 overflow-hidden bg-surface-container-high">
+<img alt="handcrafted leather goods workshop" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 scale-105 group-hover:scale-100" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyZSvcV_gIs_a2IpDcoROP0c5hlkH5bfmLU02dQTuR9Iv8kwC1N3WytixTP68ljfHcr9I1agGqAUpWAWtPhn7G-NHYDo90QIe86c-snxOPHjgekieEqY34gh3Z8_4Q38reY90h6nNhiDcxsi-sGdJ2zViqReaFh0xFPkg0SPOjL1tUnaVf9PDXYKIGDhmsKJ-ameG8n6b_1lOCS8d7s4AkD0mgCKMYALNrbU5x9L2biepyC-OtCj_OPrIyT-TB2Oo2F9d2rAw5Sb0"/>
+</div>
+<div class="mb-4">
+<span class="text-secondary font-bold text-[10px] tracking-widest uppercase">Manufaktur</span>
+<h3 class="text-2xl font-black tracking-tight text-primary mt-1">Lederwerk Taunus</h3>
+</div>
+<p class="text-on-surface-variant text-sm mb-6 leading-relaxed">Handgefertigte Lederwaren von höchster Güte. Tradition trifft auf zeitgenössisches Design.</p>
+<div class="flex items-center justify-between mt-auto">
+<span class="text-[10px] font-bold text-primary flex items-center gap-1 uppercase tracking-tighter">
+<span class="material-symbols-outlined text-xs">location_on</span> Kelsterbach
+                        </span>
+<span class="material-symbols-outlined text-secondary opacity-0 group-hover:opacity-100 transform translate-x-[-10px] group-hover:translate-x-0 transition-all">arrow_forward</span>
+</div>
+</div>
+<!-- Premium Card 3 -->
+<div class="group relative bg-surface-container-lowest p-8 border border-tertiary-container/40 hover:bg-surface-bright transition-all duration-300">
+<div class="absolute -top-3 right-6 bg-tertiary text-white text-[10px] font-bold px-3 py-1 tracking-widest uppercase">TOP-PARTNER</div>
+<div class="mb-6 h-48 overflow-hidden bg-surface-container-high">
+<img alt="minimalist kitchen design" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 scale-105 group-hover:scale-100" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRqIAQ4hAcUVyPq8qWiGScCbareVwEwG9z5ns72rjDrFbzDkle_yADzWCEjA4VgKohAxfXl_oUv2l5gR32G9l9SLnvWXqxJGsBE43NuJBLfY4I1jpa9wzp_L8lICa5RBu1IoK8Mbi0wJU8O2eABpH6hCB6qxKrdA88KIoMCaOYT26ksvqUGScAgK4fXEN_x2cUsz5qamqRkmLdgRKWfX8H9OTIyFJ0E9hO60V-2YZ7eyHCqbN3KPxAo_3X373dyBwCyFLU-sK8dLQ"/>
+</div>
+<div class="mb-4">
+<span class="text-secondary font-bold text-[10px] tracking-widest uppercase">Gastronomie</span>
+<h3 class="text-2xl font-black tracking-tight text-primary mt-1">Lumina Fine Dining</h3>
+</div>
+<p class="text-on-surface-variant text-sm mb-6 leading-relaxed">Kulinarische Erlebnisse auf Sterneniveau im Herzen von Rüsselsheim. Regional &amp; Saisonal.</p>
+<div class="flex items-center justify-between mt-auto">
+<span class="text-[10px] font-bold text-primary flex items-center gap-1 uppercase tracking-tighter">
+<span class="material-symbols-outlined text-xs">location_on</span> Rüsselsheim
+                        </span>
+<span class="material-symbols-outlined text-secondary opacity-0 group-hover:opacity-100 transform translate-x-[-10px] group-hover:translate-x-0 transition-all">arrow_forward</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Standard Listings -->
+<section>
+<div class="flex justify-between items-end mb-10">
+<h2 class="text-[12px] font-black tracking-[0.1em] text-primary uppercase">Alle Unternehmen</h2>
+<div class="flex gap-4">
+<button class="text-[10px] font-bold border-b border-primary pb-1 tracking-widest uppercase">A-Z</button>
+<button class="text-[10px] font-bold text-on-surface-variant/50 hover:text-primary transition-colors tracking-widest uppercase">Neueste</button>
+</div>
+</div>
+<div class="space-y-4">
+<!-- Standard Item 1 -->
+<div class="bg-surface-container-low hover:bg-surface-container-lowest p-6 flex items-center gap-8 transition-colors group cursor-pointer">
+<div class="w-16 h-16 bg-surface-container-highest flex-shrink-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant">home_repair_service</span>
+</div>
+<div class="flex-grow grid grid-cols-4 items-center">
+<div class="col-span-2">
+<h4 class="font-bold text-primary tracking-tight">Handwerksbetrieb Müller</h4>
+<p class="text-xs text-on-surface-variant uppercase tracking-wider">Sanitär &amp; Heizung</p>
+</div>
+<div class="text-[10px] font-bold text-on-surface-variant uppercase tracking-tighter">
+                            Kelsterbach
+                        </div>
+<div class="text-right">
+<span class="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">call</span>
+</div>
+</div>
+</div>
+<!-- Standard Item 2 -->
+<div class="bg-surface-container-low hover:bg-surface-container-lowest p-6 flex items-center gap-8 transition-colors group cursor-pointer">
+<div class="w-16 h-16 bg-surface-container-highest flex-shrink-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant">auto_stories</span>
+</div>
+<div class="flex-grow grid grid-cols-4 items-center">
+<div class="col-span-2">
+<h4 class="font-bold text-primary tracking-tight">Buchhandlung am Markt</h4>
+<p class="text-xs text-on-surface-variant uppercase tracking-wider">Einzelhandel</p>
+</div>
+<div class="text-[10px] font-bold text-on-surface-variant uppercase tracking-tighter">
+                            Rüsselsheim
+                        </div>
+<div class="text-right">
+<span class="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">call</span>
+</div>
+</div>
+</div>
+<!-- Standard Item 3 -->
+<div class="bg-surface-container-low hover:bg-surface-container-lowest p-6 flex items-center gap-8 transition-colors group cursor-pointer">
+<div class="w-16 h-16 bg-surface-container-highest flex-shrink-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant">fitness_center</span>
+</div>
+<div class="flex-grow grid grid-cols-4 items-center">
+<div class="col-span-2">
+<h4 class="font-bold text-primary tracking-tight">Main-Gym Fitness</h4>
+<p class="text-xs text-on-surface-variant uppercase tracking-wider">Sport &amp; Freizeit</p>
+</div>
+<div class="text-[10px] font-bold text-on-surface-variant uppercase tracking-tighter">
+                            Raunheim
+                        </div>
+<div class="text-right">
+<span class="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">call</span>
+</div>
+</div>
+</div>
+<!-- Standard Item 4 -->
+<div class="bg-surface-container-low hover:bg-surface-container-lowest p-6 flex items-center gap-8 transition-colors group cursor-pointer">
+<div class="w-16 h-16 bg-surface-container-highest flex-shrink-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant">palette</span>
+</div>
+<div class="flex-grow grid grid-cols-4 items-center">
+<div class="col-span-2">
+<h4 class="font-bold text-primary tracking-tight">Atelier Schwarzweiß</h4>
+<p class="text-xs text-on-surface-variant uppercase tracking-wider">Grafik &amp; Kunst</p>
+</div>
+<div class="text-[10px] font-bold text-on-surface-variant uppercase tracking-tighter">
+                            Kelsterbach
+                        </div>
+<div class="text-right">
+<span class="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">call</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Pagination/Load More -->
+<div class="mt-12 flex justify-center">
+<button class="bg-primary text-white text-[10px] font-bold tracking-widest uppercase px-12 py-4 hover:bg-primary-container transition-colors">
+                    Weitere Einträge laden
+                </button>
+</div>
+</section>
+</main>
+<!-- Map Floating Trigger -->
+<div class="absolute bottom-10 right-10 z-40">
+<button class="premium-gradient text-white flex items-center gap-3 px-6 py-4 rounded-sm shadow-2xl hover:scale-105 transition-transform">
+<span class="material-symbols-outlined">map</span>
+<span class="font-bold text-xs tracking-widest uppercase">Kartenansicht</span>
+</button>
+</div>
+<!-- Footer -->
+<footer class="ml-72 p-12 border-t border-outline-variant/10">
+<div class="flex flex-col md:flex-row justify-between items-center gap-8">
+<div class="flex items-center gap-3 scale-75 origin-left">
+<div class="flex items-center gap-1.5 h-6">
+<span class="w-[2px] h-[16px] bg-[#020511]"></span>
+<span class="w-[2px] h-[24px] bg-[#006d42]"></span>
+<span class="w-[2px] h-[20px] bg-[#735c00]"></span>
+</div>
+<div class="text-2xl font-['Inter'] tracking-tighter uppercase flex items-baseline">
+<span class="font-bold text-[#020511]">DREIGEWINNT</span>
+<span class="font-light text-[#735c00]">.COM</span>
+</div>
+</div>
+<div class="flex gap-8 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant/60">
+<a class="hover:text-primary transition-colors" href="#">Impressum</a>
+<a class="hover:text-primary transition-colors" href="#">Datenschutz</a>
+<a class="hover:text-primary transition-colors" href="#">Kontakt</a>
+<span class="opacity-40">© 2024 DREIGEWINNT.COM</span>
+</div>
+</div>
+</footer>
+</div>
+</body></html>
