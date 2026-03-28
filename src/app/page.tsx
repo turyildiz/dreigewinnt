@@ -74,47 +74,102 @@ export default function Home() {
           <Link href="/gewerbe" className="text-[10px] md:text-sm font-bold uppercase tracking-widest border-b-2 border-secondary pb-1 hover:text-secondary transition-colors">Alle Unternehmen ansehen</Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {/* Card 1 */}
-          <div className="group bg-surface-container-lowest p-6 md:p-8 border border-tertiary-container/40 relative hover:bg-surface-bright transition-all duration-300">
-            <div className="absolute top-0 right-0 bg-tertiary px-3 py-1 text-[10px] font-bold text-on-tertiary uppercase tracking-widest">Top-Partner</div>
-            <div className="w-12 h-12 md:w-16 md:h-16 bg-surface-container-high mb-6 md:mb-8 flex items-center justify-center rounded-sm">
-              <span className="material-symbols-outlined text-primary text-2xl md:text-3xl">restaurant</span>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
+          {/* Card 1 — tall featured */}
+          <Link href="/gewerbe/main-studio-gmbh" className="group relative overflow-hidden md:col-span-1 h-[480px] md:h-[600px] block">
+            <img
+              src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=1200&auto=format&fit=crop"
+              alt="Gourmet Eck Raunheim"
+              className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700"
+            />
+            {/* Gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/30 to-transparent" />
+            {/* Top badge */}
+            <div className="absolute top-4 left-4 flex items-center gap-1.5 bg-tertiary px-3 py-1">
+              <span className="material-symbols-outlined text-white text-xs" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+              <span className="text-white text-[10px] font-black uppercase tracking-widest">Top-Partner</span>
             </div>
-            <h3 className="text-xl md:text-2xl font-bold mb-2 group-hover:text-secondary transition-colors">Gourmet Eck Raunheim</h3>
-            <p className="text-on-surface-variant text-xs md:text-sm mb-6 leading-relaxed">Exzellente deutsche Küche mit regionalen Zutaten. Ein Muss für jeden Feinschmecker in der Region.</p>
-            <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-tertiary text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-              <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-primary">Gastronomie • Raunheim</span>
+            {/* Town tag top right */}
+            <div className="absolute top-4 right-4">
+              <TownTag town="Raunheim" />
             </div>
-          </div>
+            {/* Content bottom */}
+            <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+              <span className="text-secondary-fixed text-[10px] font-bold uppercase tracking-widest block mb-2">Gastronomie</span>
+              <h3 className="text-2xl md:text-3xl font-black text-white tracking-tight leading-tight mb-3 group-hover:text-secondary-fixed transition-colors">
+                Gourmet Eck Raunheim
+              </h3>
+              <p className="text-white/70 text-sm leading-relaxed line-clamp-2 mb-5">
+                Exzellente deutsche Küche mit regionalen Zutaten. Ein Muss für jeden Feinschmecker in der Region.
+              </p>
+              <div className="flex items-center gap-2 text-white/50 text-[10px] font-bold uppercase tracking-widest group-hover:text-secondary-fixed transition-colors">
+                <span>Zum Profil</span>
+                <span className="material-symbols-outlined text-sm -translate-x-1 group-hover:translate-x-0 transition-transform duration-300">arrow_forward</span>
+              </div>
+            </div>
+          </Link>
 
-          {/* Card 2 */}
-          <div className="group bg-surface-container-lowest p-6 md:p-8 border border-tertiary-container/40 relative hover:bg-surface-bright transition-all duration-300">
-            <div className="absolute top-0 right-0 bg-tertiary px-3 py-1 text-[10px] font-bold text-on-tertiary uppercase tracking-widest">Top-Partner</div>
-            <div className="w-12 h-12 md:w-16 md:h-16 bg-surface-container-high mb-6 md:mb-8 flex items-center justify-center rounded-sm">
-              <span className="material-symbols-outlined text-primary text-2xl md:text-3xl">fitness_center</span>
-            </div>
-            <h3 className="text-xl md:text-2xl font-bold mb-2 group-hover:text-secondary transition-colors">Power Hub Kelsterbach</h3>
-            <p className="text-on-surface-variant text-xs md:text-sm mb-6 leading-relaxed">Modernstes Fitnessstudio der Region mit 24/7 Zugang und persönlicher Betreuung durch Experten.</p>
-            <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-tertiary text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-              <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-primary">Sport • Kelsterbach</span>
-            </div>
-          </div>
+          {/* Cards 2 + 3 stacked */}
+          <div className="md:col-span-2 grid grid-cols-1 md:grid-rows-2 gap-0">
+            {/* Card 2 */}
+            <Link href="/gewerbe/lederwerk-taunus" className="group relative overflow-hidden h-[360px] md:h-auto block">
+              <img
+                src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1400&auto=format&fit=crop"
+                alt="Power Hub Kelsterbach"
+                className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/80 via-primary/40 to-transparent" />
+              <div className="absolute top-4 left-4 flex items-center gap-1.5 bg-tertiary px-3 py-1">
+                <span className="material-symbols-outlined text-white text-xs" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                <span className="text-white text-[10px] font-black uppercase tracking-widest">Top-Partner</span>
+              </div>
+              <div className="absolute top-4 right-4">
+                <TownTag town="Kelsterbach" />
+              </div>
+              <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 md:max-w-md">
+                <span className="text-secondary-fixed text-[10px] font-bold uppercase tracking-widest block mb-1.5">Sport & Fitness</span>
+                <h3 className="text-xl md:text-2xl font-black text-white tracking-tight leading-tight mb-2 group-hover:text-secondary-fixed transition-colors">
+                  Power Hub Kelsterbach
+                </h3>
+                <p className="text-white/70 text-sm leading-relaxed line-clamp-1 mb-4 hidden md:block">
+                  Modernstes Fitnessstudio der Region mit 24/7 Zugang und persönlicher Betreuung.
+                </p>
+                <div className="flex items-center gap-2 text-white/50 text-[10px] font-bold uppercase tracking-widest group-hover:text-secondary-fixed transition-colors">
+                  <span>Zum Profil</span>
+                  <span className="material-symbols-outlined text-sm -translate-x-1 group-hover:translate-x-0 transition-transform duration-300">arrow_forward</span>
+                </div>
+              </div>
+            </Link>
 
-          {/* Card 3 */}
-          <div className="group bg-surface-container-lowest p-6 md:p-8 border border-tertiary-container/40 relative hover:bg-surface-bright transition-all duration-300">
-            <div className="absolute top-0 right-0 bg-tertiary px-3 py-1 text-[10px] font-bold text-on-tertiary uppercase tracking-widest">Top-Partner</div>
-            <div className="w-12 h-12 md:w-16 md:h-16 bg-surface-container-high mb-6 md:mb-8 flex items-center justify-center rounded-sm">
-              <span className="material-symbols-outlined text-primary text-2xl md:text-3xl">architecture</span>
-            </div>
-            <h3 className="text-xl md:text-2xl font-bold mb-2 group-hover:text-secondary transition-colors">Design Studio Opel Altbau</h3>
-            <p className="text-on-surface-variant text-xs md:text-sm mb-6 leading-relaxed">Kreativ-Agentur im Herzen von Rüsselsheim. Spezialisiert auf Markenbildung und digitale Transformation.</p>
-            <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-tertiary text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-              <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-primary">Kreativ • Rüsselsheim</span>
-            </div>
+            {/* Card 3 */}
+            <Link href="/gewerbe/lumina-fine-dining" className="group relative overflow-hidden h-[360px] md:h-auto block">
+              <img
+                src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1400&auto=format&fit=crop"
+                alt="Design Studio Opel Altbau"
+                className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/80 via-primary/40 to-transparent" />
+              <div className="absolute top-4 left-4 flex items-center gap-1.5 bg-tertiary px-3 py-1">
+                <span className="material-symbols-outlined text-white text-xs" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                <span className="text-white text-[10px] font-black uppercase tracking-widest">Top-Partner</span>
+              </div>
+              <div className="absolute top-4 right-4">
+                <TownTag town="Rüsselsheim" />
+              </div>
+              <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 md:max-w-md">
+                <span className="text-secondary-fixed text-[10px] font-bold uppercase tracking-widest block mb-1.5">Kreativ & Design</span>
+                <h3 className="text-xl md:text-2xl font-black text-white tracking-tight leading-tight mb-2 group-hover:text-secondary-fixed transition-colors">
+                  Design Studio Opel Altbau
+                </h3>
+                <p className="text-white/70 text-sm leading-relaxed line-clamp-1 mb-4 hidden md:block">
+                  Kreativ-Agentur im Herzen von Rüsselsheim. Markenbildung und digitale Transformation.
+                </p>
+                <div className="flex items-center gap-2 text-white/50 text-[10px] font-bold uppercase tracking-widest group-hover:text-secondary-fixed transition-colors">
+                  <span>Zum Profil</span>
+                  <span className="material-symbols-outlined text-sm -translate-x-1 group-hover:translate-x-0 transition-transform duration-300">arrow_forward</span>
+                </div>
+              </div>
+            </Link>
           </div>
         </div>
       </section>
