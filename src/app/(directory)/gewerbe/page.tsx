@@ -90,16 +90,18 @@ export default async function GewerbePage({
       {/* ── Page Header ── */}
       <header className="px-4 sm:px-8 lg:px-12 pt-6 lg:pt-14 pb-10 lg:pb-16">
         <div className="flex items-center gap-3 mb-4 flex-wrap">
-          <span className="bg-surface-container-highest text-primary px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase">
-            {townLabel ?? "Region"}
-          </span>
+          {townLabel ? (
+            <TownTag town={townLabel as "Raunheim" | "Kelsterbach" | "Rüsselsheim"} />
+          ) : (
+            <span className="bg-surface-container-highest text-primary px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase">Region</span>
+          )}
           {category && (
             <span className="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase">
               {category}
             </span>
           )}
           <span className="text-on-surface-variant font-medium text-xs tracking-widest uppercase">
-            Gewerbeindex 2025
+            Gewerbeindex 2026
           </span>
         </div>
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-headline font-black tracking-tighter text-primary leading-none mb-4">

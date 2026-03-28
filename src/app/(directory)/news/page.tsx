@@ -97,9 +97,11 @@ export default async function NewsPage({
       {/* ── Page Header ── */}
       <header className="px-4 sm:px-8 lg:px-12 pt-6 lg:pt-14 pb-8 lg:pb-12">
         <div className="flex items-center gap-2 mb-3 flex-wrap">
-          <span className="bg-surface-container-highest text-primary px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase">
-            {townLabel ?? "Dreigewinnt Region"}
-          </span>
+          {townLabel ? (
+            <TownTag town={townLabel as "Raunheim" | "Kelsterbach" | "Rüsselsheim"} />
+          ) : (
+            <span className="bg-surface-container-highest text-primary px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase">Dreigewinnt Region</span>
+          )}
           <span className="text-on-surface-variant/40 text-sm italic">— Lokal Kuratiert</span>
         </div>
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-headline font-black tracking-tighter text-primary leading-none">

@@ -94,9 +94,11 @@ export default async function EventsPage({
       {/* ── Page Header ── */}
       <header className="px-4 sm:px-8 lg:px-12 pt-6 lg:pt-14 pb-8 lg:pb-10">
         <div className="flex items-center gap-2 mb-3 flex-wrap">
-          <span className="bg-surface-container-highest text-primary px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase">
-            {townLabel ?? "Dreigewinnt Region"}
-          </span>
+          {townLabel ? (
+            <TownTag town={townLabel as "Raunheim" | "Kelsterbach" | "Rüsselsheim"} />
+          ) : (
+            <span className="bg-surface-container-highest text-primary px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase">Dreigewinnt Region</span>
+          )}
           {category && (
             <span className="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase">
               {category}
