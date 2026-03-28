@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 
 import { TopNavbar } from "@/components/layout/TopNavbar";
-import { Footer } from "@/components/layout/Footer";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -31,7 +30,6 @@ export default function RootLayout({
         <div className="flex-1 flex flex-col w-full">
           {children}
         </div>
-        <Footer />
       </body>
     </html>
   );

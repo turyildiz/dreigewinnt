@@ -23,7 +23,6 @@ export function EventCard({
   variant = "landing",
 }: EventCardProps) {
   
-  // Split the dateStr for the directory box (e.g. "24. Sept" -> "24", "SEPT")
   const dateNum = dateStr.slice(0, 2);
   const dateMonth = dateStr.split(" ")[1] ? dateStr.split(" ")[1].toUpperCase() : "";
 
@@ -31,12 +30,13 @@ export function EventCard({
     return (
       <div className="group relative bg-surface-container-lowest border border-tertiary-container/20 overflow-hidden hover:shadow-2xl transition-all duration-500">
         {isFeatured && (
-          <div className="absolute top-4 right-4 z-10 bg-tertiary text-on-tertiary px-3 py-1 text-[10px] font-bold uppercase tracking-widest">
-            Top-Partner
+          <div className="absolute top-3 right-3 z-10 bg-primary text-white px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider">
+            Featured Boost
           </div>
         )}
         <Link href={`/events/${id}`}>
-          <div className="h-64 overflow-hidden bg-surface-container-highest">
+          {/* Image */}
+          <div className="h-44 sm:h-52 lg:h-64 overflow-hidden bg-surface-container-highest">
             {imageUrl ? (
               <img
                 src={imageUrl}
@@ -49,17 +49,24 @@ export function EventCard({
               </div>
             )}
           </div>
-          <div className="p-8 relative">
-            <div className="absolute -top-6 left-8 bg-surface-container-lowest p-4 shadow-sm">
-              <span className="block text-secondary font-black text-2xl leading-none">{dateNum}</span>
-              <span className="block text-on-surface-variant text-[10px] uppercase font-bold tracking-widest">{dateMonth}</span>
+
+          {/* Card body */}
+          <div className="p-4 sm:p-6 lg:p-8 relative">
+            {/* Date chip */}
+            <div className="absolute -top-5 left-4 sm:left-6 lg:left-8 bg-surface-container-lowest p-3 sm:p-4 shadow-sm">
+              <span className="block text-secondary font-black text-xl sm:text-2xl leading-none">{dateNum}</span>
+              <span className="block text-on-surface-variant text-[9px] uppercase font-bold tracking-widest">{dateMonth}</span>
             </div>
-            <div className="pt-6">
-              <h3 className="text-2xl font-headline font-bold text-primary mb-2 group-hover:text-secondary transition-colors">{title}</h3>
-              <p className="text-on-surface-variant text-sm mb-6 line-clamp-2">{description}</p>
-              <button className="w-full flex items-center justify-center gap-2 border border-outline-variant/30 py-3 text-[11px] font-bold uppercase tracking-widest hover:bg-surface-container-high transition-colors">
-                <span className="material-symbols-outlined text-[18px]">calendar_today</span>
-                Zum Kalender hinzufügen
+
+            <div className="pt-5 sm:pt-6">
+              <h3 className="text-lg sm:text-xl lg:text-2xl font-headline font-bold text-primary mb-2 group-hover:text-secondary transition-colors leading-tight">
+                {title}
+              </h3>
+              <p className="text-on-surface-variant text-xs sm:text-sm mb-4 sm:mb-6 line-clamp-2">{description}</p>
+              <button className="w-full flex items-center justify-center gap-2 border border-outline-variant/30 py-2.5 sm:py-3 text-[9px] sm:text-[11px] font-bold uppercase tracking-wider hover:bg-surface-container-high transition-colors">
+                <span className="material-symbols-outlined text-base sm:text-[18px]">calendar_today</span>
+                <span className="hidden sm:inline">Zum Kalender hinzufügen</span>
+                <span className="sm:hidden">Kalender</span>
               </button>
             </div>
           </div>

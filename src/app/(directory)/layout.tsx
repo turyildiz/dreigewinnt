@@ -1,4 +1,5 @@
 import { SideNavBar } from "@/components/layout/SideNavBar";
+import { Footer } from "@/components/layout/Footer";
 
 export default function DirectoryLayout({
   children,
@@ -6,10 +7,11 @@ export default function DirectoryLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="max-w-[1440px] w-full mx-auto flex flex-1">
+    <div className="max-w-[1440px] w-full mx-auto flex flex-1 overflow-x-hidden">
       <SideNavBar />
-      <div className="flex-1 lg:ml-72 flex flex-col pt-20">
+      <div className="flex-1 min-w-0 lg:ml-72 flex flex-col pt-20">
         {children}
+        <Footer />
       </div>
     </div>
   );

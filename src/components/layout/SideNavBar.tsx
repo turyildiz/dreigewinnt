@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export function SideNavBar() {
   return (
-    <aside className="fixed hidden lg:flex h-[calc(100vh-80px)] w-72 bg-surface-container-lowest border-r border-outline-variant/15 flex-col py-10 z-40 overflow-y-auto mt-20">
+    <aside className="fixed hidden lg:flex h-[calc(100vh-80px)] w-72 bg-surface-container-lowest border-r border-outline-variant/15 flex-col py-10 z-40 overflow-y-auto mt-20 left-[max(0px,calc((100vw-1440px)/2))]">
       <div className="px-8 mb-4">
         <h3 className="font-headline uppercase tracking-[0.05em] text-[12px] font-bold text-primary dark:text-white">LOKALER FILTER</h3>
         <p className="text-[10px] text-on-surface-variant font-medium tracking-widest opacity-70">DREIGEWINNT REGION</p>
