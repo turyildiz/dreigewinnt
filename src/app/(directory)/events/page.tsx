@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { EventCard } from "@/components/ui/EventCard";
 
 const featuredEvents = [
@@ -32,6 +33,7 @@ const featuredEvents = [
 
 const upcomingEvents = [
   {
+    id: "krimidinner-stadtbuecherei",
     category: "Lesung",
     title: "Krimidinner in der Stadtbücherei",
     locationTime: "Rüsselsheim · 19:00 Uhr",
@@ -40,6 +42,7 @@ const upcomingEvents = [
     imageUrl: "https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800&auto=format&fit=crop"
   },
   {
+    id: "digital-hub-networking",
     category: "Gewerbe",
     title: "Digital Hub: Main-Taunus Networking",
     locationTime: "Technologiezentrum · 18:30 Uhr",
@@ -48,6 +51,7 @@ const upcomingEvents = [
     imageUrl: "https://images.unsplash.com/photo-1515169067868-5387ec356754?q=80&w=800&auto=format&fit=crop"
   },
   {
+    id: "lichterfest-stadtpark",
     category: "Stadtfest",
     title: "Lichterfest im Stadtpark",
     locationTime: "Kelsterbach · Ganztägig",
@@ -121,9 +125,10 @@ export default function EventsPage() {
         </div>
 
         <div className="flex flex-col gap-2 lg:gap-3">
-          {upcomingEvents.map((event, i) => (
-            <div
-              key={i}
+          {upcomingEvents.map((event) => (
+            <Link
+              key={event.id}
+              href={`/events/${event.id}`}
               className="group bg-surface-container-lowest flex items-stretch hover:bg-surface-bright transition-colors overflow-hidden"
             >
               {/* Thumbnail */}
@@ -157,7 +162,7 @@ export default function EventsPage() {
                   <span className="hidden sm:inline ml-1">Kalender</span>
                 </button>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>
