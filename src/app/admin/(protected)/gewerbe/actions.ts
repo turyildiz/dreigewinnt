@@ -1,6 +1,7 @@
 "use server";
 
 import { supabaseAdmin } from "@/lib/supabase-admin";
+import { uploadToStorage } from "@/lib/storage";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -15,20 +16,8 @@ function toSlug(name: string) {
     .replace(/^-|-$/g, "");
 }
 
-async function ensureBucket() {
-  await supabaseAdmin.storage.createBucket("business-images", { public: true }).catch(() => {});
-}
-
-async function uploadImage(file: File, folder: string): Promise<string> {
-  await ensureBucket();
-  const ext = file.name.split(".").pop() ?? "jpg";
-  const path = `${folder}/${Date.now()}.${ext}`;
-  const bytes = await file.arrayBuffer();
-  const { data, error } = await supabaseAdmin.storage
-    .from("business-images")
-    .upload(path, bytes, { contentType: file.type, upsert: true });
-  if (error) throw new Error(error.message);
-  return supabaseAdmin.storage.from("business-images").getPublicUrl(data.path).data.publicUrl;
+function uploadImage(file: File, folder: string) {
+  return uploadToStorage(file, "business-images", folder);
 }
 
 export async function createBusinessAction(formData: FormData) {
