@@ -40,7 +40,7 @@ export default async function Home() {
       .from("businesses")
       .select("id, slug, name, town, category, description, hero_image_url")
       .eq("status", "active")
-      .eq("tier", "premium")
+      .eq("is_spotlight", true)
       .limit(4),
     supabase
       .from("events")

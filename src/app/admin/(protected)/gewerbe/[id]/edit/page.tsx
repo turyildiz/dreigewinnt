@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { updateBusinessAction, deleteBusinessAction, uploadGalleryPhotoAction, deleteGalleryPhotoAction } from "../../actions";
@@ -27,9 +28,18 @@ export default async function EditBusinessPage({
   return (
     <div className="p-8 lg:p-12">
       <div className="max-w-3xl">
-        <div className="pb-6">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-secondary mb-1">Gewerbe</p>
-          <h1 className="text-3xl font-headline font-black tracking-tighter text-primary">{business.name}</h1>
+        <div className="pb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-secondary mb-1">Gewerbe</p>
+            <h1 className="text-3xl font-headline font-black tracking-tighter text-primary">{business.name}</h1>
+          </div>
+          <Link
+            href={`/admin/gewerbe/${id}/posts`}
+            className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors flex-shrink-0"
+          >
+            <span className="material-symbols-outlined text-base">feed</span>
+            Posts verwalten
+          </Link>
         </div>
 
         <BusinessForm action={updateAction} deleteAction={deleteAction} defaultValues={business} />

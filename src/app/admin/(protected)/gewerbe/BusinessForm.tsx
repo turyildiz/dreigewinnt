@@ -33,6 +33,7 @@ type DefaultValues = {
   town?: string;
   tier?: string;
   status?: string;
+  is_spotlight?: boolean;
   description?: string | null;
   full_description?: string | null;
   address?: string | null;
@@ -119,6 +120,20 @@ export function BusinessForm({ action, deleteAction, defaultValues }: BusinessFo
               </select>
             </Field>
           </div>
+          <Field label="Homepage Spotlight">
+            <label className={`flex items-center justify-between gap-4 px-4 py-3 border cursor-pointer transition-all ${defaultValues?.is_spotlight ? "border-tertiary bg-tertiary/5" : "border-outline-variant/20 hover:border-outline-variant/40"}`}>
+              <div>
+                <p className="text-sm font-bold text-primary">Spotlight aktiv</p>
+                <p className="text-[10px] text-on-surface-variant mt-0.5">Erscheint im Top-Partner-Bereich auf der Startseite</p>
+              </div>
+              <input
+                type="checkbox"
+                name="is_spotlight"
+                defaultChecked={defaultValues?.is_spotlight ?? false}
+                className="accent-tertiary w-4 h-4 flex-shrink-0"
+              />
+            </label>
+          </Field>
           <Field label="Header-Bild">
             <HeroImageField currentUrl={defaultValues?.hero_image_url ?? null} />
           </Field>

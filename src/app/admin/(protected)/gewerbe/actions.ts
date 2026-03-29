@@ -69,6 +69,7 @@ export async function updateBusinessAction(id: string, formData: FormData) {
       town: formData.get("town") as string,
       tier: formData.get("tier") as string,
       status: formData.get("status") as string,
+      is_spotlight: formData.get("is_spotlight") === "on",
       description: (formData.get("description") as string) || null,
       full_description: (formData.get("full_description") as string) || null,
       address: (formData.get("address") as string) || null,
