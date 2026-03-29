@@ -21,8 +21,6 @@ export function TopNavbar() {
   const inputRef = useRef<HTMLInputElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
 
-  if (pathname?.startsWith("/admin")) return null;
-
   // Autofocus input when search opens
   useEffect(() => {
     if (isSearchOpen) {
@@ -46,6 +44,8 @@ export function TopNavbar() {
     setIsMobileMenuOpen(false);
     setIsSearchOpen(false);
   }, [pathname]);
+
+  if (pathname?.startsWith("/admin")) return null;
 
   return (
     <>
