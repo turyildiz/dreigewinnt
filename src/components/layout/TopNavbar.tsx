@@ -15,12 +15,13 @@ const quickLinks = [
 
 export function TopNavbar() {
   const pathname = usePathname();
-  if (pathname?.startsWith("/admin")) return null;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
+
+  if (pathname?.startsWith("/admin")) return null;
 
   // Autofocus input when search opens
   useEffect(() => {
