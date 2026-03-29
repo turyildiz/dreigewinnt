@@ -64,4 +64,4 @@ export function ChangePasswordForm() {
 }
 
 const inputClass =
-  "w-full bg-surface-container-low px-4 py-3 text-sm text-primary placeholder:text-outline/50 outline-none focus:ring-1 focus:ring-secondary/30 focus:bg-surface-container-lowest transition-colors";
+  "w-full bg-white px-4 py-3 text-sm text-primary placeholder:text-outline/40 outline-none border border-outline-variant/25 focus:border-secondary/60 focus:bg-white transition-colors";
