@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 const towns = [
   { value: "raunheim", label: "Raunheim" },
@@ -119,8 +119,8 @@ export function BusinessForm({ action, deleteAction, defaultValues }: BusinessFo
               </select>
             </Field>
           </div>
-          <Field label="Hero-Bild URL">
-            <input name="hero_image_url" type="url" defaultValue={defaultValues?.hero_image_url ?? ""} className={inputClass} placeholder="https://…" />
+          <Field label="Header-Bild">
+            <HeroImageField currentUrl={defaultValues?.hero_image_url ?? null} />
           </Field>
         </Section>
 
@@ -186,6 +186,62 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
         {label}
       </label>
       {children}
+    </div>
+  );
+}
+
+function HeroImageField({ currentUrl }: { currentUrl: string | null }) {
+  const [preview, setPreview] = useState<string | null>(currentUrl);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (file) setPreview(URL.createObjectURL(file));
+  }
+
+  return (
+    <div className="flex flex-col gap-3">
+      {/* Hidden URL field — keeps existing URL if no new file selected */}
+      <input type="hidden" name="hero_image_url" value={preview && preview.startsWith("http") ? preview : ""} />
+      <input
+        ref={inputRef}
+        type="file"
+        name="hero_image_file"
+        accept="image/*"
+        onChange={handleFile}
+        className="hidden"
+      />
+
+      {preview ? (
+        <div className="relative w-full h-48 bg-surface-container-high overflow-hidden">
+          <img src={preview} alt="" className="w-full h-full object-cover" />
+          <button
+            type="button"
+            onClick={() => { setPreview(null); if (inputRef.current) inputRef.current.value = ""; }}
+            className="absolute top-2 right-2 bg-primary/80 text-on-primary px-2 py-1 text-[10px] font-bold uppercase tracking-widest hover:bg-error transition-colors flex items-center gap-1"
+          >
+            <span className="material-symbols-outlined text-sm">close</span>
+            Entfernen
+          </button>
+          <button
+            type="button"
+            onClick={() => inputRef.current?.click()}
+            className="absolute bottom-2 right-2 bg-primary/80 text-on-primary px-2 py-1 text-[10px] font-bold uppercase tracking-widest hover:bg-secondary transition-colors flex items-center gap-1"
+          >
+            <span className="material-symbols-outlined text-sm">upload</span>
+            Ändern
+          </button>
+        </div>
+      ) : (
+        <button
+          type="button"
+          onClick={() => inputRef.current?.click()}
+          className="w-full h-36 border-2 border-dashed border-outline-variant/30 flex flex-col items-center justify-center gap-2 hover:border-secondary/40 hover:bg-surface-container transition-colors"
+        >
+          <span className="material-symbols-outlined text-3xl text-on-surface-variant/40">add_photo_alternate</span>
+          <span className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant/50">Bild hochladen</span>
+        </button>
+      )}
     </div>
   );
 }
