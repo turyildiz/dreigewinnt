@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { logoutAction } from "./actions";
+import { AdminMobileHeader } from "./AdminMobileHeader";
 
 const navItems = [
   { href: "/admin/dashboard", label: "Übersicht", icon: "dashboard" },
@@ -37,8 +38,14 @@ export default async function AdminLayout({
 
   return (
     <div className="min-h-screen bg-surface-container-low flex">
-      {/* Sidebar */}
-      <aside className="w-64 bg-surface-container-lowest flex-shrink-0 flex flex-col fixed top-0 left-0 h-full">
+      {/* Mobile header */}
+      <AdminMobileHeader
+        userName={adminUser.full_name ?? adminUser.email ?? "Admin"}
+        isSuperadmin={isSuperadmin}
+      />
+
+      {/* Sidebar — desktop only */}
+      <aside className="hidden lg:flex w-64 bg-surface-container-lowest flex-shrink-0 flex-col fixed top-0 left-0 h-full">
         {/* Logo */}
         <div className="px-6 py-5 border-b border-outline-variant/15">
           <Link href="/admin/dashboard" className="flex items-center gap-3">
@@ -114,7 +121,7 @@ export default async function AdminLayout({
       </aside>
 
       {/* Content */}
-      <main className="flex-1 ml-64 min-h-screen">{children}</main>
+      <main className="flex-1 lg:ml-64 min-h-screen pt-14 lg:pt-0">{children}</main>
     </div>
   );
 }

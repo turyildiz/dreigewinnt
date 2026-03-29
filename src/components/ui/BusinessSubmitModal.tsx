@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useTransition } from "react";
+import { submitBusinessAction } from "@/app/(directory)/gewerbe/einreichen/actions";
 
 const towns = ["Raunheim", "Kelsterbach", "Rüsselsheim"];
 const categories = [
@@ -17,6 +18,7 @@ export function BusinessSubmitModal() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTier, setSelectedTier] = useState("free");
   const [submitted, setSubmitted] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -26,9 +28,13 @@ export function BusinessSubmitModal() {
     return () => document.removeEventListener("keydown", onKey);
   }, []);
 
-  function handleSubmit(e: React.FormEvent) {
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setSubmitted(true);
+    const formData = new FormData(e.currentTarget);
+    startTransition(async () => {
+      await submitBusinessAction(formData);
+      setSubmitted(true);
+    });
   }
 
   function handleClose() {
@@ -93,31 +99,26 @@ export function BusinessSubmitModal() {
                   </label>
                   <div className="flex flex-col gap-2">
                     {tiers.map((tier) => (
-                      <button
+                      <label
                         key={tier.id}
-                        type="button"
                         onClick={() => setSelectedTier(tier.id)}
-                        className={`flex items-center justify-between px-4 py-3 border text-left transition-all ${
+                        className={`flex items-center justify-between px-4 py-3 border cursor-pointer transition-all ${
                           selectedTier === tier.id
                             ? "border-secondary bg-secondary/5"
                             : "border-outline-variant/20 hover:border-outline-variant/50"
                         }`}
                       >
-                        <div>
-                          <span className="font-bold text-sm text-primary">{tier.label}</span>
-                          <p className="text-[10px] text-on-surface-variant mt-0.5">{tier.features}</p>
+                        <div className="flex items-center gap-3">
+                          <input type="radio" name="tier" value={tier.id} checked={selectedTier === tier.id} onChange={() => setSelectedTier(tier.id)} className="accent-secondary" />
+                          <div>
+                            <span className="font-bold text-sm text-primary">{tier.label}</span>
+                            <p className="text-[10px] text-on-surface-variant mt-0.5">{tier.features}</p>
+                          </div>
                         </div>
-                        <div className="text-right flex-shrink-0 ml-4">
-                          <span className={`text-xs font-black ${selectedTier === tier.id ? "text-secondary" : "text-on-surface-variant"}`}>
-                            {tier.price}
-                          </span>
-                          {selectedTier === tier.id && (
-                            <span className="material-symbols-outlined text-secondary text-sm block" style={{ fontVariationSettings: "'FILL' 1" }}>
-                              check_circle
-                            </span>
-                          )}
-                        </div>
-                      </button>
+                        <span className={`text-xs font-black flex-shrink-0 ml-4 ${selectedTier === tier.id ? "text-secondary" : "text-on-surface-variant"}`}>
+                          {tier.price}
+                        </span>
+                      </label>
                     ))}
                   </div>
                 </div>
@@ -130,36 +131,21 @@ export function BusinessSubmitModal() {
                   <label className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant block mb-2">
                     Unternehmensname <span className="text-error">*</span>
                   </label>
-                  <input
-                    required
-                    type="text"
-                    placeholder="z. B. Bäckerei Müller"
-                    className="w-full bg-surface-container-low px-4 py-3 text-sm text-primary placeholder:text-outline/50 outline-none focus:ring-1 focus:ring-secondary/30 focus:bg-surface-container-lowest transition-colors"
-                  />
+                  <input name="name" required type="text" placeholder="z. B. Bäckerei Müller" className="w-full bg-surface-container-low px-4 py-3 text-sm text-primary placeholder:text-outline/50 outline-none focus:ring-1 focus:ring-secondary/30 focus:bg-surface-container-lowest transition-colors" />
                 </div>
 
                 {/* Town + Category */}
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant block mb-2">
-                      Stadt <span className="text-error">*</span>
-                    </label>
-                    <select
-                      required
-                      className="w-full bg-surface-container-low px-4 py-3 text-sm text-primary outline-none focus:ring-1 focus:ring-secondary/30 appearance-none"
-                    >
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant block mb-2">Stadt <span className="text-error">*</span></label>
+                    <select name="town" required className="w-full bg-surface-container-low px-4 py-3 text-sm text-primary outline-none focus:ring-1 focus:ring-secondary/30 appearance-none">
                       <option value="">Bitte wählen</option>
-                      {towns.map((t) => <option key={t}>{t}</option>)}
+                      {towns.map((t) => <option key={t} value={t.toLowerCase().replace("ü", "ue")}>{t}</option>)}
                     </select>
                   </div>
                   <div>
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant block mb-2">
-                      Kategorie <span className="text-error">*</span>
-                    </label>
-                    <select
-                      required
-                      className="w-full bg-surface-container-low px-4 py-3 text-sm text-primary outline-none focus:ring-1 focus:ring-secondary/30 appearance-none"
-                    >
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant block mb-2">Kategorie <span className="text-error">*</span></label>
+                    <select name="category" required className="w-full bg-surface-container-low px-4 py-3 text-sm text-primary outline-none focus:ring-1 focus:ring-secondary/30 appearance-none">
                       <option value="">Bitte wählen</option>
                       {categories.map((c) => <option key={c}>{c}</option>)}
                     </select>
@@ -170,19 +156,11 @@ export function BusinessSubmitModal() {
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant block mb-2">Telefon</label>
-                    <input
-                      type="tel"
-                      placeholder="+49 6142 …"
-                      className="w-full bg-surface-container-low px-4 py-3 text-sm text-primary placeholder:text-outline/50 outline-none focus:ring-1 focus:ring-secondary/30 focus:bg-surface-container-lowest transition-colors"
-                    />
+                    <input name="phone" type="tel" placeholder="+49 6142 …" className="w-full bg-surface-container-low px-4 py-3 text-sm text-primary placeholder:text-outline/50 outline-none focus:ring-1 focus:ring-secondary/30 focus:bg-surface-container-lowest transition-colors" />
                   </div>
                   <div>
                     <label className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant block mb-2">Website</label>
-                    <input
-                      type="url"
-                      placeholder="www.beispiel.de"
-                      className="w-full bg-surface-container-low px-4 py-3 text-sm text-primary placeholder:text-outline/50 outline-none focus:ring-1 focus:ring-secondary/30 focus:bg-surface-container-lowest transition-colors"
-                    />
+                    <input name="website" type="url" placeholder="https://beispiel.de" className="w-full bg-surface-container-low px-4 py-3 text-sm text-primary placeholder:text-outline/50 outline-none focus:ring-1 focus:ring-secondary/30 focus:bg-surface-container-lowest transition-colors" />
                   </div>
                 </div>
 
@@ -190,33 +168,19 @@ export function BusinessSubmitModal() {
                 {selectedTier !== "free" && (
                   <div>
                     <label className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant block mb-2">Beschreibung</label>
-                    <textarea
-                      rows={3}
-                      placeholder="Kurze Beschreibung Ihres Unternehmens…"
-                      className="w-full bg-surface-container-low px-4 py-3 text-sm text-primary placeholder:text-outline/50 outline-none focus:ring-1 focus:ring-secondary/30 focus:bg-surface-container-lowest transition-colors resize-none"
-                    />
+                    <textarea name="description" rows={3} placeholder="Kurze Beschreibung Ihres Unternehmens…" className="w-full bg-surface-container-low px-4 py-3 text-sm text-primary placeholder:text-outline/50 outline-none focus:ring-1 focus:ring-secondary/30 focus:bg-surface-container-lowest transition-colors resize-none" />
                   </div>
                 )}
 
                 {/* Contact email */}
                 <div>
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant block mb-2">
-                    Ihre E-Mail <span className="text-error">*</span>
-                  </label>
-                  <input
-                    required
-                    type="email"
-                    placeholder="ihre@email.de"
-                    className="w-full bg-surface-container-low px-4 py-3 text-sm text-primary placeholder:text-outline/50 outline-none focus:ring-1 focus:ring-secondary/30 focus:bg-surface-container-lowest transition-colors"
-                  />
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant block mb-2">Ihre E-Mail <span className="text-error">*</span></label>
+                  <input name="contact_email" required type="email" placeholder="ihre@email.de" className="w-full bg-surface-container-low px-4 py-3 text-sm text-primary placeholder:text-outline/50 outline-none focus:ring-1 focus:ring-secondary/30 focus:bg-surface-container-lowest transition-colors" />
                 </div>
 
                 {/* Submit */}
-                <button
-                  type="submit"
-                  className="signature-gradient text-on-secondary py-4 font-black uppercase text-xs tracking-widest hover:brightness-110 transition-all mt-2"
-                >
-                  {selectedTier === "free" ? "Kostenlos einreichen" : `${tiers.find(t => t.id === selectedTier)?.price} — Weiter zur Zahlung`}
+                <button type="submit" disabled={isPending} className="signature-gradient text-on-secondary py-4 font-black uppercase text-xs tracking-widest hover:brightness-110 transition-all mt-2 disabled:opacity-60">
+                  {isPending ? "Wird eingereicht…" : "Kostenlos einreichen"}
                 </button>
 
                 <p className="text-[10px] text-on-surface-variant text-center">

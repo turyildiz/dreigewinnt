@@ -49,7 +49,7 @@ export function TopNavbar() {
 
   return (
     <>
-      <nav className="fixed top-0 w-full z-50 bg-surface/80 dark:bg-primary/80 backdrop-blur-xl border-b border-outline-variant/15 shadow-[0_40px_40px_rgba(2,5,17,0.06)]">
+      <nav className="fixed top-0 w-full z-50 bg-surface/80 nav-blur border-b border-outline-variant/15 shadow-[0_40px_40px_rgba(2,5,17,0.06)]">
         {/* Content container */}
         <div className="max-w-[1440px] mx-auto h-20 flex items-center relative">
 
@@ -57,12 +57,12 @@ export function TopNavbar() {
           <div className="absolute left-0 top-0 h-20 w-72 hidden lg:flex items-center justify-center border-r border-outline-variant/15">
             <Link href="/" className="flex items-center gap-3">
               <div className="flex items-center gap-1.5 h-6">
-                <span className="w-[2px] h-[16px] bg-primary dark:bg-white"></span>
+                <span className="w-[2px] h-[16px] bg-primary"></span>
                 <span className="w-[2px] h-[24px] bg-secondary"></span>
                 <span className="w-[2px] h-[20px] bg-tertiary"></span>
               </div>
               <div className="text-2xl font-headline tracking-tighter uppercase flex items-baseline">
-                <span className="font-bold text-primary dark:text-white">DREIGEWINNT</span>
+                <span className="font-bold text-primary">DREIGEWINNT</span>
                 <span className="font-light text-tertiary">.COM</span>
               </div>
             </Link>
@@ -89,11 +89,12 @@ export function TopNavbar() {
             {/* Right actions */}
             <div className="flex items-center gap-3 ml-auto">
               <button
+                type="button"
                 onClick={() => { setIsSearchOpen(!isSearchOpen); setIsMobileMenuOpen(false); }}
-                className={`material-symbols-outlined p-2 rounded-full transition-colors ${isSearchOpen ? "bg-primary text-on-primary" : "text-primary hover:bg-surface-container-low"}`}
+                className={`p-2 rounded-full transition-colors flex items-center justify-center ${isSearchOpen ? "bg-primary text-on-primary" : "text-primary hover:bg-surface-container-low"}`}
                 aria-label="Suche öffnen"
               >
-                {isSearchOpen ? "close" : "search"}
+                <span className="material-symbols-outlined">{isSearchOpen ? "close" : "search"}</span>
               </button>
               <Link
                 href="/gewerbe/einreichen"
@@ -103,10 +104,11 @@ export function TopNavbar() {
               </Link>
               <div className="lg:hidden">
                 <button
-                  className="material-symbols-outlined text-primary p-2 active:bg-surface-container-low rounded-full transition-colors"
+                  type="button"
+                  className="text-primary p-2 active:bg-surface-container-low rounded-full transition-colors flex items-center justify-center"
                   onClick={() => { setIsMobileMenuOpen(!isMobileMenuOpen); setIsSearchOpen(false); }}
                 >
-                  {isMobileMenuOpen ? "close" : "menu"}
+                  <span className="material-symbols-outlined">{isMobileMenuOpen ? "close" : "menu"}</span>
                 </button>
               </div>
             </div>
@@ -182,7 +184,7 @@ export function TopNavbar() {
           isSearchOpen ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-2 pointer-events-none"
         }`}
       >
-        <div className="bg-surface/95 backdrop-blur-xl border-b border-outline-variant/15 shadow-2xl">
+        <div className="bg-surface/95 nav-blur border-b border-outline-variant/15 shadow-2xl">
           <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 py-6 lg:py-8">
 
             {/* Search input */}
@@ -226,11 +228,13 @@ export function TopNavbar() {
           </div>
         </div>
 
-        {/* Backdrop */}
-        <div
-          className="h-screen bg-primary/20 backdrop-blur-sm"
-          onClick={() => setIsSearchOpen(false)}
-        />
+        {/* Backdrop — only mounted when open so it never blocks touch events */}
+        {isSearchOpen && (
+          <div
+            className="h-screen bg-primary/20"
+            onClick={() => setIsSearchOpen(false)}
+          />
+        )}
       </div>
     </>
   );

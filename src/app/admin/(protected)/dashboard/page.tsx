@@ -65,7 +65,7 @@ export default async function DashboardPage() {
   const stats = await getStats();
 
   return (
-    <div className="p-8 lg:p-12">
+    <div className="p-5 sm:p-8 lg:p-12">
       {/* Header */}
       <div className="mb-10">
         <p className="text-[10px] font-bold uppercase tracking-widest text-secondary mb-1">

@@ -27,7 +27,7 @@ export default async function AdminGewerbePage() {
   };
 
   return (
-    <div className="p-8 lg:p-12">
+    <div className="p-5 sm:p-8 lg:p-12">
       {/* Header */}
       <div className="flex items-start justify-between mb-8">
         <div>
@@ -60,25 +60,32 @@ export default async function AdminGewerbePage() {
         {businesses?.map((b) => (
           <div
             key={b.id}
-            className="flex items-center gap-4 px-6 py-4 border-b border-outline-variant/10 last:border-b-0 hover:bg-surface-container-low transition-colors"
+            className="flex items-center gap-3 px-4 sm:px-6 py-3 sm:py-4 border-b border-outline-variant/10 last:border-b-0 hover:bg-surface-container-low transition-colors"
           >
             <div className="flex-1 min-w-0">
               <p className="font-bold text-primary text-sm truncate">{b.name}</p>
-              <p className="text-[10px] text-on-surface-variant uppercase tracking-wider mt-0.5">
-                {b.category} · {townLabels[b.town] ?? b.town}
-              </p>
+              <div className="flex items-center gap-2 mt-0.5 flex-wrap">
+                <p className="text-[10px] text-on-surface-variant uppercase tracking-wider">
+                  {b.category} · {townLabels[b.town] ?? b.town}
+                </p>
+                <span
+                  className={`sm:hidden text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 ${statusColors[b.status] ?? "bg-outline/10 text-on-surface-variant"}`}
+                >
+                  {b.status}
+                </span>
+              </div>
             </div>
-            <span className="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">
+            <span className="hidden sm:inline text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">
               {tierLabels[b.tier] ?? b.tier}
             </span>
             <span
-              className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 ${statusColors[b.status] ?? "bg-outline/10 text-on-surface-variant"}`}
+              className={`hidden sm:inline text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 ${statusColors[b.status] ?? "bg-outline/10 text-on-surface-variant"}`}
             >
               {b.status}
             </span>
             <Link
               href={`/admin/gewerbe/${b.id}/edit`}
-              className="material-symbols-outlined text-xl text-on-surface-variant hover:text-primary transition-colors"
+              className="material-symbols-outlined text-xl text-on-surface-variant hover:text-primary transition-colors flex-shrink-0"
             >
               edit
             </Link>

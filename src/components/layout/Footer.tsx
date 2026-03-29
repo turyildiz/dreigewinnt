@@ -6,12 +6,12 @@ export function Footer() {
       <div className="max-w-[1440px] mx-auto py-12 px-12 flex flex-col md:flex-row justify-between items-center gap-6">
         <Link href="/" className="flex items-center gap-3">
           <div className="flex items-center gap-1 h-4">
-            <span className="w-[1.5px] h-[10px] bg-primary dark:bg-white"></span>
+            <span className="w-[1.5px] h-[10px] bg-primary"></span>
             <span className="w-[1.5px] h-[16px] bg-secondary"></span>
             <span className="w-[1.5px] h-[13px] bg-tertiary"></span>
           </div>
           <div className="text-lg font-headline tracking-tighter uppercase flex items-baseline">
-            <span className="font-bold text-primary dark:text-white">DREIGEWINNT</span>
+            <span className="font-bold text-primary">DREIGEWINNT</span>
             <span className="font-light text-tertiary">.COM</span>
           </div>
         </Link>

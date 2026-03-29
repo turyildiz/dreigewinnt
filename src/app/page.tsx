@@ -4,6 +4,8 @@ import { Footer } from "@/components/layout/Footer";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { supabase } from "@/lib/supabase";
 
+export const dynamic = "force-dynamic";
+
 const townLabels: Record<string, "Raunheim" | "Kelsterbach" | "Rüsselsheim"> = {
   raunheim: "Raunheim",
   kelsterbach: "Kelsterbach",
@@ -17,10 +19,23 @@ function formatEventDate(dateStr: string) {
   });
 }
 
+function formatRelativeTime(dateStr: string): string {
+  const diffMs = Date.now() - new Date(dateStr).getTime();
+  const diffMins = Math.floor(diffMs / 60000);
+  if (diffMins < 1) return "gerade eben";
+  if (diffMins < 60) return `vor ${diffMins} Minute${diffMins !== 1 ? "n" : ""}`;
+  const diffHrs = Math.floor(diffMins / 60);
+  if (diffHrs < 24) return `vor ${diffHrs} Stunde${diffHrs !== 1 ? "n" : ""}`;
+  const diffDays = Math.floor(diffHrs / 24);
+  if (diffDays < 7) return `vor ${diffDays} Tag${diffDays !== 1 ? "en" : ""}`;
+  const diffWeeks = Math.floor(diffDays / 7);
+  return `vor ${diffWeeks} Woche${diffWeeks !== 1 ? "n" : ""}`;
+}
+
 export default async function Home() {
   const now = new Date().toISOString();
 
-  const [{ data: partners }, { data: events }] = await Promise.all([
+  const [{ data: partners }, { data: events }, { data: posts }] = await Promise.all([
     supabase
       .from("businesses")
       .select("id, slug, name, town, category, description, hero_image_url")
@@ -34,6 +49,11 @@ export default async function Home() {
       .gte("start_date", now)
       .order("start_date", { ascending: true })
       .limit(2),
+    supabase
+      .from("business_posts")
+      .select("id, content, image_url, images, created_at, businesses(name, slug, town, tier)")
+      .order("created_at", { ascending: false })
+      .limit(10),
   ]);
 
   return (
@@ -86,6 +106,57 @@ export default async function Home() {
       <div className="px-6 md:px-12 py-5 bg-surface-container-low border-b border-outline-variant/10 relative z-20">
         <SearchBar />
       </div>
+
+      {/* Aktuelles aus der Region */}
+      {posts && posts.length > 0 && (
+        <section className="py-16 md:py-20 px-6 md:px-12 bg-surface-container-low">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-12 gap-4">
+            <div>
+              <span className="text-secondary font-black text-[10px] md:text-xs uppercase tracking-[0.3em] block mb-3 md:mb-4">Updates</span>
+              <h2 className="text-4xl md:text-5xl font-headline font-black text-primary tracking-tighter">Aktuelles aus der Region</h2>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0">
+            {posts.map((post) => {
+              const biz = Array.isArray(post.businesses) ? post.businesses[0] : post.businesses;
+              if (!biz) return null;
+              const truncated = post.content.length > 200 ? post.content.slice(0, 200).trimEnd() + "…" : post.content;
+              return (
+                <div key={post.id} className="bg-surface p-6 flex flex-col gap-3">
+                  <div className="flex items-center justify-between gap-2">
+                    <Link
+                      href={`/gewerbe/${biz.slug}`}
+                      className="font-black text-sm text-primary hover:text-secondary transition-colors tracking-tight leading-snug"
+                    >
+                      {biz.name}
+                    </Link>
+                    <span className="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest flex-shrink-0">
+                      {formatRelativeTime(post.created_at)}
+                    </span>
+                  </div>
+                  {(post.images?.[0] ?? post.image_url) && (
+                    <div className="overflow-hidden h-36">
+                      <img
+                        src={post.images?.[0] ?? post.image_url!}
+                        alt=""
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  )}
+                  <p className="text-on-surface-variant text-sm leading-relaxed">{truncated}</p>
+                  <Link
+                    href={`/gewerbe/${biz.slug}?tab=aktuelles`}
+                    className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-secondary hover:text-primary transition-colors mt-auto"
+                  >
+                    <span>Mehr lesen</span>
+                    <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                  </Link>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       {/* Trust Bar */}
       <section className="bg-surface-container-low py-4 md:py-6 px-6 md:px-12 flex flex-col md:flex-row justify-center items-center gap-2 md:gap-4 text-center md:text-left overflow-hidden">

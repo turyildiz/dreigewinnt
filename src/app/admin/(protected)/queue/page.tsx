@@ -8,7 +8,7 @@ export default async function QueuePage() {
     .order("created_at");
 
   return (
-    <div className="p-8 lg:p-12">
+    <div className="p-5 sm:p-8 lg:p-12">
       <div className="mb-8">
         <p className="text-[10px] font-bold uppercase tracking-widest text-secondary mb-1">Verwaltung</p>
         <h1 className="text-3xl font-headline font-black tracking-tighter text-primary">Warteschlange</h1>
@@ -25,15 +25,15 @@ export default async function QueuePage() {
       ) : (
         <div className="bg-surface-container-lowest">
           {items?.map((item) => (
-            <div key={item.id} className="px-6 py-4 border-b border-outline-variant/10 last:border-b-0">
-              <div className="flex items-center gap-3 mb-1">
+            <div key={item.id} className="px-4 sm:px-6 py-4 border-b border-outline-variant/10 last:border-b-0">
+              <div className="flex items-start gap-2 mb-2 flex-wrap">
                 <span className="text-[10px] font-bold uppercase tracking-widest bg-secondary/10 text-secondary px-2 py-0.5">
                   {item.content_type}
                 </span>
                 <span className="text-[10px] font-bold uppercase tracking-widest bg-outline/10 text-on-surface-variant px-2 py-0.5">
                   {item.source_type}
                 </span>
-                <span className="text-[10px] text-on-surface-variant ml-auto">
+                <span className="text-[10px] text-on-surface-variant sm:ml-auto w-full sm:w-auto mt-1 sm:mt-0">
                   {new Date(item.created_at).toLocaleString("de-DE")}
                 </span>
               </div>
