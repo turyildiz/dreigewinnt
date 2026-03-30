@@ -225,7 +225,7 @@ export default async function BusinessDetailPage({
       </div>
 
       {/* ── Content ── */}
-      <div className="px-4 sm:px-8 lg:px-12 pt-8 lg:pt-12">
+      <div className="px-4 sm:px-8 lg:px-12 pt-8 lg:pt-12 bg-surface-container-low">
 
         <Link
           href="/gewerbe"
@@ -308,9 +308,9 @@ export default async function BusinessDetailPage({
                     <p className="text-on-surface-variant text-sm">Noch keine Beiträge von diesem Unternehmen.</p>
                   </div>
                 ) : (
-                  <div className="flex flex-col gap-0">
+                  <div className="flex flex-col gap-3">
                     {posts.map((post) => (
-                      <div key={post.id} className="bg-surface-container-low p-6 flex flex-col gap-4">
+                      <div key={post.id} className="bg-white border border-outline-variant/10 p-6 flex flex-col gap-4 shadow-md">
                         <div className="flex items-center justify-between gap-2">
                           <span className="text-[10px] font-bold uppercase tracking-widest text-secondary">
                             {business.name}
