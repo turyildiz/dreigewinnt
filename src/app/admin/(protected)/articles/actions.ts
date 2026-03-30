@@ -39,6 +39,7 @@ export async function createArticleAction(formData: FormData) {
     hero_image_url: heroImageUrl,
     towns: [town],
     status: formData.get("status") as string,
+    type: (formData.get("type") as string) || "news",
     published_at: formData.get("status") === "published" ? new Date().toISOString() : null,
     meta_title: (formData.get("meta_title") as string) || null,
     meta_description: (formData.get("meta_description") as string) || null,
@@ -67,6 +68,7 @@ export async function updateArticleAction(id: string, formData: FormData) {
     hero_image_url: heroImageUrl,
     towns: [town],
     status: newStatus,
+    type: (formData.get("type") as string) || "news",
     meta_title: (formData.get("meta_title") as string) || null,
     meta_description: (formData.get("meta_description") as string) || null,
   }).eq("id", id);

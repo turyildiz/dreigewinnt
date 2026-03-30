@@ -25,40 +25,62 @@ function formatDate(dateStr: string) {
 export default async function NewsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ town?: string }>;
+  searchParams: Promise<{ town?: string; type?: string }>;
 }) {
-  const { town } = await searchParams;
+  const { town, type } = await searchParams;
   const townLabel = town ? townLabels[town] : null;
+  const activeType = type === "story" ? "story" : type === "news" ? "news" : null;
 
   let query = supabase
     .from("articles")
-    .select("id, slug, title, excerpt, hero_image_url, towns, published_at")
+    .select("id, slug, title, excerpt, hero_image_url, towns, published_at, type")
     .eq("status", "published")
     .order("published_at", { ascending: false });
 
-  if (townLabel) {
-    query = query.contains("towns", [townLabel]);
-  }
+  if (townLabel) query = query.contains("towns", [townLabel]);
+  if (activeType) query = query.eq("type", activeType);
 
   const { data: articles } = await query;
 
   const featured = articles?.[0] ?? null;
   const rest = articles?.slice(1) ?? [];
 
+  const tabs = (
+    <div className="px-4 sm:px-8 lg:px-12 flex gap-2 mb-8 lg:mb-10">
+      <Link href={town ? `/news?town=${town}` : "/news"} className={`px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-widest transition-colors ${!activeType ? "bg-primary text-on-primary" : "bg-surface-container text-on-surface-variant hover:bg-surface-container-high"}`}>
+        Alle
+      </Link>
+      <Link href={`/news?${town ? `town=${town}&` : ""}type=news`} className={`px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-widest transition-colors ${activeType === "news" ? "bg-primary text-on-primary" : "bg-surface-container text-on-surface-variant hover:bg-surface-container-high"}`}>
+        Nachrichten
+      </Link>
+      <Link href={`/news?${town ? `town=${town}&` : ""}type=story`} className={`px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-widest transition-colors ${activeType === "story" ? "bg-secondary text-on-secondary" : "bg-surface-container text-on-surface-variant hover:bg-surface-container-high"}`}>
+        Magazin
+      </Link>
+    </div>
+  );
+
+  const pageHeader = (
+    <header className="px-4 sm:px-8 lg:px-12 pt-6 lg:pt-14 pb-8 lg:pb-12">
+      <div className="flex items-center gap-2 mb-3 flex-wrap">
+        {townLabel ? (
+          <TownTag town={townLabel} />
+        ) : (
+          <span className="bg-surface-container-highest text-primary px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase">Dreigewinnt Region</span>
+        )}
+        <span className="text-on-surface-variant/40 text-sm italic">— Lokal Kuratiert</span>
+      </div>
+      <h1 className="text-4xl sm:text-5xl lg:text-6xl font-headline font-black tracking-tighter text-primary leading-none">Nachrichten</h1>
+      <p className="text-on-surface-variant mt-3 text-sm sm:text-base lg:text-lg leading-relaxed max-w-lg">
+        {townLabel ? `Aktuelle Berichte aus ${townLabel}.` : "Geprüfte Berichte aus Raunheim, Kelsterbach und Rüsselsheim."}
+      </p>
+    </header>
+  );
+
   if (!articles || articles.length === 0) {
     return (
       <main className="w-full pb-16">
-        <header className="px-4 sm:px-8 lg:px-12 pt-6 lg:pt-14 pb-8 lg:pb-12">
-          <div className="flex items-center gap-2 mb-3 flex-wrap">
-            {townLabel ? (
-              <TownTag town={townLabel} />
-            ) : (
-              <span className="bg-surface-container-highest text-primary px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase">Dreigewinnt Region</span>
-            )}
-            <span className="text-on-surface-variant/40 text-sm italic">— Lokal Kuratiert</span>
-          </div>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-headline font-black tracking-tighter text-primary leading-none">Nachrichten</h1>
-        </header>
+        {pageHeader}
+        {tabs}
         <div className="px-4 sm:px-8 lg:px-12">
           <div className="bg-surface-container-lowest p-12 text-center">
             <p className="text-on-surface-variant text-sm">Noch keine Artikel veröffentlicht.</p>
@@ -70,26 +92,8 @@ export default async function NewsPage({
 
   return (
     <main className="w-full pb-16">
-
-      {/* ── Page Header ── */}
-      <header className="px-4 sm:px-8 lg:px-12 pt-6 lg:pt-14 pb-8 lg:pb-12">
-        <div className="flex items-center gap-2 mb-3 flex-wrap">
-          {townLabel ? (
-            <TownTag town={townLabel} />
-          ) : (
-            <span className="bg-surface-container-highest text-primary px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase">Dreigewinnt Region</span>
-          )}
-          <span className="text-on-surface-variant/40 text-sm italic">— Lokal Kuratiert</span>
-        </div>
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-headline font-black tracking-tighter text-primary leading-none">
-          Nachrichten
-        </h1>
-        <p className="text-on-surface-variant mt-3 text-sm sm:text-base lg:text-lg leading-relaxed max-w-lg">
-          {townLabel
-            ? `Aktuelle Berichte aus ${townLabel}.`
-            : "Geprüfte Berichte aus Raunheim, Kelsterbach und Rüsselsheim."}
-        </p>
-      </header>
+      {pageHeader}
+      {tabs}
 
       {/* ── Featured Article ── */}
       {featured && (
@@ -117,6 +121,9 @@ export default async function NewsPage({
                   <div className="flex items-center gap-2 mb-4 flex-wrap">
                     {featured.towns?.[0] && (
                       <TownTag town={featured.towns[0] as "Raunheim" | "Kelsterbach" | "Rüsselsheim"} />
+                    )}
+                    {featured.type === "story" && (
+                      <span className="text-[9px] font-black uppercase tracking-widest bg-secondary/10 text-secondary px-2 py-0.5">Magazin</span>
                     )}
                   </div>
                   <h2 className="text-2xl sm:text-3xl lg:text-4xl font-headline font-black tracking-tighter text-primary leading-tight mb-4 group-hover:text-secondary transition-colors">
@@ -181,6 +188,9 @@ export default async function NewsPage({
                 <div className="flex items-center gap-2 mb-2 flex-wrap">
                   {article.towns?.[0] && (
                     <TownTag town={article.towns[0] as "Raunheim" | "Kelsterbach" | "Rüsselsheim"} />
+                  )}
+                  {article.type === "story" && (
+                    <span className="text-[9px] font-black uppercase tracking-widest bg-secondary/10 text-secondary px-2 py-0.5">Magazin</span>
                   )}
                 </div>
                 <h3 className="text-sm sm:text-base lg:text-lg font-headline font-bold text-primary leading-tight group-hover:text-secondary transition-colors line-clamp-2">

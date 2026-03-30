@@ -44,6 +44,14 @@ export function ArticleForm({ action, deleteAction, defaultValues }: ArticleForm
               </select>
             </Field>
           </div>
+          <div className="grid grid-cols-2 gap-4">
+            <Field label="Typ">
+              <select name="type" defaultValue={defaultValues?.type as string ?? "news"} className={inputClass}>
+                <option value="news">Nachricht</option>
+                <option value="story">Story / Magazin</option>
+              </select>
+            </Field>
+          </div>
         </Section>
 
         {/* Inhalt */}
