@@ -36,8 +36,8 @@ export function StickyBusinessHeader({ businessName, town, slug, activeTab, titl
           href={`/gewerbe/${slug}?tab=aktuelles`}
           className={`flex items-center gap-3 px-4 py-3 transition-colors border-b-2 ${
             activeTab === "aktuelles"
-              ? "bg-surface-container-lowest border-primary"
-              : "bg-surface-container-low border-transparent hover:bg-surface-container-lowest"
+              ? "bg-white border-primary"
+              : "bg-surface-container border-transparent hover:bg-white"
           }`}
         >
           <span
@@ -57,8 +57,8 @@ export function StickyBusinessHeader({ businessName, town, slug, activeTab, titl
           href={`/gewerbe/${slug}?tab=info`}
           className={`flex items-center gap-3 px-4 py-3 transition-colors border-b-2 ${
             activeTab === "info"
-              ? "bg-surface-container-lowest border-primary"
-              : "bg-surface-container-low border-transparent hover:bg-surface-container-lowest"
+              ? "bg-white border-primary"
+              : "bg-surface-container border-transparent hover:bg-white"
           }`}
         >
           <span
