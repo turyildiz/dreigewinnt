@@ -1,8 +1,41 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { GalleryLightbox } from "@/components/ui/GalleryLightbox";
 import { StickyBusinessHeader } from "@/components/ui/StickyBusinessHeader";
 import { supabase } from "@/lib/supabase";
 import { toDisplayTown } from "@/lib/towns";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const { data: b } = await supabase
+    .from("businesses")
+    .select("name, category, town, description, hero_image_url")
+    .eq("slug", id)
+    .eq("status", "active")
+    .single();
+
+  if (!b) return {};
+
+  const town = toDisplayTown(b.town);
+  const title = `${b.name} — ${b.category} in ${town} | Dreigewinnt`;
+  const description = b.description
+    ? b.description.slice(0, 155)
+    : `${b.name} ist ein Unternehmen in ${town}. Jetzt Informationen, Angebote und Kontaktdaten auf Dreigewinnt entdecken.`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      images: b.hero_image_url ? [{ url: b.hero_image_url }] : [],
+    },
+  };
+}
 
 const tierLabels: Record<string, { label: string; classes: string }> = {
   premium: { label: "Premium Partner", classes: "bg-tertiary text-on-tertiary" },
@@ -71,11 +104,37 @@ export default async function BusinessDetailPage({
   const openingHours: { day: string; hours: string }[] = business.opening_hours ?? [];
 
   const isFree = business.tier === "free";
+  const displayTown = toDisplayTown(business.town);
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    name: business.name,
+    description: business.description ?? undefined,
+    image: business.hero_image_url ?? undefined,
+    address: business.address
+      ? {
+          "@type": "PostalAddress",
+          streetAddress: business.address,
+          addressLocality: displayTown,
+          addressCountry: "DE",
+        }
+      : undefined,
+    telephone: business.phone ?? undefined,
+    email: business.email ?? undefined,
+    url: business.website ? `https://${business.website}` : undefined,
+    openingHoursSpecification: (business.opening_hours as { day: string; hours: string }[] | null)?.map((row) => ({
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: row.day,
+      description: row.hours,
+    })),
+  };
 
   // ── Free tier: minimal stub ──────────────────────────────────────────────
   if (isFree) {
     return (
       <main className="w-full pb-16">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
         {/* Flat header — no hero image */}
         <div className="px-4 sm:px-8 lg:px-12 pt-8 lg:pt-12">
@@ -147,6 +206,7 @@ export default async function BusinessDetailPage({
   // ── Standard / Premium tier: full profile ────────────────────────────────
   return (
     <main className="w-full pb-16">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       {/* ── Hero ── */}
       <div className="relative h-[35vw] min-h-[220px] max-h-[440px] bg-surface-container-high overflow-hidden">
