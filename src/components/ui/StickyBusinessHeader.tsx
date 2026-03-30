@@ -5,12 +5,13 @@ import { useEffect, useRef, useState } from "react";
 
 interface Props {
   businessName: string;
+  town: string;
   slug: string;
   activeTab: "aktuelles" | "info";
   titleId: string;
 }
 
-export function StickyBusinessHeader({ businessName, slug, activeTab, titleId }: Props) {
+export function StickyBusinessHeader({ businessName, town, slug, activeTab, titleId }: Props) {
   const [showName, setShowName] = useState(false);
 
   useEffect(() => {
@@ -26,9 +27,10 @@ export function StickyBusinessHeader({ businessName, slug, activeTab, titleId }:
 
   return (
     <div className="sticky top-20 z-20 -mx-4 sm:-mx-8 lg:-mx-12 px-4 sm:px-8 lg:px-12 bg-surface/95 backdrop-blur-[8px] pt-3 pb-4 mb-4 lg:mb-6 border-b border-outline-variant/10">
-      <p className={`text-xs font-black text-primary tracking-tight mb-2 truncate transition-all duration-200 ${showName ? "opacity-100 h-4" : "opacity-0 h-0 mb-0 overflow-hidden"}`}>
-        {businessName}
-      </p>
+      <div className={`flex items-baseline gap-2 mb-2 transition-all duration-200 ${showName ? "opacity-100 max-h-8" : "opacity-0 max-h-0 mb-0 overflow-hidden"}`}>
+        <p className="text-sm font-black text-primary tracking-tight truncate">{businessName}</p>
+        <p className="text-[11px] font-bold text-on-surface-variant flex-shrink-0">· {town}</p>
+      </div>
       <div className="grid grid-cols-2 gap-2">
         <Link
           href={`/gewerbe/${slug}?tab=aktuelles`}

@@ -257,6 +257,7 @@ export default async function BusinessDetailPage({
 
         <StickyBusinessHeader
           businessName={business.name}
+          town={displayTown}
           slug={id}
           activeTab={tab}
           titleId="business-title"
