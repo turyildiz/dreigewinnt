@@ -32,9 +32,20 @@ function getSection(pathname: string) {
   return "/gewerbe";
 }
 
+// Only show the filter bar on list pages, not detail pages
+function isDetailPage(pathname: string) {
+  return (
+    /^\/gewerbe\/[^/]+/.test(pathname) ||
+    /^\/events\/[^/]+/.test(pathname) ||
+    /^\/news\/[^/]+/.test(pathname)
+  );
+}
+
 export function MobileFilterBar() {
   const router = useRouter();
   const pathname = usePathname();
+
+  if (isDetailPage(pathname)) return null;
   const searchParams = useSearchParams();
   const section = getSection(pathname);
   const activeTown = searchParams.get("town");
