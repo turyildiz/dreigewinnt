@@ -195,7 +195,8 @@ export default async function BusinessDetailPage({
         </div>
 
         {/* ── Tabs ── */}
-        <div className="grid grid-cols-2 gap-2 mb-8 lg:mb-10">
+        <div className="sticky top-20 z-20 -mx-4 sm:-mx-8 lg:-mx-12 px-4 sm:px-8 lg:px-12 bg-surface/95 backdrop-blur-[8px] pb-4 mb-4 lg:mb-6">
+        <div className="grid grid-cols-2 gap-2">
           <Link
             href={`/gewerbe/${id}?tab=aktuelles`}
             className={`flex items-center gap-3 px-4 py-3 transition-colors border-b-2 ${
@@ -224,6 +225,7 @@ export default async function BusinessDetailPage({
               <p className="text-[10px] text-on-surface-variant/60 font-medium hidden sm:block">Kontakt & Öffnungszeiten</p>
             </div>
           </Link>
+        </div>
         </div>
 
         {tab === "info" && (
