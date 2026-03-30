@@ -293,19 +293,7 @@ export default async function BusinessDetailPage({
                 </div>
               )}
 
-              {/* Premium Telegram CTA */}
-              {business.tier === "premium" && (
-                <div className="bg-surface-container-low border border-outline-variant/10 p-5 lg:p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                  <span className="material-symbols-outlined text-secondary text-2xl flex-shrink-0">send</span>
-                  <div className="flex-1">
-                    <p className="font-bold text-primary text-sm mb-0.5">Eintrag aktualisieren</p>
-                    <p className="text-on-surface-variant text-xs">Als Premium Partner können Sie Öffnungszeiten, Fotos und Angebote direkt via Telegram einreichen.</p>
-                  </div>
-                  <button className="signature-gradient text-on-secondary text-[10px] font-bold uppercase tracking-widest px-5 py-2.5 hover:brightness-110 transition-all flex-shrink-0 w-full sm:w-auto text-center">
-                    Via Telegram
-                  </button>
-                </div>
-              )}
+              {/* Premium Telegram CTA — re-enable when bot is live */}
 
             </div>
 
