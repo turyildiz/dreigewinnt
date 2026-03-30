@@ -4,6 +4,25 @@ import { TownTag } from "@/components/ui/TownTag";
 import { supabase } from "@/lib/supabase";
 import { toDisplayTown } from "@/lib/towns";
 
+function categoryIcon(category: string): string {
+  const c = category.toLowerCase();
+  if (c.includes("restaurant") || c.includes("gastronomie") || c.includes("essen")) return "restaurant";
+  if (c.includes("bäcker") || c.includes("konditor")) return "bakery_dining";
+  if (c.includes("lebensmittel") || c.includes("supermarkt")) return "local_grocery_store";
+  if (c.includes("gesundheit") || c.includes("arzt") || c.includes("medizin") || c.includes("praxis")) return "medical_services";
+  if (c.includes("beauty") || c.includes("kosmetik") || c.includes("friseur") || c.includes("spa")) return "spa";
+  if (c.includes("sport") || c.includes("fitness") || c.includes("wellness")) return "fitness_center";
+  if (c.includes("handwerk") || c.includes("sanitär") || c.includes("heizung") || c.includes("elektro")) return "build";
+  if (c.includes("auto") || c.includes("kfz") || c.includes("fahrzeug")) return "directions_car";
+  if (c.includes("immobilien") || c.includes("makler")) return "home";
+  if (c.includes("recht") || c.includes("anwalt") || c.includes("steuer")) return "gavel";
+  if (c.includes("einzelhandel") || c.includes("mode") || c.includes("kleidung")) return "shopping_bag";
+  if (c.includes("bildung") || c.includes("schule") || c.includes("kita") || c.includes("kinder")) return "school";
+  if (c.includes("kultur") || c.includes("kunst") || c.includes("musik")) return "theater_comedy";
+  if (c.includes("dienstleistung")) return "business_center";
+  return "storefront";
+}
+
 export default async function GewerbePage({
   searchParams,
 }: {
@@ -136,10 +155,10 @@ export default async function GewerbePage({
               className="group bg-surface-container-low hover:bg-surface-container-lowest p-4 sm:p-5 lg:p-6 flex items-center gap-4 sm:gap-6 lg:gap-8 transition-colors"
             >
               <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-surface-container-highest flex-shrink-0 flex items-center justify-center overflow-hidden">
-                {business.hero_image_url ? (
+                {business.hero_image_url && business.tier !== "free" ? (
                   <img src={business.hero_image_url} alt={business.name} className="w-full h-full object-cover" />
                 ) : (
-                  <span className="material-symbols-outlined text-on-surface-variant text-xl lg:text-2xl">storefront</span>
+                  <span className="material-symbols-outlined text-on-surface-variant text-xl lg:text-2xl">{categoryIcon(business.category)}</span>
                 )}
               </div>
               <div className="flex-1 min-w-0 grid grid-cols-2 sm:grid-cols-4 items-center gap-2">
