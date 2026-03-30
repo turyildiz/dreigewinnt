@@ -117,13 +117,13 @@ export default async function Home() {
               <h2 className="text-4xl md:text-5xl font-headline font-black text-primary tracking-tighter">Aktuelles aus der Region</h2>
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0">
+          <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-none -mx-6 md:-mx-12 px-6 md:px-12">
             {posts.map((post) => {
               const biz = Array.isArray(post.businesses) ? post.businesses[0] : post.businesses;
               if (!biz) return null;
-              const truncated = post.content.length > 200 ? post.content.slice(0, 200).trimEnd() + "…" : post.content;
+              const truncated = post.content.length > 180 ? post.content.slice(0, 180).trimEnd() + "…" : post.content;
               return (
-                <div key={post.id} className="bg-surface p-6 flex flex-col gap-3">
+                <div key={post.id} className="bg-surface p-6 flex flex-col gap-3 flex-shrink-0 w-[280px] sm:w-[320px] snap-start">
                   <div className="flex items-center justify-between gap-2">
                     <Link
                       href={`/gewerbe/${biz.slug}`}
@@ -136,7 +136,7 @@ export default async function Home() {
                     </span>
                   </div>
                   {(post.images?.[0] ?? post.image_url) && (
-                    <div className="overflow-hidden h-36">
+                    <div className="overflow-hidden h-36 flex-shrink-0">
                       <img
                         src={post.images?.[0] ?? post.image_url!}
                         alt=""
@@ -144,7 +144,7 @@ export default async function Home() {
                       />
                     </div>
                   )}
-                  <p className="text-on-surface-variant text-sm leading-relaxed">{truncated}</p>
+                  <p className="text-on-surface-variant text-sm leading-relaxed flex-1">{truncated}</p>
                   <Link
                     href={`/gewerbe/${biz.slug}?tab=aktuelles`}
                     className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-secondary hover:text-primary transition-colors mt-auto"
