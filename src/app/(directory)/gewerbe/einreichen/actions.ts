@@ -1,5 +1,6 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 
 export async function submitBusinessAction(formData: FormData) {
@@ -23,4 +24,5 @@ export async function submitBusinessAction(formData: FormData) {
   });
 
   if (error) throw new Error(error.message);
+  redirect("/gewerbe/einreichen?success=1");
 }

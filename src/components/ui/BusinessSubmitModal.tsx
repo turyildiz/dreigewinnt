@@ -180,7 +180,7 @@ export function BusinessSubmitModal() {
 
                 {/* Submit */}
                 <button type="submit" disabled={isPending} className="signature-gradient text-on-secondary py-4 font-black uppercase text-xs tracking-widest hover:brightness-110 transition-all mt-2 disabled:opacity-60">
-                  {isPending ? "Wird eingereicht…" : "Kostenlos einreichen"}
+                  {isPending ? "Wird eingereicht…" : selectedTier === "free" ? "Kostenlos einreichen" : "Kostenpflichtig einreichen"}
                 </button>
 
                 <p className="text-[10px] text-on-surface-variant text-center">

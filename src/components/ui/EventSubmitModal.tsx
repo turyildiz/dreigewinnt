@@ -226,7 +226,7 @@ export function EventSubmitModal() {
                   type="submit"
                   className="signature-gradient text-on-secondary py-4 font-black uppercase text-xs tracking-widest hover:brightness-110 transition-all mt-2"
                 >
-                  {featuredBoost ? "Kostenlos einreichen + €12 Boost" : "Kostenlos einreichen"}
+                  {featuredBoost ? "Einreichen + €12 Featured Boost" : "Kostenlos einreichen"}
                 </button>
 
                 <p className="text-[10px] text-on-surface-variant text-center">
