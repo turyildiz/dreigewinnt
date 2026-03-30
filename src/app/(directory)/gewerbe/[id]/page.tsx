@@ -68,6 +68,81 @@ export default async function BusinessDetailPage({
   const tier = tierLabels[business.tier];
   const openingHours: { day: string; hours: string }[] = business.opening_hours ?? [];
 
+  const isFree = business.tier === "free";
+
+  // ── Free tier: minimal stub ──────────────────────────────────────────────
+  if (isFree) {
+    return (
+      <main className="w-full pb-16">
+
+        {/* Flat header — no hero image */}
+        <div className="px-4 sm:px-8 lg:px-12 pt-8 lg:pt-12">
+          <Link
+            href="/gewerbe"
+            className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors mb-6"
+          >
+            <span className="material-symbols-outlined text-sm">arrow_back</span>
+            Gewerbeverzeichnis
+          </Link>
+
+          <div className="flex items-center gap-2 flex-wrap mb-2">
+            <span className="text-[10px] font-bold px-2 py-0.5 uppercase tracking-widest bg-surface-container text-on-surface-variant">
+              Basiseintrag
+            </span>
+            <span className="text-on-surface-variant text-xs uppercase tracking-widest font-bold">
+              {business.category}
+            </span>
+          </div>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-headline font-black tracking-tighter text-primary leading-tight mb-8">
+            {business.name}
+          </h1>
+
+          {/* Address only */}
+          <div className="bg-surface-container-lowest p-5 lg:p-6 flex items-start gap-3 mb-3 max-w-sm">
+            <span className="material-symbols-outlined text-on-surface-variant/50 text-xl flex-shrink-0">location_on</span>
+            <div>
+              <p className="font-bold text-primary text-sm">{toDisplayTown(business.town)}</p>
+              {business.address && <p className="text-on-surface-variant text-xs mt-0.5">{business.address}</p>}
+            </div>
+          </div>
+
+          {/* Upgrade CTA */}
+          <div className="mt-10 max-w-xl bg-surface-container-low p-6 lg:p-8 border-l-4 border-secondary">
+            <p className="text-[10px] font-black uppercase tracking-widest text-secondary mb-2">Ihr Unternehmen?</p>
+            <h2 className="text-xl font-headline font-black text-primary mb-3 leading-tight">
+              Präsentieren Sie sich mit einem vollständigen Profil.
+            </h2>
+            <p className="text-on-surface-variant text-sm leading-relaxed mb-6">
+              Mit einem Standard- oder Premium-Eintrag erhalten Sie ein Titelbild, Beschreibung, Öffnungszeiten, Galerie und die Möglichkeit, Angebote direkt über Telegram zu veröffentlichen.
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+              {[
+                { icon: "photo_camera", label: "Titelbild & Galerie" },
+                { icon: "schedule", label: "Öffnungszeiten" },
+                { icon: "description", label: "Beschreibung & Details" },
+                { icon: "send", label: "Beiträge via Telegram" },
+              ].map(({ icon, label }) => (
+                <div key={label} className="flex items-center gap-2.5">
+                  <span className="material-symbols-outlined text-secondary text-base">{icon}</span>
+                  <span className="text-xs font-bold text-on-surface-variant">{label}</span>
+                </div>
+              ))}
+            </div>
+
+            <Link
+              href="/gewerbe/einreichen"
+              className="signature-gradient text-on-secondary text-[11px] font-black uppercase tracking-widest px-6 py-3 hover:brightness-110 transition-all inline-block"
+            >
+              Jetzt upgraden
+            </Link>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  // ── Standard / Premium tier: full profile ────────────────────────────────
   return (
     <main className="w-full pb-16">
 
