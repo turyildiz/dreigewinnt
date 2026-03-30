@@ -44,10 +44,10 @@ export default async function Home() {
       .limit(4),
     supabase
       .from("events")
-      .select("id, slug, title, town, category, start_date, description, hero_image_url, is_featured")
+      .select("id, slug, title, town, category, date_start, description, image_url, is_featured")
       .eq("status", "active")
-      .gte("start_date", now)
-      .order("start_date", { ascending: true })
+      .gte("date_start", now)
+      .order("date_start", { ascending: true })
       .limit(2),
     supabase
       .from("business_posts")
@@ -256,9 +256,9 @@ export default async function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
             {events[0] && (
               <Link href={`/events/${events[0].slug}`} className="group relative overflow-hidden h-[420px] md:h-[540px] block md:col-span-2">
-                {events[0].hero_image_url ? (
+                {events[0].image_url ? (
                   <img
-                    src={events[0].hero_image_url}
+                    src={events[0].image_url}
                     alt={events[0].title}
                     className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700"
                   />
@@ -278,7 +278,7 @@ export default async function Home() {
                 )}
                 <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10">
                   <span className="text-secondary-fixed text-[10px] font-bold uppercase tracking-widest block mb-2">
-                    {events[0].start_date && formatEventDate(events[0].start_date)}
+                    {events[0].date_start && formatEventDate(events[0].date_start)}
                     {events[0].category && ` · ${events[0].category}`}
                   </span>
                   <h3 className="text-2xl md:text-4xl font-black text-white tracking-tight leading-tight mb-3 group-hover:text-secondary-fixed transition-colors">
@@ -299,9 +299,9 @@ export default async function Home() {
 
             {events[1] && (
               <Link href={`/events/${events[1].slug}`} className="group relative overflow-hidden h-[420px] md:h-[540px] block md:col-span-1">
-                {events[1].hero_image_url ? (
+                {events[1].image_url ? (
                   <img
-                    src={events[1].hero_image_url}
+                    src={events[1].image_url}
                     alt={events[1].title}
                     className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700"
                   />
@@ -321,7 +321,7 @@ export default async function Home() {
                 )}
                 <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
                   <span className="text-secondary-fixed text-[10px] font-bold uppercase tracking-widest block mb-2">
-                    {events[1].start_date && formatEventDate(events[1].start_date)}
+                    {events[1].date_start && formatEventDate(events[1].date_start)}
                     {events[1].category && ` · ${events[1].category}`}
                   </span>
                   <h3 className="text-xl md:text-2xl font-black text-white tracking-tight leading-tight mb-3 group-hover:text-secondary-fixed transition-colors">
