@@ -148,7 +148,22 @@ export async function uploadGalleryPhotoAction(businessId: string, formData: For
 }
 
 export async function deleteGalleryPhotoAction(photoId: string, businessId: string) {
+  const { data: photo } = await supabaseAdmin
+    .from("business_photos")
+    .select("url")
+    .eq("id", photoId)
+    .single();
+
   await supabaseAdmin.from("business_photos").delete().eq("id", photoId);
+
+  // Remove from storage — extract path after /business-images/
+  if (photo?.url) {
+    const match = photo.url.match(/\/business-images\/(.+)$/);
+    if (match) {
+      await supabaseAdmin.storage.from("business-images").remove([match[1]]);
+    }
+  }
+
   revalidatePath(`/admin/gewerbe/${businessId}/edit`);
   revalidatePath(`/gewerbe`);
 }
