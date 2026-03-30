@@ -194,26 +194,34 @@ export default async function BusinessDetailPage({
         </div>
 
         {/* ── Tabs ── */}
-        <div className="flex gap-2 mb-8 lg:mb-10">
+        <div className="grid grid-cols-2 gap-2 mb-8 lg:mb-10">
           <Link
             href={`/gewerbe/${id}?tab=aktuelles`}
-            className={`px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-widest transition-colors ${
+            className={`flex items-center gap-3 px-4 py-3 transition-colors border-b-2 ${
               tab === "aktuelles"
-                ? "bg-primary text-on-primary"
-                : "bg-surface-container text-on-surface-variant hover:bg-surface-container-high"
+                ? "bg-surface-container-lowest border-primary"
+                : "bg-surface-container-low border-transparent hover:bg-surface-container-lowest"
             }`}
           >
-            Aktuelles
+            <span className={`material-symbols-outlined text-xl flex-shrink-0 ${tab === "aktuelles" ? "text-primary" : "text-on-surface-variant/50"}`} style={{ fontVariationSettings: "'FILL' 1" }}>campaign</span>
+            <div>
+              <p className={`text-[11px] font-black uppercase tracking-widest ${tab === "aktuelles" ? "text-primary" : "text-on-surface-variant"}`}>Aktuelles</p>
+              <p className="text-[10px] text-on-surface-variant/60 font-medium hidden sm:block">Angebote & Updates</p>
+            </div>
           </Link>
           <Link
             href={`/gewerbe/${id}?tab=info`}
-            className={`px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-widest transition-colors ${
+            className={`flex items-center gap-3 px-4 py-3 transition-colors border-b-2 ${
               tab === "info"
-                ? "bg-primary text-on-primary"
-                : "bg-surface-container text-on-surface-variant hover:bg-surface-container-high"
+                ? "bg-surface-container-lowest border-primary"
+                : "bg-surface-container-low border-transparent hover:bg-surface-container-lowest"
             }`}
           >
-            Info
+            <span className={`material-symbols-outlined text-xl flex-shrink-0 ${tab === "info" ? "text-primary" : "text-on-surface-variant/50"}`} style={{ fontVariationSettings: "'FILL' 1" }}>store</span>
+            <div>
+              <p className={`text-[11px] font-black uppercase tracking-widest ${tab === "info" ? "text-primary" : "text-on-surface-variant"}`}>Info</p>
+              <p className="text-[10px] text-on-surface-variant/60 font-medium hidden sm:block">Kontakt & Öffnungszeiten</p>
+            </div>
           </Link>
         </div>
 
