@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { GalleryLightbox } from "@/components/ui/GalleryLightbox";
+import { HeroSlideshow } from "@/components/ui/HeroSlideshow";
 import { StickyBusinessHeader } from "@/components/ui/StickyBusinessHeader";
 import { supabase } from "@/lib/supabase";
 import { toDisplayTown } from "@/lib/towns";
@@ -210,17 +211,11 @@ export default async function BusinessDetailPage({
 
       {/* ── Hero ── */}
       <div className="relative h-[35vw] min-h-[220px] max-h-[440px] bg-surface-container-high overflow-hidden">
-        {business.hero_image_url ? (
-          <img
-            src={business.hero_image_url}
-            alt={business.name}
-            className="w-full h-full object-cover"
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center">
-            <span className="material-symbols-outlined text-outline/30 text-6xl">storefront</span>
-          </div>
-        )}
+        <HeroSlideshow
+          images={galleryImages}
+          alt={business.name}
+          fallback={business.hero_image_url ?? undefined}
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-primary/50 via-primary/5 to-transparent" />
         {business.tier === "premium" && (
           <div className="absolute top-4 right-4 sm:top-6 sm:right-6 lg:top-8 lg:right-12 bg-tertiary text-on-tertiary text-[10px] font-bold px-3 py-1 tracking-widest uppercase">
