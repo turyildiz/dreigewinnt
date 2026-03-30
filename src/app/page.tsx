@@ -35,7 +35,7 @@ function formatRelativeTime(dateStr: string): string {
 export default async function Home() {
   const now = new Date().toISOString();
 
-  const [{ data: partners }, { data: events }, { data: posts }] = await Promise.all([
+  const [{ data: partners }, { data: events }, { data: posts }, { data: articles }] = await Promise.all([
     supabase
       .from("businesses")
       .select("id, slug, name, town, category, description, hero_image_url")
@@ -54,6 +54,12 @@ export default async function Home() {
       .select("id, content, image_url, images, created_at, businesses(name, slug, town, tier)")
       .or(`expires_at.is.null,expires_at.gt.${new Date().toISOString()}`)
       .order("created_at", { ascending: false })
+      .limit(10),
+    supabase
+      .from("articles")
+      .select("id, slug, title, excerpt, hero_image_url, towns, type, published_at")
+      .eq("status", "published")
+      .order("published_at", { ascending: false })
       .limit(10),
   ]);
 
@@ -352,6 +358,56 @@ export default async function Home() {
           </Link>
         </div>
       </section>
+
+      {/* News & Magazin Section */}
+      {articles && articles.length > 0 && (
+        <section className="py-16 md:py-20 px-6 md:px-12">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-12 gap-4">
+            <div>
+              <span className="text-secondary font-black text-[10px] md:text-xs uppercase tracking-[0.3em] block mb-3 md:mb-4">Lokale Nachrichten</span>
+              <h2 className="text-4xl md:text-5xl font-headline font-black text-primary tracking-tighter">Neuigkeiten</h2>
+            </div>
+            <Link href="/news" className="text-[10px] md:text-sm font-bold uppercase tracking-widest border-b-2 border-secondary pb-1 hover:text-secondary transition-colors">Alle Artikel lesen</Link>
+          </div>
+          <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-none -mx-6 md:-mx-12 px-6 md:px-12">
+            {articles.map((article) => {
+              const town = article.towns?.[0];
+              const displayTown = town ? (townLabels[town] ?? town) : null;
+              return (
+                <Link
+                  key={article.id}
+                  href={`/news/${article.slug}`}
+                  className="group bg-surface-container-low flex flex-col flex-shrink-0 w-[260px] sm:w-[300px] snap-start hover:bg-surface-container transition-colors"
+                >
+                  <div className="h-40 bg-surface-container-high overflow-hidden flex-shrink-0">
+                    {article.hero_image_url ? (
+                      <img src={article.hero_image_url} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <span className="material-symbols-outlined text-outline/20 text-4xl">newspaper</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-4 flex flex-col gap-2 flex-1">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      {article.type === "story" && (
+                        <span className="text-[9px] font-black uppercase tracking-widest text-secondary bg-secondary/10 px-2 py-0.5">Magazin</span>
+                      )}
+                      {displayTown && <TownTag town={displayTown as "Raunheim" | "Kelsterbach" | "Rüsselsheim"} />}
+                    </div>
+                    <h3 className="font-black text-sm text-primary tracking-tight leading-snug group-hover:text-secondary transition-colors line-clamp-2">
+                      {article.title}
+                    </h3>
+                    {article.excerpt && (
+                      <p className="text-on-surface-variant text-xs leading-relaxed line-clamp-3 flex-1">{article.excerpt}</p>
+                    )}
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       {/* Newsletter Section */}
       <section className="py-20 md:py-32 px-6 md:px-12">
