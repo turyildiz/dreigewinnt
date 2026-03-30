@@ -194,8 +194,9 @@ export default async function BusinessDetailPage({
           </h1>
         </div>
 
-        {/* ── Tabs ── */}
-        <div className="sticky top-20 z-20 -mx-4 sm:-mx-8 lg:-mx-12 px-4 sm:px-8 lg:px-12 bg-surface/95 backdrop-blur-[8px] pb-4 mb-4 lg:mb-6">
+        {/* ── Sticky header: name + tabs ── */}
+        <div className="sticky top-20 z-20 -mx-4 sm:-mx-8 lg:-mx-12 px-4 sm:px-8 lg:px-12 bg-surface/95 backdrop-blur-[8px] pt-3 pb-4 mb-4 lg:mb-6 border-b border-outline-variant/10">
+          <p className="text-xs font-black text-primary tracking-tight mb-2 truncate">{business.name}</p>
         <div className="grid grid-cols-2 gap-2">
           <Link
             href={`/gewerbe/${id}?tab=aktuelles`}

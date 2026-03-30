@@ -9,7 +9,7 @@ export default function DirectoryLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="max-w-[1440px] w-full mx-auto flex flex-1 overflow-x-hidden">
+    <div className="max-w-[1440px] w-full mx-auto flex flex-1 [overflow-x:clip]">
       <Suspense>
         <SideNavBar />
       </Suspense>
