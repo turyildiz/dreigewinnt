@@ -61,6 +61,7 @@ export default async function BusinessDetailPage({
       .from("business_posts")
       .select("*")
       .eq("business_id", business.id)
+      .or(`expires_at.is.null,expires_at.gt.${new Date().toISOString()}`)
       .order("created_at", { ascending: false }),
   ]);
 

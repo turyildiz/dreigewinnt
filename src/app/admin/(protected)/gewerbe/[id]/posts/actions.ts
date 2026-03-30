@@ -30,12 +30,15 @@ export async function createPostAction(businessId: string, formData: FormData) {
   // Legacy single image_url field — keep first image there for backward compat
   const imageUrl = uploadedUrls[0] ?? null;
 
+  const expiresAt = (formData.get("expires_at") as string) || null;
+
   const { error } = await supabaseAdmin.from("business_posts").insert({
     business_id: businessId,
     content,
     image_url: imageUrl,
     images: uploadedUrls,
     source: "manual",
+    expires_at: expiresAt ? new Date(expiresAt).toISOString() : null,
   });
 
   if (error) throw new Error(error.message);
@@ -64,9 +67,16 @@ export async function updatePostAction(postId: string, businessId: string, formD
   const allImages = [...existingImages, ...newUploads];
   const imageUrl = allImages[0] ?? existing?.image_url ?? null;
 
+  const expiresAt = (formData.get("expires_at") as string) || null;
+
   const { error } = await supabaseAdmin
     .from("business_posts")
-    .update({ content, images: allImages, image_url: imageUrl })
+    .update({
+      content,
+      images: allImages,
+      image_url: imageUrl,
+      expires_at: expiresAt ? new Date(expiresAt).toISOString() : null,
+    })
     .eq("id", postId);
 
   if (error) throw new Error(error.message);

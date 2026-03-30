@@ -52,6 +52,7 @@ export default async function Home() {
     supabase
       .from("business_posts")
       .select("id, content, image_url, images, created_at, businesses(name, slug, town, tier)")
+      .or(`expires_at.is.null,expires_at.gt.${new Date().toISOString()}`)
       .order("created_at", { ascending: false })
       .limit(10),
   ]);

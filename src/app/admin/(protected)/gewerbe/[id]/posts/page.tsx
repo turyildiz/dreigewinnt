@@ -17,7 +17,7 @@ export default async function BusinessPostsPage({
     supabaseAdmin.from("businesses").select("id, name").eq("id", id).single(),
     supabaseAdmin
       .from("business_posts")
-      .select("id, content, image_url, images, created_at, source")
+      .select("id, content, image_url, images, created_at, source, expires_at")
       .eq("business_id", id)
       .order("created_at", { ascending: false }),
   ]);
@@ -72,6 +72,17 @@ export default async function BusinessPostsPage({
                 accept="image/*"
                 multiple
                 className="w-full text-sm text-on-surface-variant file:mr-4 file:py-2 file:px-4 file:border-0 file:text-[10px] file:font-bold file:uppercase file:tracking-widest file:bg-surface-container file:text-primary hover:file:bg-surface-container-high file:cursor-pointer cursor-pointer"
+              />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
+                Expires (optional — leave blank to keep forever)
+              </label>
+              <input
+                name="expires_at"
+                type="date"
+                min={new Date().toISOString().split("T")[0]}
+                className={inputClass}
               />
             </div>
             <div className="flex justify-end">
@@ -130,6 +141,11 @@ export default async function BusinessPostsPage({
                         {post.source && post.source !== "manual" && (
                           <span className="text-[10px] font-bold text-secondary uppercase tracking-widest px-2 py-0.5 bg-secondary/10">
                             {post.source}
+                          </span>
+                        )}
+                        {post.expires_at && (
+                          <span className={`text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 ${new Date(post.expires_at) < new Date() ? "bg-error/10 text-error" : "bg-tertiary/10 text-tertiary"}`}>
+                            {new Date(post.expires_at) < new Date() ? "Expired" : `Expires ${new Date(post.expires_at).toLocaleDateString("en-GB", { day: "numeric", month: "short" })}`}
                           </span>
                         )}
                       </div>
@@ -207,6 +223,17 @@ export default async function BusinessPostsPage({
                             accept="image/*"
                             multiple
                             className="w-full text-sm text-on-surface-variant file:mr-4 file:py-2 file:px-4 file:border-0 file:text-[10px] file:font-bold file:uppercase file:tracking-widest file:bg-surface-container file:text-primary hover:file:bg-surface-container-high file:cursor-pointer cursor-pointer"
+                          />
+                        </div>
+                        <div className="flex flex-col gap-1.5">
+                          <label className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
+                            Expires (leave blank to keep forever)
+                          </label>
+                          <input
+                            name="expires_at"
+                            type="date"
+                            defaultValue={post.expires_at ? new Date(post.expires_at).toISOString().split("T")[0] : ""}
+                            className={inputClass}
                           />
                         </div>
 
