@@ -258,153 +258,202 @@ export default async function BusinessDetailPage({
           titleId="business-title"
         />
 
-        {tab === "info" && (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-16">
+        {/* ── Two-column layout: main content + persistent sidebar ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 xl:gap-16">
 
-            {/* ── Left: description + gallery ── */}
-            <div className="lg:col-span-2 flex flex-col gap-8 lg:gap-12">
+          {/* ── Main content area ── */}
+          <div className="lg:col-span-2">
 
-              <div>
-                {business.description && (
-                  <p className="text-on-surface-variant text-base sm:text-lg leading-relaxed mb-3">
-                    {business.description}
-                  </p>
+            {tab === "info" && (
+              <div className="flex flex-col gap-8 lg:gap-12">
+                <div>
+                  {business.description && (
+                    <p className="text-on-surface-variant text-base sm:text-lg leading-relaxed mb-3">
+                      {business.description}
+                    </p>
+                  )}
+                  {business.full_description && (
+                    <p className="text-on-surface-variant text-sm sm:text-base leading-relaxed">
+                      {business.full_description}
+                    </p>
+                  )}
+                </div>
+
+                {galleryImages.length > 0 && (
+                  <div>
+                    <h2 className="text-[12px] font-black tracking-[0.1em] text-primary uppercase mb-4 lg:mb-6 flex items-center gap-3">
+                      <span className="w-5 h-[2px] bg-outline-variant flex-shrink-0" />
+                      Galerie
+                    </h2>
+                    <GalleryLightbox images={galleryImages} altPrefix={business.name} />
+                  </div>
                 )}
-                {business.full_description && (
-                  <p className="text-on-surface-variant text-sm sm:text-base leading-relaxed">
-                    {business.full_description}
-                  </p>
+
+                {/* Contact info — mobile only (sidebar shows on desktop) */}
+                <div className="lg:hidden flex flex-col gap-4">
+                  <ContactSidebar business={business} openingHours={openingHours} displayTown={displayTown} />
+                </div>
+
+                {business.tier !== "premium" && (
+                  <UpsellCTA />
                 )}
               </div>
+            )}
 
-              {/* Gallery */}
-              {galleryImages.length > 0 && (
-                <div>
-                  <h2 className="text-[12px] font-black tracking-[0.1em] text-primary uppercase mb-4 lg:mb-6 flex items-center gap-3">
-                    <span className="w-5 h-[2px] bg-outline-variant flex-shrink-0" />
-                    Galerie
-                  </h2>
-                  <GalleryLightbox images={galleryImages} altPrefix={business.name} />
-                </div>
-              )}
-
-              {/* Upsell CTA for free/standard — hidden for premium */}
-              {business.tier !== "premium" && (
-                <div className="bg-surface-container-low border border-outline-variant/10 p-5 lg:p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                  <span className="material-symbols-outlined text-secondary text-2xl flex-shrink-0">send</span>
-                  <div className="flex-1">
-                    <p className="font-bold text-primary text-sm mb-0.5">Eintrag aktualisieren</p>
-                    <p className="text-on-surface-variant text-xs">Als Premium Partner können Sie Öffnungszeiten, Fotos und Angebote direkt via Telegram einreichen.</p>
+            {tab === "aktuelles" && (
+              <>
+                {!posts || posts.length === 0 ? (
+                  <div className="bg-surface-container-low p-12 text-center">
+                    <span className="material-symbols-outlined text-4xl text-on-surface-variant/20 mb-3 block" style={{ fontVariationSettings: "'FILL' 1" }}>feed</span>
+                    <p className="text-on-surface-variant text-sm">Noch keine Beiträge von diesem Unternehmen.</p>
                   </div>
+                ) : (
+                  <div className="flex flex-col gap-0">
+                    {posts.map((post) => (
+                      <div key={post.id} className="bg-surface-container-low p-6 flex flex-col gap-4">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="text-[10px] font-bold uppercase tracking-widest text-secondary">
+                            {business.name}
+                          </span>
+                          <span className="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest flex-shrink-0">
+                            {formatRelativeTime(post.created_at)}
+                          </span>
+                        </div>
+                        {(() => {
+                          const imgs: string[] = post.images?.length ? post.images : post.image_url ? [post.image_url] : [];
+                          if (!imgs.length) return null;
+                          return (
+                            <div className={`grid gap-1 ${imgs.length === 1 ? "grid-cols-1" : imgs.length === 2 ? "grid-cols-2" : "grid-cols-3"}`}>
+                              {imgs.map((url: string) => (
+                                <img key={url} src={url} alt="" className="w-full object-cover aspect-video" />
+                              ))}
+                            </div>
+                          );
+                        })()}
+                        <p className="text-on-surface-variant text-sm sm:text-base leading-relaxed whitespace-pre-line">
+                          {post.content}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Upsell CTA below posts — mobile only */}
+                {business.tier !== "premium" && (
+                  <div className="lg:hidden mt-8">
+                    <UpsellCTA />
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+
+          {/* ── Persistent right sidebar (desktop) ── */}
+          <aside className="hidden lg:flex flex-col gap-4">
+            <ContactSidebar business={business} openingHours={openingHours} displayTown={displayTown} />
+
+            {business.tier !== "premium" && (
+              <div className="bg-surface-container-low border border-outline-variant/10 p-5 flex flex-col gap-3">
+                <span className="material-symbols-outlined text-secondary text-xl">send</span>
+                <div>
+                  <p className="font-bold text-primary text-sm mb-1">Eintrag aktualisieren</p>
+                  <p className="text-on-surface-variant text-xs leading-relaxed mb-3">Als Premium Partner können Sie Öffnungszeiten, Fotos und Angebote direkt via Telegram einreichen.</p>
                   <Link
                     href="/gewerbe/einreichen"
-                    className="signature-gradient text-on-secondary text-[10px] font-bold uppercase tracking-widest px-5 py-2.5 hover:brightness-110 transition-all flex-shrink-0 w-full sm:w-auto text-center"
+                    className="signature-gradient text-on-secondary text-[10px] font-bold uppercase tracking-widest px-4 py-2.5 hover:brightness-110 transition-all block text-center"
                   >
                     Jetzt upgraden
                   </Link>
                 </div>
-              )}
-
-            </div>
-
-            {/* ── Right: contact sidebar ── */}
-            <aside className="flex flex-col gap-4">
-
-              <div className="bg-surface-container-lowest border border-outline-variant/10 p-5 lg:p-6">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-3">Adresse</p>
-                <div className="flex items-start gap-3">
-                  <span className="material-symbols-outlined text-secondary text-xl flex-shrink-0">location_on</span>
-                  <div>
-                    <p className="font-bold text-primary text-sm">{toDisplayTown(business.town)}</p>
-                    <p className="text-on-surface-variant text-xs mt-0.5">{business.address}</p>
-                  </div>
-                </div>
-              </div>
-
-              {(business.phone || business.email || business.website) && (
-                <div className="bg-surface-container-lowest border border-outline-variant/10 p-5 lg:p-6 flex flex-col gap-3">
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1">Kontakt</p>
-                  {business.phone && (
-                    <a href={`tel:${business.phone}`} className="flex items-center gap-3 group">
-                      <span className="material-symbols-outlined text-secondary text-xl flex-shrink-0">call</span>
-                      <span className="text-sm font-bold text-primary group-hover:text-secondary transition-colors">{business.phone}</span>
-                    </a>
-                  )}
-                  {business.email && (
-                    <a href={`mailto:${business.email}`} className="flex items-center gap-3 group">
-                      <span className="material-symbols-outlined text-secondary text-xl flex-shrink-0">mail</span>
-                      <span className="text-sm text-on-surface-variant group-hover:text-primary transition-colors truncate">{business.email}</span>
-                    </a>
-                  )}
-                  {business.website && (
-                    <a href={`https://${business.website}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 group">
-                      <span className="material-symbols-outlined text-secondary text-xl flex-shrink-0">language</span>
-                      <span className="text-sm text-on-surface-variant group-hover:text-primary transition-colors truncate">{business.website}</span>
-                    </a>
-                  )}
-                </div>
-              )}
-
-              {openingHours.length > 0 && (
-                <div className="bg-surface-container-lowest border border-outline-variant/10 p-5 lg:p-6">
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-4">Öffnungszeiten</p>
-                  <div className="flex flex-col gap-2.5">
-                    {openingHours.map((row) => (
-                      <div key={row.day} className="flex justify-between items-start gap-4">
-                        <span className="text-xs font-bold text-primary flex-shrink-0">{row.day}</span>
-                        <span className="text-xs text-on-surface-variant text-right">{row.hours}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-            </aside>
-          </div>
-        )}
-
-        {tab === "aktuelles" && (
-          <div className="max-w-2xl">
-            {!posts || posts.length === 0 ? (
-              <div className="bg-surface-container-low p-12 text-center">
-                <span className="material-symbols-outlined text-4xl text-on-surface-variant/20 mb-3 block" style={{ fontVariationSettings: "'FILL' 1" }}>feed</span>
-                <p className="text-on-surface-variant text-sm">Noch keine Beiträge von diesem Unternehmen.</p>
-              </div>
-            ) : (
-              <div className="flex flex-col gap-0">
-                {posts.map((post) => (
-                  <div key={post.id} className="bg-surface-container-low p-6 flex flex-col gap-4">
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="text-[10px] font-bold uppercase tracking-widest text-secondary">
-                        {business.name}
-                      </span>
-                      <span className="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest flex-shrink-0">
-                        {formatRelativeTime(post.created_at)}
-                      </span>
-                    </div>
-                    {(() => {
-                      const imgs: string[] = post.images?.length ? post.images : post.image_url ? [post.image_url] : [];
-                      if (!imgs.length) return null;
-                      return (
-                        <div className={`grid gap-1 ${imgs.length === 1 ? "grid-cols-1" : imgs.length === 2 ? "grid-cols-2" : "grid-cols-3"}`}>
-                          {imgs.map((url: string) => (
-                            <img key={url} src={url} alt="" className="w-full object-cover aspect-video" />
-                          ))}
-                        </div>
-                      );
-                    })()}
-                    <p className="text-on-surface-variant text-sm sm:text-base leading-relaxed whitespace-pre-line">
-                      {post.content}
-                    </p>
-                  </div>
-                ))}
               </div>
             )}
-          </div>
-        )}
+          </aside>
+
+        </div>
 
       </div>
 
     </main>
+  );
+}
+
+function ContactSidebar({
+  business,
+  openingHours,
+  displayTown,
+}: {
+  business: { address?: string | null; phone?: string | null; email?: string | null; website?: string | null; town: string };
+  openingHours: { day: string; hours: string }[];
+  displayTown: string;
+}) {
+  return (
+    <>
+      <div className="bg-surface-container-lowest border border-outline-variant/10 p-5 lg:p-6">
+        <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-3">Adresse</p>
+        <div className="flex items-start gap-3">
+          <span className="material-symbols-outlined text-secondary text-xl flex-shrink-0">location_on</span>
+          <div>
+            <p className="font-bold text-primary text-sm">{displayTown}</p>
+            {business.address && <p className="text-on-surface-variant text-xs mt-0.5">{business.address}</p>}
+          </div>
+        </div>
+      </div>
+
+      {(business.phone || business.email || business.website) && (
+        <div className="bg-surface-container-lowest border border-outline-variant/10 p-5 lg:p-6 flex flex-col gap-3">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1">Kontakt</p>
+          {business.phone && (
+            <a href={`tel:${business.phone}`} className="flex items-center gap-3 group">
+              <span className="material-symbols-outlined text-secondary text-xl flex-shrink-0">call</span>
+              <span className="text-sm font-bold text-primary group-hover:text-secondary transition-colors">{business.phone}</span>
+            </a>
+          )}
+          {business.email && (
+            <a href={`mailto:${business.email}`} className="flex items-center gap-3 group">
+              <span className="material-symbols-outlined text-secondary text-xl flex-shrink-0">mail</span>
+              <span className="text-sm text-on-surface-variant group-hover:text-primary transition-colors truncate">{business.email}</span>
+            </a>
+          )}
+          {business.website && (
+            <a href={`https://${business.website}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 group">
+              <span className="material-symbols-outlined text-secondary text-xl flex-shrink-0">language</span>
+              <span className="text-sm text-on-surface-variant group-hover:text-primary transition-colors truncate">{business.website}</span>
+            </a>
+          )}
+        </div>
+      )}
+
+      {openingHours.length > 0 && (
+        <div className="bg-surface-container-lowest border border-outline-variant/10 p-5 lg:p-6">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-4">Öffnungszeiten</p>
+          <div className="flex flex-col gap-2.5">
+            {openingHours.map((row) => (
+              <div key={row.day} className="flex justify-between items-start gap-4">
+                <span className="text-xs font-bold text-primary flex-shrink-0">{row.day}</span>
+                <span className="text-xs text-on-surface-variant text-right">{row.hours}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+function UpsellCTA() {
+  return (
+    <div className="bg-surface-container-low border border-outline-variant/10 p-5 lg:p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+      <span className="material-symbols-outlined text-secondary text-2xl flex-shrink-0">send</span>
+      <div className="flex-1">
+        <p className="font-bold text-primary text-sm mb-0.5">Eintrag aktualisieren</p>
+        <p className="text-on-surface-variant text-xs">Als Premium Partner können Sie Öffnungszeiten, Fotos und Angebote direkt via Telegram einreichen.</p>
+      </div>
+      <Link
+        href="/gewerbe/einreichen"
+        className="signature-gradient text-on-secondary text-[10px] font-bold uppercase tracking-widest px-5 py-2.5 hover:brightness-110 transition-all flex-shrink-0 w-full sm:w-auto text-center"
+      >
+        Jetzt upgraden
+      </Link>
+    </div>
   );
 }
