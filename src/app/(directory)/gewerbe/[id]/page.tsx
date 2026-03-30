@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { GalleryLightbox } from "@/components/ui/GalleryLightbox";
+import { StickyBusinessHeader } from "@/components/ui/StickyBusinessHeader";
 import { supabase } from "@/lib/supabase";
 import { toDisplayTown } from "@/lib/towns";
 
@@ -189,45 +190,17 @@ export default async function BusinessDetailPage({
               {business.category}
             </span>
           </div>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-headline font-black tracking-tighter text-primary leading-tight">
+          <h1 id="business-title" className="text-3xl sm:text-4xl lg:text-5xl font-headline font-black tracking-tighter text-primary leading-tight">
             {business.name}
           </h1>
         </div>
 
-        {/* ── Sticky header: name + tabs ── */}
-        <div className="sticky top-20 z-20 -mx-4 sm:-mx-8 lg:-mx-12 px-4 sm:px-8 lg:px-12 bg-surface/95 backdrop-blur-[8px] pt-3 pb-4 mb-4 lg:mb-6 border-b border-outline-variant/10">
-          <p className="text-xs font-black text-primary tracking-tight mb-2 truncate">{business.name}</p>
-        <div className="grid grid-cols-2 gap-2">
-          <Link
-            href={`/gewerbe/${id}?tab=aktuelles`}
-            className={`flex items-center gap-3 px-4 py-3 transition-colors border-b-2 ${
-              tab === "aktuelles"
-                ? "bg-surface-container-lowest border-primary"
-                : "bg-surface-container-low border-transparent hover:bg-surface-container-lowest"
-            }`}
-          >
-            <span className={`material-symbols-outlined text-xl flex-shrink-0 ${tab === "aktuelles" ? "text-primary" : "text-on-surface-variant/50"}`} style={{ fontVariationSettings: "'FILL' 1" }}>campaign</span>
-            <div>
-              <p className={`text-[11px] font-black uppercase tracking-widest ${tab === "aktuelles" ? "text-primary" : "text-on-surface-variant"}`}>Aktuelles</p>
-              <p className="text-[10px] text-on-surface-variant/60 font-medium hidden sm:block">Angebote & Updates</p>
-            </div>
-          </Link>
-          <Link
-            href={`/gewerbe/${id}?tab=info`}
-            className={`flex items-center gap-3 px-4 py-3 transition-colors border-b-2 ${
-              tab === "info"
-                ? "bg-surface-container-lowest border-primary"
-                : "bg-surface-container-low border-transparent hover:bg-surface-container-lowest"
-            }`}
-          >
-            <span className={`material-symbols-outlined text-xl flex-shrink-0 ${tab === "info" ? "text-primary" : "text-on-surface-variant/50"}`} style={{ fontVariationSettings: "'FILL' 1" }}>store</span>
-            <div>
-              <p className={`text-[11px] font-black uppercase tracking-widest ${tab === "info" ? "text-primary" : "text-on-surface-variant"}`}>Info</p>
-              <p className="text-[10px] text-on-surface-variant/60 font-medium hidden sm:block">Kontakt & Öffnungszeiten</p>
-            </div>
-          </Link>
-        </div>
-        </div>
+        <StickyBusinessHeader
+          businessName={business.name}
+          slug={id}
+          activeTab={tab}
+          titleId="business-title"
+        />
 
         {tab === "info" && (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-16">
