@@ -67,28 +67,32 @@ export function SideNavBar() {
           );
         })}
 
-        <div className="h-[1px] bg-outline-variant/10 my-4 mx-8" />
+        {section === "/gewerbe" && (
+          <>
+            <div className="h-[1px] bg-outline-variant/10 my-4 mx-8" />
 
-        {categories.map((cat) => {
-          const isCatActive = activeCategory === cat.value;
-          const href = activeTown
-            ? `${section}?town=${activeTown}&category=${cat.value}`
-            : `${section}?category=${cat.value}`;
-          return (
-            <Link
-              key={cat.value}
-              href={href}
-              className={`flex items-center gap-4 py-3 px-8 transition-all font-headline uppercase tracking-[0.05em] text-[12px] font-bold ${
-                isCatActive
-                  ? "text-secondary border-l-4 border-secondary bg-surface-container-low/30"
-                  : "text-on-surface-variant opacity-70 hover:opacity-100 hover:bg-surface-container-low"
-              }`}
-            >
-              <span className="material-symbols-outlined text-xl">{cat.icon}</span>
-              <span>{cat.label}</span>
-            </Link>
-          );
-        })}
+            {categories.map((cat) => {
+              const isCatActive = activeCategory === cat.value;
+              const href = activeTown
+                ? `${section}?town=${activeTown}&category=${cat.value}`
+                : `${section}?category=${cat.value}`;
+              return (
+                <Link
+                  key={cat.value}
+                  href={href}
+                  className={`flex items-center gap-4 py-3 px-8 transition-all font-headline uppercase tracking-[0.05em] text-[12px] font-bold ${
+                    isCatActive
+                      ? "text-secondary border-l-4 border-secondary bg-surface-container-low/30"
+                      : "text-on-surface-variant opacity-70 hover:opacity-100 hover:bg-surface-container-low"
+                  }`}
+                >
+                  <span className="material-symbols-outlined text-xl">{cat.icon}</span>
+                  <span>{cat.label}</span>
+                </Link>
+              );
+            })}
+          </>
+        )}
       </nav>
 
       <div className="mt-auto px-8 pt-6">

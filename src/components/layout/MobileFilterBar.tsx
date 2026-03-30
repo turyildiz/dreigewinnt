@@ -88,26 +88,28 @@ export function MobileFilterBar() {
         })}
       </div>
 
-      {/* Category select row */}
-      <div className="px-4 pb-2.5">
-        <div className="relative">
-          <select
-            value={activeCategory ?? ""}
-            onChange={handleCategoryChange}
-            className="w-full bg-surface-container-low text-on-surface-variant text-[11px] font-bold uppercase tracking-wider px-3 py-2 appearance-none outline-none focus:ring-1 focus:ring-secondary/30 pr-8"
-          >
-            <option value="">Alle Kategorien</option>
-            {categories.map((cat) => (
-              <option key={cat.value} value={cat.value}>
-                {cat.label}
-              </option>
-            ))}
-          </select>
-          <span className="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-on-surface-variant text-base pointer-events-none">
-            expand_more
-          </span>
+      {/* Category select row — gewerbe only */}
+      {section === "/gewerbe" && (
+        <div className="px-4 pb-2.5">
+          <div className="relative">
+            <select
+              value={activeCategory ?? ""}
+              onChange={handleCategoryChange}
+              className="w-full bg-surface-container-low text-on-surface-variant text-[11px] font-bold uppercase tracking-wider px-3 py-2 appearance-none outline-none focus:ring-1 focus:ring-secondary/30 pr-8"
+            >
+              <option value="">Alle Kategorien</option>
+              {categories.map((cat) => (
+                <option key={cat.value} value={cat.value}>
+                  {cat.label}
+                </option>
+              ))}
+            </select>
+            <span className="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-on-surface-variant text-base pointer-events-none">
+              expand_more
+            </span>
+          </div>
         </div>
-      </div>
+      )}
 
     </div>
   );
