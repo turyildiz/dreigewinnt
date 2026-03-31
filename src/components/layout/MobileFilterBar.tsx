@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
+import { GewerbeSearch } from "@/components/ui/GewerbeSearch";
 
 const towns = [
   { label: "Raunheim", value: "raunheim" },
@@ -99,9 +100,9 @@ export function MobileFilterBar() {
         })}
       </div>
 
-      {/* Category select row — gewerbe only */}
+      {/* Category select + search — gewerbe only */}
       {section === "/gewerbe" && (
-        <div className="px-4 pb-2.5">
+        <div className="px-4 pb-2.5 flex flex-col gap-2">
           <div className="relative">
             <select
               value={activeCategory ?? ""}
@@ -119,6 +120,7 @@ export function MobileFilterBar() {
               expand_more
             </span>
           </div>
+          <GewerbeSearch />
         </div>
       )}
 

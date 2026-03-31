@@ -1,7 +1,5 @@
 import Link from "next/link";
-import { Suspense } from "react";
 import { BusinessSubmitModal } from "@/components/ui/BusinessSubmitModal";
-import { GewerbeSearch } from "@/components/ui/GewerbeSearch";
 import { TownTag } from "@/components/ui/TownTag";
 import { supabase } from "@/lib/supabase";
 import { toDisplayTown } from "@/lib/towns";
@@ -72,14 +70,11 @@ export default async function GewerbePage({
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-headline font-black tracking-tighter text-primary leading-none mb-4">
           Gewerbeverzeichnis
         </h1>
-        <p className="text-on-surface-variant text-base sm:text-lg lg:text-xl max-w-2xl leading-relaxed mb-6">
+        <p className="text-on-surface-variant text-base sm:text-lg lg:text-xl max-w-2xl leading-relaxed">
           {townLabel
             ? `Unternehmen in ${townLabel} — kuratierte Qualität aus Ihrer Nachbarschaft.`
             : "Entdecken Sie die wirtschaftliche Vielfalt der Region Groß-Gerau. Kuratierte Qualität aus Ihrer Nachbarschaft."}
         </p>
-        <Suspense>
-          <GewerbeSearch />
-        </Suspense>
       </header>
 
       {/* ── Premium Partner ── */}

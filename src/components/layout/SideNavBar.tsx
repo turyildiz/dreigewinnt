@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
+import { GewerbeSearch } from "@/components/ui/GewerbeSearch";
 
 const towns = [
   { label: "Raunheim", value: "raunheim", icon: "location_city" },
@@ -69,7 +70,10 @@ export function SideNavBar() {
 
         {section === "/gewerbe" && (
           <>
-            <div className="h-[1px] bg-outline-variant/10 my-4 mx-8" />
+            <div className="px-6 mt-4 mb-2">
+              <GewerbeSearch />
+            </div>
+            <div className="h-[1px] bg-outline-variant/10 my-2 mx-8" />
 
             {categories.map((cat) => {
               const isCatActive = activeCategory === cat.value;
