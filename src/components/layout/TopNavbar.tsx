@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 
 const quickLinks = [
   { label: "Raunheim", href: "/gewerbe?town=raunheim", icon: "location_city" },
@@ -15,11 +16,18 @@ const quickLinks = [
 
 export function TopNavbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
+
+  function handleSearch() {
+    if (!query.trim()) return;
+    setIsSearchOpen(false);
+    router.push(`/suche?q=${encodeURIComponent(query.trim())}`);
+  }
 
   // Autofocus input when search opens
   useEffect(() => {
@@ -188,21 +196,31 @@ export function TopNavbar() {
           <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 py-6 lg:py-8">
 
             {/* Search input */}
-            <div className="flex items-center gap-3 bg-surface-container-low px-4 sm:px-6 py-4 mb-6">
-              <span className="material-symbols-outlined text-outline text-xl flex-shrink-0">search</span>
-              <input
-                ref={inputRef}
-                type="text"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Gewerbe, Events oder Nachrichten suchen…"
-                className="flex-1 bg-transparent border-none outline-none text-primary font-bold text-sm sm:text-base placeholder:text-outline/50 placeholder:font-normal"
-              />
-              {query && (
-                <button onClick={() => setQuery("")} className="material-symbols-outlined text-outline hover:text-primary transition-colors text-xl">
-                  close
-                </button>
-              )}
+            <div className="flex items-center gap-3 mb-6">
+              <div className="flex-1 flex items-center gap-3 bg-surface-container-low px-4 sm:px-6 py-4">
+                <span className="material-symbols-outlined text-outline text-xl flex-shrink-0">search</span>
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+                  placeholder="Gewerbe, Events oder Nachrichten suchen…"
+                  className="flex-1 bg-transparent border-none outline-none text-primary font-bold text-sm sm:text-base placeholder:text-outline/50 placeholder:font-normal"
+                />
+                {query && (
+                  <button onClick={() => setQuery("")} className="material-symbols-outlined text-outline hover:text-primary transition-colors text-xl">
+                    close
+                  </button>
+                )}
+              </div>
+              <button
+                onClick={handleSearch}
+                disabled={!query.trim()}
+                className="hidden sm:block signature-gradient text-on-secondary px-6 py-4 font-black uppercase text-xs tracking-widest hover:brightness-110 transition-all disabled:opacity-40"
+              >
+                Suchen
+              </button>
             </div>
 
             {/* Quick links */}

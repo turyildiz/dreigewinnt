@@ -10,8 +10,10 @@ const towns = [
 ];
 
 const categories = [
-  "Gastronomie", "Handwerk", "Einzelhandel", "Gesundheit & Beauty",
-  "Dienstleistungen", "Sport & Freizeit", "Kultur & Bildung", "Sonstiges",
+  "Gastronomie", "Handwerk", "Einzelhandel", "Gesundheit",
+  "Dienstleistung", "Auto & Mobilität", "IT & Digital", "Fitness",
+  "Sport & Freizeit", "Transport & Logistik", "Finanzen",
+  "Hotel & Gastgewerbe", "Kultur", "Sonstiges",
 ];
 
 const tiers = [

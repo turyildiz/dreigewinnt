@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { supabaseAdmin } from "@/lib/supabase-admin";
+import { AdminSearch } from "@/components/admin/AdminSearch";
 
 const townLabels: Record<string, string> = {
   raunheim: "Raunheim",
@@ -14,11 +15,21 @@ const statusColors: Record<string, string> = {
   rejected: "bg-error/10 text-error",
 };
 
-export default async function AdminEventsPage() {
-  const { data: events } = await supabaseAdmin
+export default async function AdminEventsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string }>;
+}) {
+  const { q } = await searchParams;
+
+  let query = supabaseAdmin
     .from("events")
     .select("id, slug, title, town, date_start, status, is_featured")
     .order("date_start", { ascending: false });
+
+  if (q) query = query.ilike("title", `%${q}%`);
+
+  const { data: events } = await query;
 
   return (
     <div className="p-5 sm:p-8 lg:p-12">
@@ -26,12 +37,14 @@ export default async function AdminEventsPage() {
         <div>
           <p className="text-[10px] font-bold uppercase tracking-widest text-secondary mb-1">Verwaltung</p>
           <h1 className="text-3xl font-headline font-black tracking-tighter text-primary">Veranstaltungen</h1>
-          <p className="text-on-surface-variant text-sm mt-1">{events?.length ?? 0} Einträge</p>
+          <p className="text-on-surface-variant text-sm mt-1">{events?.length ?? 0} Einträge{q ? ` für „${q}"` : ""}</p>
         </div>
         <Link href="/admin/events/new" className="signature-gradient text-on-secondary px-5 py-2.5 font-bold uppercase text-xs tracking-widest hover:brightness-110 transition-all flex items-center gap-2">
           <span className="material-symbols-outlined text-sm">add</span>Neu
         </Link>
       </div>
+
+      <AdminSearch placeholder="Veranstaltung suchen…" />
 
       <div className="bg-surface-container-lowest">
         {events?.length === 0 && (

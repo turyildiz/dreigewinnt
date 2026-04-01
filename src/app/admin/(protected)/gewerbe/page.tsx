@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { supabaseAdmin } from "@/lib/supabase-admin";
+import { AdminSearch } from "@/components/admin/AdminSearch";
 
 export default async function AdminGewerbePage({
   searchParams,
@@ -68,25 +69,7 @@ export default async function AdminGewerbePage({
         </Link>
       </div>
 
-      {/* Search */}
-      <form method="GET" className="mb-4">
-        <div className="flex items-center gap-2 bg-surface-container-lowest px-4 py-3">
-          <span className="material-symbols-outlined text-outline text-xl flex-shrink-0">search</span>
-          <input
-            name="q"
-            type="text"
-            defaultValue={q ?? ""}
-            placeholder="Unternehmen suchen…"
-            autoComplete="off"
-            className="flex-1 bg-transparent text-sm text-primary placeholder:text-outline/50 outline-none font-medium"
-          />
-          {q && (
-            <Link href="/admin/gewerbe" className="material-symbols-outlined text-outline hover:text-primary transition-colors text-xl">
-              close
-            </Link>
-          )}
-        </div>
-      </form>
+      <AdminSearch placeholder="Unternehmen suchen…" />
 
       {/* Table */}
       <div className="flex flex-col gap-0">
