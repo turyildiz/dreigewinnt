@@ -3,6 +3,7 @@ import { TownTag } from "@/components/ui/TownTag";
 import { Footer } from "@/components/layout/Footer";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { supabase } from "@/lib/supabase";
+import { ScrollableRow } from "@/components/ui/ScrollableRow";
 
 export const dynamic = "force-dynamic";
 
@@ -123,7 +124,7 @@ export default async function Home() {
               <h2 className="text-4xl md:text-5xl font-headline font-black text-primary tracking-tighter">Aktuelles aus der Region</h2>
             </div>
           </div>
-          <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-none -mx-6 md:-mx-12 px-6 md:px-12">
+          <ScrollableRow>
             {posts.map((post) => {
               const biz = Array.isArray(post.businesses) ? post.businesses[0] : post.businesses;
               if (!biz) return null;
@@ -161,7 +162,7 @@ export default async function Home() {
                 </div>
               );
             })}
-          </div>
+          </ScrollableRow>
         </section>
       )}
 
@@ -369,7 +370,7 @@ export default async function Home() {
             </div>
             <Link href="/news" className="text-[10px] md:text-sm font-bold uppercase tracking-widest border-b-2 border-secondary pb-1 hover:text-secondary transition-colors">Alle Artikel lesen</Link>
           </div>
-          <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-none -mx-6 md:-mx-12 px-6 md:px-12">
+          <ScrollableRow>
             {articles.map((article) => {
               const town = article.towns?.[0];
               const displayTown = town ? (townLabels[town] ?? town) : null;
@@ -405,7 +406,7 @@ export default async function Home() {
                 </Link>
               );
             })}
-          </div>
+          </ScrollableRow>
         </section>
       )}
 

@@ -35,6 +35,9 @@ interface JobFormProps {
 
 export function JobForm({ action, deleteAction, defaultValues }: JobFormProps) {
   const [showDelete, setShowDelete] = useState(false);
+  const [isFeatured, setIsFeatured] = useState<boolean>(
+    (defaultValues?.is_featured as boolean) ?? false
+  );
 
   return (
     <div className="flex flex-col gap-px">
@@ -92,20 +95,7 @@ export function JobForm({ action, deleteAction, defaultValues }: JobFormProps) {
             </Field>
           </div>
           <Field label="Website / Bewerbungslink">
-            <input name="website_url" type="url" defaultValue={defaultValues?.website_url as string ?? ""} className={inputClass} placeholder="https://…" />
-          </Field>
-        </Section>
-
-        {/* Header-Bild */}
-        <Section label="Header-Bild">
-          {(defaultValues?.image_url as string | undefined) && (
-            <div className="mb-3">
-              <img src={defaultValues!.image_url as string} alt="Vorschau" className="h-32 object-cover w-full" />
-              <input type="hidden" name="image_url" value={defaultValues!.image_url as string} />
-            </div>
-          )}
-          <Field label="Bild hochladen">
-            <input name="image_file" type="file" accept="image/*" className={inputClass} />
+            <input name="website_url" type="text" defaultValue={defaultValues?.website_url as string ?? ""} className={inputClass} placeholder="https://…" />
           </Field>
         </Section>
 
@@ -118,19 +108,39 @@ export function JobForm({ action, deleteAction, defaultValues }: JobFormProps) {
               id="is_featured"
               defaultChecked={defaultValues?.is_featured as boolean ?? false}
               className="w-4 h-4 accent-secondary"
+              onChange={(e) => setIsFeatured(e.target.checked)}
             />
             <label htmlFor="is_featured" className="text-sm font-bold text-primary cursor-pointer">
               Stelle boosten (erscheint ganz oben)
             </label>
           </div>
-          <Field label="Boost aktiv bis">
-            <input
-              name="featured_until"
-              type="date"
-              defaultValue={defaultValues?.featured_until ? (defaultValues.featured_until as string).slice(0, 10) : ""}
-              className={`${inputClass} max-w-xs`}
-            />
-          </Field>
+
+          {isFeatured && (
+            <>
+              <Field label="Boost aktiv bis">
+                <input
+                  name="featured_until"
+                  type="date"
+                  defaultValue={defaultValues?.featured_until ? (defaultValues.featured_until as string).slice(0, 10) : ""}
+                  className={`${inputClass} max-w-xs`}
+                />
+              </Field>
+
+              {/* Header image — only for boosted listings */}
+              <div className="border border-secondary/20 bg-secondary/5 p-4 flex flex-col gap-4">
+                <p className="text-[10px] font-black uppercase tracking-widest text-secondary">Header-Bild</p>
+                {(defaultValues?.image_url as string | undefined) && (
+                  <div>
+                    <img src={defaultValues!.image_url as string} alt="Vorschau" className="h-32 object-cover w-full mb-2" />
+                    <input type="hidden" name="image_url" value={defaultValues!.image_url as string} />
+                  </div>
+                )}
+                <Field label="Bild hochladen">
+                  <input name="image_file" type="file" accept="image/*" className={inputClass} />
+                </Field>
+              </div>
+            </>
+          )}
         </Section>
 
         {/* Einstellungen */}

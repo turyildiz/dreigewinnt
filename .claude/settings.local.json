@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add:*)",
+      "Bash(npm run:*)",
+      "mcp__plugin_supabase_supabase__list_projects",
+      "Bash(find C:UsersturgaAppDataRoamingCode -name *.json)",
+      "Bash(xargs grep:*)",
+      "Bash(find C:Usersturga -name *.json -path */claude-code*)",
+      "Bash(find C:Usersturga -name mcp*.json)",
+      "mcp__plugin_supabase_supabase__list_organizations",
+      "Read(//c/Users/turga/AppData/Roaming/Code/User/globalStorage/**)",
+      "Read(//c/Users/turga/.claude/**)",
+      "Read(//c/Users/turga/AppData/Roaming/Claude/**)",
+      "Read(//c/Users/turga/.config/**)",
+      "mcp__supabase__list_projects",
+      "mcp__supabase__list_organizations",
+      "mcp__supabase__get_cost",
+      "mcp__supabase__create_project",
+      "mcp__supabase__confirm_cost",
+      "mcp__supabase__apply_migration",
+      "mcp__supabase__get_project_url",
+      "mcp__supabase__get_publishable_keys",
+      "Bash(mv layout.tsx \"\\(protected\\)/\")",
+      "Bash(mv account:*)",
+      "Bash(mv actions.ts \"\\(protected\\)/\")",
+      "Bash(mv articles:*)",
+      "Bash(mv dashboard:*)",
+      "Bash(cp -r articles \"\\(protected\\)/\")",
+      "Bash(cp -r dashboard \"\\(protected\\)/\")",
+      "Bash(cp -r events \"\\(protected\\)/\")",
+      "Bash(cp -r gewerbe \"\\(protected\\)/\")",
+      "Bash(cp -r jobs \"\\(protected\\)/\")",
+      "Bash(ls \"c:/Projects/drei-gewinnt/src/app/admin/\\(protected\\)/\")",
+      "Bash(find \"c:/Projects/drei-gewinnt/src/app/admin/\\(protected\\)\" -name \"page.tsx\")",
+      "Bash(ls \"src/app/admin/\\(protected\\)/gewerbe/\")",
+      "mcp__supabase__list_tables",
+      "mcp__supabase__execute_sql",
+      "mcp__plugin_playwright_playwright__browser_navigate"
+    ]
+  }
+}

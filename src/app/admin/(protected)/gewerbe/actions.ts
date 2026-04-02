@@ -44,6 +44,7 @@ export async function createBusinessAction(formData: FormData) {
     email: (formData.get("email") as string) || null,
     website: (formData.get("website") as string) || null,
     hero_image_url: heroUrl,
+    opening_hours: formData.get("opening_hours") ? JSON.parse(formData.get("opening_hours") as string) : null,
   });
   if (error) throw new Error(error.message);
 
@@ -77,6 +78,7 @@ export async function updateBusinessAction(id: string, formData: FormData) {
       email: (formData.get("email") as string) || null,
       website: (formData.get("website") as string) || null,
       hero_image_url: heroUrl,
+      opening_hours: formData.get("opening_hours") ? JSON.parse(formData.get("opening_hours") as string) : null,
     })
     .eq("id", id);
   if (error) throw new Error(error.message);

@@ -43,6 +43,7 @@ type DefaultValues = {
   email?: string | null;
   website?: string | null;
   hero_image_url?: string | null;
+  opening_hours?: { day: string; hours: string }[] | null;
 };
 
 interface BusinessFormProps {
@@ -141,6 +142,13 @@ export function BusinessForm({ action, deleteAction, defaultValues }: BusinessFo
           </Field>
         </Section>
 
+        {/* Details */}
+        <Section label="Details">
+          <Field label="Öffnungszeiten">
+            <OpeningHoursEditor initialData={defaultValues?.opening_hours ?? null} />
+          </Field>
+        </Section>
+
         {/* Actions */}
         <div className="bg-surface-container-lowest px-8 py-5 flex items-center gap-3 border-t border-outline-variant/10">
           <button type="submit" className="signature-gradient text-on-secondary px-6 py-2.5 font-black uppercase text-xs tracking-widest hover:brightness-110 transition-all">
@@ -206,7 +214,6 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
     </div>
   );
 }
-
 function HeroImageField({ currentUrl }: { currentUrl: string | null }) {
   const [preview, setPreview] = useState<string | null>(currentUrl);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -259,6 +266,79 @@ function HeroImageField({ currentUrl }: { currentUrl: string | null }) {
           <span className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant/50">Bild hochladen</span>
         </button>
       )}
+    </div>
+  );
+}
+
+function OpeningHoursEditor({ initialData }: { initialData: { day: string; hours: string }[] | null }) {
+  const [rows, setRows] = useState<{ day: string; hours: string }[]>(
+    initialData && initialData.length > 0 ? initialData : [{ day: "", hours: "" }]
+  );
+
+  const addRow = () => setRows([...rows, { day: "", hours: "" }]);
+  const removeRow = (index: number) => setRows(rows.filter((_, i) => i !== index));
+  const updateRow = (index: number, field: "day" | "hours", value: string) => {
+    const newRows = [...rows];
+    newRows[index] = { ...newRows[index], [field]: value };
+    setRows(newRows);
+  };
+
+  const applyPreset = () => {
+    setRows([
+      { day: "Mo - Fr", hours: "09:00 - 18:00" },
+      { day: "Samstag", hours: "10:00 - 14:00" },
+      { day: "Sonntag", hours: "Geschlossen" },
+    ]);
+  };
+
+  return (
+    <div className="flex flex-col gap-3">
+      <input type="hidden" name="opening_hours" value={JSON.stringify(rows)} />
+      {rows.map((row, index) => (
+        <div key={index} className="flex gap-2 items-start">
+          <div className="flex-1">
+            <input
+              className={inputClass}
+              value={row.day}
+              onChange={(e) => updateRow(index, "day", e.target.value)}
+              placeholder="Tag (z.B. Mo - Fr)"
+            />
+          </div>
+          <div className="flex-[2]">
+            <input
+              className={inputClass}
+              value={row.hours}
+              onChange={(e) => updateRow(index, "hours", e.target.value)}
+              placeholder="Uhrzeit (z.B. 08:00 - 18:00)"
+            />
+          </div>
+          <button
+            type="button"
+            onClick={() => removeRow(index)}
+            className="p-2.5 text-on-surface-variant/40 hover:text-error transition-colors"
+          >
+            <span className="material-symbols-outlined text-xl">delete</span>
+          </button>
+        </div>
+      ))}
+      <div className="flex items-center gap-4 mt-1">
+        <button
+          type="button"
+          onClick={addRow}
+          className="text-[10px] font-bold uppercase tracking-widest text-secondary hover:text-primary flex items-center gap-1 transition-colors"
+        >
+          <span className="material-symbols-outlined text-sm">add</span>
+          Zeile hinzufügen
+        </button>
+        <button
+          type="button"
+          onClick={applyPreset}
+          className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant/60 hover:text-secondary flex items-center gap-1 transition-colors"
+        >
+          <span className="material-symbols-outlined text-sm">auto_fix_high</span>
+          Preset laden
+        </button>
+      </div>
     </div>
   );
 }

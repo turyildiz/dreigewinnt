@@ -26,6 +26,7 @@ const categories = [
   { label: "Finanzen", value: "finanzen" },
   { label: "Hotel & Gastgewerbe", value: "hotel" },
   { label: "Kultur", value: "kultur" },
+  { label: "Sonstiges", value: "sonstiges" },
 ];
 
 const townActiveClass = {

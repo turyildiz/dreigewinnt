@@ -21,6 +21,7 @@ const categories = [
   { label: "Dienstleistung", value: "dienstleistung", icon: "business_center" },
   { label: "Finanzen", value: "finanzen", icon: "payments" },
   { label: "Kultur", value: "kultur", icon: "theater_comedy" },
+  { label: "Sonstiges", value: "sonstiges", icon: "more_horiz" },
 ];
 
 function getSection(pathname: string) {

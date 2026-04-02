@@ -5,6 +5,7 @@ import { HeroSlideshow } from "@/components/ui/HeroSlideshow";
 import { StickyBusinessHeader } from "@/components/ui/StickyBusinessHeader";
 import { supabase } from "@/lib/supabase";
 import { toDisplayTown } from "@/lib/towns";
+import { ensureHttp } from "@/lib/utils";
 
 export async function generateMetadata({
   params,
@@ -123,7 +124,7 @@ export default async function BusinessDetailPage({
       : undefined,
     telephone: business.phone ?? undefined,
     email: business.email ?? undefined,
-    url: business.website ? `https://${business.website}` : undefined,
+    url: business.website ? ensureHttp(business.website) : undefined,
     openingHoursSpecification: (business.opening_hours as { day: string; hours: string }[] | null)?.map((row) => ({
       "@type": "OpeningHoursSpecification",
       dayOfWeek: row.day,
@@ -415,7 +416,7 @@ function ContactSidebar({
             </a>
           )}
           {business.website && (
-            <a href={`https://${business.website}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 group">
+            <a href={ensureHttp(business.website)} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 group">
               <span className="material-symbols-outlined text-secondary text-xl flex-shrink-0">language</span>
               <span className="text-sm text-on-surface-variant group-hover:text-primary transition-colors truncate">{business.website}</span>
             </a>
@@ -424,13 +425,20 @@ function ContactSidebar({
       )}
 
       {openingHours.length > 0 && (
-        <div className="bg-surface-container-lowest border border-outline-variant/10 p-5 lg:p-6">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-4">Öffnungszeiten</p>
-          <div className="flex flex-col gap-2.5">
-            {openingHours.map((row) => (
-              <div key={row.day} className="flex justify-between items-start gap-4">
-                <span className="text-xs font-bold text-primary flex-shrink-0">{row.day}</span>
-                <span className="text-xs text-on-surface-variant text-right">{row.hours}</span>
+        <div className="bg-surface-container-lowest border border-outline-variant/10 p-5 lg:p-6 rounded-2xl shadow-sm">
+          <div className="flex items-center gap-2 mb-4">
+            <span className="material-symbols-outlined text-secondary text-base">schedule</span>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Öffnungszeiten</p>
+          </div>
+          <div className="flex flex-col gap-3">
+            {openingHours.map((row, idx) => (
+              <div key={idx} className="flex justify-between items-start gap-4 pb-2 last:pb-0 border-b border-outline-variant/5 last:border-0">
+                {row.day && (
+                  <span className="text-[11px] font-black uppercase tracking-tight text-primary flex-shrink-0 w-20">{row.day}</span>
+                )}
+                <span className={`text-[11px] leading-relaxed text-on-surface-variant/80 ${!row.day ? "text-left w-full" : "text-right flex-1 font-medium"}`}>
+                  {row.hours}
+                </span>
               </div>
             ))}
           </div>

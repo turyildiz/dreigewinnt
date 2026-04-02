@@ -21,6 +21,7 @@ function categoryIcon(category: string): string {
   if (c.includes("bildung") || c.includes("schule") || c.includes("kita") || c.includes("kinder")) return "school";
   if (c.includes("kultur") || c.includes("kunst") || c.includes("musik")) return "theater_comedy";
   if (c.includes("dienstleistung")) return "business_center";
+  if (c.includes("sonstiges")) return "more_horiz";
   return "storefront";
 }
 
@@ -185,11 +186,11 @@ export default async function GewerbePage({
         )}
 
         <div className="flex flex-col gap-2 lg:gap-3">
-          {others?.map((business) => (
+          {others?.map((business, index) => (
             <Link
               key={business.slug}
               href={`/gewerbe/${business.slug}`}
-              className="group bg-surface-container-low hover:bg-surface-container-lowest p-4 sm:p-5 lg:p-6 flex items-center gap-4 sm:gap-6 lg:gap-8 transition-colors"
+              className={`group ${index % 2 === 0 ? "bg-surface-container-low" : "bg-white"} hover:bg-surface-bright p-4 sm:p-5 lg:p-6 flex items-center gap-4 sm:gap-6 lg:gap-8 transition-colors`}
             >
               <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-surface-container-highest flex-shrink-0 flex items-center justify-center overflow-hidden">
                 {business.hero_image_url && business.tier !== "free" ? (
