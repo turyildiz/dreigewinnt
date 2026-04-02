@@ -46,30 +46,48 @@ export default async function AdminEventsPage({
 
       <AdminSearch placeholder="Veranstaltung suchen…" />
 
-      <div className="bg-surface-container-lowest">
+      <div className="flex flex-col gap-0.5">
         {events?.length === 0 && (
-          <p className="text-on-surface-variant text-sm p-8 text-center">Noch keine Veranstaltungen eingetragen.</p>
+          <div className="bg-surface-container-lowest p-12 text-center rounded-2xl border-2 border-dashed border-outline-variant/10">
+            <span className="material-symbols-outlined text-4xl text-on-surface-variant/20 mb-3 block">search_off</span>
+            <p className="text-on-surface-variant text-sm font-medium">
+              {q ? `Keine Ergebnisse für „${q}“` : "Noch keine Veranstaltungen eingetragen."}
+            </p>
+          </div>
         )}
         {events?.map((e) => (
-          <div key={e.id} className="flex items-center gap-3 px-4 sm:px-6 py-3 sm:py-4 border-b border-outline-variant/10 last:border-b-0 hover:bg-surface-container-low transition-colors">
+          <div key={e.id} className="flex items-center gap-4 px-4 sm:px-6 py-4 border border-outline-variant/5 hover:border-outline-variant/20 hover:shadow-sm transition-all bg-surface-container-lowest rounded-xl mb-1 group">
             <div className="flex-1 min-w-0">
-              <p className="font-bold text-primary text-sm truncate">
-                {e.title}
-                {e.is_featured && <span className="ml-2 text-[9px] font-bold uppercase tracking-widest bg-tertiary/10 text-tertiary px-1.5 py-0.5">Featured</span>}
-              </p>
-              <div className="flex items-center gap-2 mt-0.5 flex-wrap">
-                <p className="text-[10px] text-on-surface-variant uppercase tracking-wider">
-                  {townLabels[e.town] ?? e.town} · {new Date(e.date_start).toLocaleDateString("de-DE")}
+              <div className="flex items-center gap-3 mb-1">
+                <p className="font-black text-primary text-sm tracking-tight group-hover:text-secondary transition-colors truncate">{e.title}</p>
+                {e.is_featured && (
+                  <span className="text-[9px] font-black uppercase tracking-wider text-tertiary bg-tertiary/10 px-2 py-0.5 rounded-md flex-shrink-0">
+                    Featured
+                  </span>
+                )}
+              </div>
+              <div className="flex items-center gap-2 flex-wrap">
+                <p className="text-[10px] text-on-surface-variant/60 font-bold uppercase tracking-widest">{townLabels[e.town] ?? e.town}</p>
+                <span className="w-1 h-1 rounded-full bg-outline-variant/30" />
+                <p className="text-[10px] text-on-surface-variant/60 font-bold uppercase tracking-widest">
+                  {new Date(e.date_start).toLocaleDateString("de-DE")}
                 </p>
-                <span className={`sm:hidden text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 ${statusColors[e.status] ?? "bg-outline/10 text-on-surface-variant"}`}>
+              </div>
+            </div>
+            
+            <div className="flex items-center gap-6">
+              <div className="hidden sm:flex flex-col items-end">
+                <span className={`text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-lg ${statusColors[e.status] ?? "bg-outline/10 text-on-surface-variant"}`}>
                   {e.status}
                 </span>
               </div>
+              <Link
+                href={`/admin/events/${e.id}/edit`}
+                className="w-10 h-10 flex items-center justify-center rounded-xl bg-surface-container hover:bg-secondary hover:text-on-secondary transition-all"
+              >
+                <span className="material-symbols-outlined text-xl text-on-surface-variant group-hover:text-inherit">edit</span>
+              </Link>
             </div>
-            <span className={`hidden sm:inline text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 ${statusColors[e.status] ?? "bg-outline/10 text-on-surface-variant"}`}>
-              {e.status}
-            </span>
-            <Link href={`/admin/events/${e.id}/edit`} className="material-symbols-outlined text-xl text-on-surface-variant hover:text-primary transition-colors flex-shrink-0">edit</Link>
           </div>
         ))}
       </div>

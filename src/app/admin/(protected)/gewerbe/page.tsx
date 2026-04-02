@@ -72,11 +72,12 @@ export default async function AdminGewerbePage({
       <AdminSearch placeholder="Unternehmen suchen…" />
 
       {/* Table */}
-      <div className="flex flex-col gap-0">
+      <div className="flex flex-col gap-0.5">
         {businesses?.length === 0 && (
-          <div className="bg-surface-container-lowest p-8 text-center">
-            <p className="text-on-surface-variant text-sm">
-              {q ? `No results for "${q}".` : "No businesses yet."}
+          <div className="bg-surface-container-lowest p-12 text-center rounded-2xl border-2 border-dashed border-outline-variant/10">
+            <span className="material-symbols-outlined text-4xl text-on-surface-variant/20 mb-3 block">search_off</span>
+            <p className="text-on-surface-variant text-sm font-medium">
+              {q ? `Keine Ergebnisse für „${q}“` : "Noch keine Einträge vorhanden."}
             </p>
           </div>
         )}
@@ -89,37 +90,53 @@ export default async function AdminGewerbePage({
           return (
             <div key={b.id}>
               {(isSpotlightHeader || isPremiumHeader || isRestHeader) && (
-                <div className={`flex items-center gap-3 px-4 sm:px-6 py-2 mt-2 first:mt-0 ${isSpotlightHeader ? "bg-tertiary/5" : "bg-surface-container-low"}`}>
-                  {isSpotlightHeader && <span className="material-symbols-outlined text-tertiary text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>}
-                  <p className={`text-[10px] font-black uppercase tracking-widest ${isSpotlightHeader ? "text-tertiary" : "text-on-surface-variant/50"}`}>
-                    {isSpotlightHeader ? "Top Partner (Spotlight)" : isPremiumHeader ? "Premium" : "Basis & Standard"}
+                <div className={`px-4 py-2 mt-4 mb-2 first:mt-0`}>
+                  <p className={`text-[10px] font-black uppercase tracking-[0.15em] opacity-40 flex items-center gap-2`}>
+                    {isSpotlightHeader ? (
+                      <>
+                        <span className="material-symbols-outlined text-xs text-tertiary" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                        Top Partner (Spotlight)
+                      </>
+                    ) : isPremiumHeader ? "Premium Partner" : "Standard & Basis"}
                   </p>
                 </div>
               )}
-              <div className="flex items-center gap-3 px-4 sm:px-6 py-3 sm:py-4 border-b border-outline-variant/10 last:border-b-0 hover:bg-surface-container-low transition-colors bg-surface-container-lowest">
+              <div className="flex items-center gap-4 px-4 sm:px-6 py-4 border border-outline-variant/5 hover:border-outline-variant/20 hover:shadow-sm transition-all bg-surface-container-lowest rounded-xl mb-1 group">
                 <div className="flex-1 min-w-0">
-                  <p className="font-bold text-primary text-sm truncate">{b.name}</p>
-                  <div className="flex items-center gap-2 mt-0.5 flex-wrap">
-                    <p className="text-[10px] text-on-surface-variant uppercase tracking-wider">
-                      {b.category} · {townLabels[b.town] ?? b.town}
+                  <div className="flex items-center gap-3 mb-1">
+                    <p className="font-black text-primary text-sm tracking-tight group-hover:text-secondary transition-colors">{b.name}</p>
+                    <span className={`text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md ${
+                      b.tier === "premium" ? "bg-tertiary/10 text-tertiary" : 
+                      b.tier === "standard" ? "bg-primary/10 text-primary" : 
+                      "bg-outline-variant/20 text-on-surface-variant/60"
+                    }`}>
+                      {tierLabels[b.tier] ?? b.tier}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <p className="text-[10px] text-on-surface-variant/60 font-bold uppercase tracking-widest">
+                      {b.category}
                     </p>
-                    <span className={`sm:hidden text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 ${statusColors[b.status] ?? "bg-outline/10 text-on-surface-variant"}`}>
+                    <span className="w-1 h-1 rounded-full bg-outline-variant/30" />
+                    <p className="text-[10px] text-on-surface-variant/60 font-bold uppercase tracking-widest">
+                      {townLabels[b.town] ?? b.town}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-6">
+                  <div className="hidden sm:flex flex-col items-end">
+                    <span className={`text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-lg ${statusColors[b.status] ?? "bg-outline/10 text-on-surface-variant"}`}>
                       {b.status}
                     </span>
                   </div>
+                  <Link
+                    href={`/admin/gewerbe/${b.id}/edit`}
+                    className="w-10 h-10 flex items-center justify-center rounded-xl bg-surface-container hover:bg-secondary hover:text-on-secondary transition-all"
+                  >
+                    <span className="material-symbols-outlined text-xl">edit</span>
+                  </Link>
                 </div>
-                <span className="hidden sm:inline text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">
-                  {tierLabels[b.tier] ?? b.tier}
-                </span>
-                <span className={`hidden sm:inline text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 ${statusColors[b.status] ?? "bg-outline/10 text-on-surface-variant"}`}>
-                  {b.status}
-                </span>
-                <Link
-                  href={`/admin/gewerbe/${b.id}/edit`}
-                  className="material-symbols-outlined text-xl text-on-surface-variant hover:text-primary transition-colors flex-shrink-0"
-                >
-                  edit
-                </Link>
               </div>
             </div>
           );

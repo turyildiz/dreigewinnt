@@ -299,7 +299,7 @@ function OpeningHoursEditor({ initialData }: { initialData: { day: string; hours
           <div className="flex-1">
             <input
               className={inputClass}
-              value={row.day}
+              value={row.day || ""}
               onChange={(e) => updateRow(index, "day", e.target.value)}
               placeholder="Tag (z.B. Mo - Fr)"
             />
@@ -307,7 +307,7 @@ function OpeningHoursEditor({ initialData }: { initialData: { day: string; hours
           <div className="flex-[2]">
             <input
               className={inputClass}
-              value={row.hours}
+              value={row.hours || ""}
               onChange={(e) => updateRow(index, "hours", e.target.value)}
               placeholder="Uhrzeit (z.B. 08:00 - 18:00)"
             />

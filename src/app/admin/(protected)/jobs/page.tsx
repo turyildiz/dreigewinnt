@@ -32,27 +32,46 @@ export default async function AdminJobsPage() {
         </Link>
       </div>
 
-      <div className="bg-surface-container-lowest">
+      <div className="flex flex-col gap-0.5">
         {jobs?.length === 0 && (
-          <p className="text-on-surface-variant text-sm p-8 text-center">Noch keine Stellenanzeigen vorhanden.</p>
+          <div className="bg-surface-container-lowest p-12 text-center rounded-2xl border-2 border-dashed border-outline-variant/10">
+            <span className="material-symbols-outlined text-4xl text-on-surface-variant/20 mb-3 block">search_off</span>
+            <p className="text-on-surface-variant text-sm font-medium">Noch keine Stellenanzeigen vorhanden.</p>
+          </div>
         )}
         {jobs?.map((j) => (
-          <div key={j.id} className="flex items-center gap-4 px-6 py-4 border-b border-outline-variant/10 last:border-b-0 hover:bg-surface-container-low transition-colors">
+          <div key={j.id} className="flex items-center gap-4 px-4 sm:px-6 py-4 border border-outline-variant/5 hover:border-outline-variant/20 hover:shadow-sm transition-all bg-surface-container-lowest rounded-xl mb-1 group">
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <p className="font-bold text-primary text-sm truncate">{j.title}</p>
+              <div className="flex items-center gap-3 mb-1">
+                <p className="font-black text-primary text-sm tracking-tight group-hover:text-secondary transition-colors truncate">{j.title}</p>
                 {j.is_featured && (
-                  <span className="text-[9px] font-bold uppercase tracking-widest text-tertiary bg-tertiary-container/30 px-2 py-0.5 flex-shrink-0">Boost</span>
+                  <span className="text-[9px] font-black uppercase tracking-wider text-tertiary bg-tertiary/10 px-2 py-0.5 rounded-md flex-shrink-0">
+                    Boost
+                  </span>
                 )}
               </div>
-              <p className="text-[10px] text-on-surface-variant uppercase tracking-wider mt-0.5">
-                {j.company_name} · {townLabels[j.town] ?? j.town} · {j.job_type}
-              </p>
+              <div className="flex items-center gap-2 flex-wrap">
+                <p className="text-[10px] text-on-surface-variant/60 font-bold uppercase tracking-widest">{j.company_name}</p>
+                <span className="w-1 h-1 rounded-full bg-outline-variant/30" />
+                <p className="text-[10px] text-on-surface-variant/60 font-bold uppercase tracking-widest">{townLabels[j.town] ?? j.town}</p>
+                <span className="w-1 h-1 rounded-full bg-outline-variant/30" />
+                <p className="text-[10px] text-on-surface-variant/60 font-bold uppercase tracking-widest">{j.job_type}</p>
+              </div>
             </div>
-            <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 ${statusColors[j.status] ?? "bg-outline/10 text-on-surface-variant"}`}>
-              {j.status}
-            </span>
-            <Link href={`/admin/jobs/${j.id}/edit`} className="material-symbols-outlined text-xl text-on-surface-variant hover:text-primary transition-colors">edit</Link>
+            
+            <div className="flex items-center gap-6">
+              <div className="hidden sm:flex flex-col items-end">
+                <span className={`text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-lg ${statusColors[j.status] ?? "bg-outline/10 text-on-surface-variant"}`}>
+                  {j.status}
+                </span>
+              </div>
+              <Link
+                href={`/admin/jobs/${j.id}/edit`}
+                className="w-10 h-10 flex items-center justify-center rounded-xl bg-surface-container hover:bg-secondary hover:text-on-secondary transition-all"
+              >
+                <span className="material-symbols-outlined text-xl text-on-surface-variant group-hover:text-inherit">edit</span>
+              </Link>
+            </div>
           </div>
         ))}
       </div>
