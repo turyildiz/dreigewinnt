@@ -11,8 +11,15 @@ const towns = [
 ];
 
 const categories = [
-  { label: "Gastronomie", value: "gastronomie", icon: "restaurant" },
   { label: "Handwerk", value: "handwerk", icon: "build" },
+  { label: "Auto & Mobilität", value: "auto", icon: "directions_car" },
+  { label: "Gastronomie", value: "gastronomie", icon: "restaurant" },
+  { label: "Gesundheit", value: "gesundheit", icon: "medical_services" },
+  { label: "Einzelhandel", value: "einzelhandel", icon: "shopping_bag" },
+  { label: "IT & Digital", value: "digital", icon: "computer" },
+  { label: "Fitness", value: "fitness", icon: "fitness_center" },
+  { label: "Dienstleistung", value: "dienstleistung", icon: "business_center" },
+  { label: "Finanzen", value: "finanzen", icon: "payments" },
   { label: "Kultur", value: "kultur", icon: "theater_comedy" },
 ];
 
@@ -20,6 +27,7 @@ function getSection(pathname: string) {
   if (pathname.startsWith("/gewerbe")) return "/gewerbe";
   if (pathname.startsWith("/events")) return "/events";
   if (pathname.startsWith("/news")) return "/news";
+  if (pathname.startsWith("/jobs")) return "/jobs";
   return "/gewerbe";
 }
 

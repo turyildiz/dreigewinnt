@@ -11,7 +11,8 @@ export async function approveItem(formData: FormData) {
   await supabaseAdmin.from(table).update({ status: "active" }).eq("id", id);
 
   revalidatePath("/admin/queue");
-  revalidatePath(table === "businesses" ? "/gewerbe" : "/events");
+  const pathMap: Record<string, string> = { businesses: "/gewerbe", events: "/events", jobs: "/jobs" };
+  revalidatePath(pathMap[table] ?? "/");
   redirect("/admin/queue?approved=1");
 }
 

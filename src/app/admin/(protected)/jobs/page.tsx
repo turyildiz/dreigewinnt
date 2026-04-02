@@ -15,7 +15,8 @@ const statusColors: Record<string, string> = {
 export default async function AdminJobsPage() {
   const { data: jobs } = await supabaseAdmin
     .from("jobs")
-    .select("id, title, company_name, town, job_type, status")
+    .select("id, title, company_name, town, job_type, status, is_featured")
+    .order("is_featured", { ascending: false })
     .order("created_at", { ascending: false });
 
   return (
@@ -38,7 +39,12 @@ export default async function AdminJobsPage() {
         {jobs?.map((j) => (
           <div key={j.id} className="flex items-center gap-4 px-6 py-4 border-b border-outline-variant/10 last:border-b-0 hover:bg-surface-container-low transition-colors">
             <div className="flex-1 min-w-0">
-              <p className="font-bold text-primary text-sm truncate">{j.title}</p>
+              <div className="flex items-center gap-2">
+                <p className="font-bold text-primary text-sm truncate">{j.title}</p>
+                {j.is_featured && (
+                  <span className="text-[9px] font-bold uppercase tracking-widest text-tertiary bg-tertiary-container/30 px-2 py-0.5 flex-shrink-0">Boost</span>
+                )}
+              </div>
               <p className="text-[10px] text-on-surface-variant uppercase tracking-wider mt-0.5">
                 {j.company_name} · {townLabels[j.town] ?? j.town} · {j.job_type}
               </p>

@@ -131,7 +131,7 @@ type FormState = {
 
 type InitialValues = Partial<Pick<FormState, "name" | "town" | "category" | "address">>;
 
-export function EinreichenForm({ initialValues, isUpgrade = false }: { initialValues?: InitialValues; isUpgrade?: boolean }) {
+export function EinreichenForm({ initialValues, isUpgrade = false, existingId }: { initialValues?: InitialValues; isUpgrade?: boolean; existingId?: string }) {
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [isPending, startTransition] = useTransition();
@@ -214,6 +214,7 @@ export function EinreichenForm({ initialValues, isUpgrade = false }: { initialVa
     startTransition(async () => {
       const fd = new FormData();
       Object.entries(form).forEach(([k, v]) => fd.append(k, v));
+      if (existingId) fd.append("existing_id", existingId);
       if (isPaid && heroFile) fd.append("hero_image", heroFile);
       if (isPaid) galleryFiles.forEach((f) => fd.append("gallery_images", f));
 

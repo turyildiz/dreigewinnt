@@ -4,9 +4,9 @@ import { EinreichenForm } from "./EinreichenForm";
 export default async function EinreichenPage({
   searchParams,
 }: {
-  searchParams: Promise<{ success?: string; name?: string; town?: string; category?: string; address?: string; upgrade?: string }>;
+  searchParams: Promise<{ success?: string; name?: string; town?: string; category?: string; address?: string; upgrade?: string; existing_id?: string }>;
 }) {
-  const { success, name, town, category, address, upgrade } = await searchParams;
+  const { success, name, town, category, address, upgrade, existing_id } = await searchParams;
 
   return (
     <main className="min-h-screen bg-surface">
@@ -38,7 +38,7 @@ export default async function EinreichenPage({
             </Link>
           </div>
         ) : (
-          <EinreichenForm initialValues={{ name, town, category, address }} isUpgrade={upgrade === "1"} />
+          <EinreichenForm initialValues={{ name, town, category, address }} isUpgrade={upgrade === "1"} existingId={existing_id} />
         )}
       </div>
     </main>

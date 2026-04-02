@@ -1,6 +1,7 @@
 "use server";
 
 import { supabaseAdmin } from "@/lib/supabase-admin";
+import { uploadToStorage } from "@/lib/storage";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -16,8 +17,19 @@ function toSlug(title: string) {
 
 export async function createJobAction(formData: FormData) {
   const title = formData.get("title") as string;
+  const slug = toSlug(title);
+
+  const imageFile = formData.get("image_file") as File | null;
+  let imageUrl = (formData.get("image_url") as string) || null;
+  if (imageFile && imageFile.size > 0) {
+    imageUrl = await uploadToStorage(imageFile, "job-images", slug);
+  }
+
+  const isFeatured = formData.get("is_featured") === "on";
+  const featuredUntilRaw = formData.get("featured_until") as string;
+
   const data = {
-    slug: toSlug(title),
+    slug,
     title,
     company_name: formData.get("company_name") as string,
     town: formData.get("town") as string,
@@ -28,6 +40,9 @@ export async function createJobAction(formData: FormData) {
     contact_email: (formData.get("contact_email") as string) || null,
     contact_phone: (formData.get("contact_phone") as string) || null,
     website_url: (formData.get("website_url") as string) || null,
+    image_url: imageUrl,
+    is_featured: isFeatured,
+    featured_until: isFeatured && featuredUntilRaw ? new Date(featuredUntilRaw).toISOString() : null,
     status: formData.get("status") as string,
     expires_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
   };
@@ -41,17 +56,34 @@ export async function createJobAction(formData: FormData) {
 }
 
 export async function updateJobAction(id: string, formData: FormData) {
-  const data = {
+  const imageFile = formData.get("image_file") as File | null;
+  let imageUrl = (formData.get("image_url") as string) || null;
+  if (imageFile && imageFile.size > 0) {
+    imageUrl = await uploadToStorage(imageFile, "job-images", id);
+  }
+
+  const isFeatured = formData.get("is_featured") === "on";
+  const featuredUntilRaw = formData.get("featured_until") as string;
+  const contactEmail = (formData.get("contact_email") as string) || null;
+
+  // Fetch existing record to preserve NOT NULL fields if left empty
+  const { data: existing } = await supabaseAdmin.from("jobs").select("contact_email").eq("id", id).single();
+
+  const data: Record<string, unknown> = {
     title: formData.get("title") as string,
     company_name: formData.get("company_name") as string,
     town: formData.get("town") as string,
     job_type: formData.get("job_type") as string,
     category: (formData.get("category") as string) || null,
     description: (formData.get("description") as string) || null,
+    address: (formData.get("address") as string) || null,
     salary_range: (formData.get("salary_range") as string) || null,
-    contact_email: (formData.get("contact_email") as string) || null,
+    contact_email: contactEmail ?? existing?.contact_email ?? "",
     contact_phone: (formData.get("contact_phone") as string) || null,
     website_url: (formData.get("website_url") as string) || null,
+    image_url: imageUrl,
+    is_featured: isFeatured,
+    featured_until: isFeatured && featuredUntilRaw ? new Date(featuredUntilRaw).toISOString() : null,
     status: formData.get("status") as string,
   };
 

@@ -80,8 +80,11 @@ export function JobForm({ action, deleteAction, defaultValues }: JobFormProps) {
 
         {/* Kontakt */}
         <Section label="Kontakt">
+          <Field label="Adresse">
+            <input name="address" defaultValue={defaultValues?.address as string ?? ""} className={inputClass} placeholder="Straße, PLZ Ort" />
+          </Field>
           <div className="grid grid-cols-2 gap-4">
-            <Field label="E-Mail">
+            <Field label="E-Mail Bewerbungen">
               <input name="contact_email" type="email" defaultValue={defaultValues?.contact_email as string ?? ""} className={inputClass} />
             </Field>
             <Field label="Telefon">
@@ -90,6 +93,43 @@ export function JobForm({ action, deleteAction, defaultValues }: JobFormProps) {
           </div>
           <Field label="Website / Bewerbungslink">
             <input name="website_url" type="url" defaultValue={defaultValues?.website_url as string ?? ""} className={inputClass} placeholder="https://…" />
+          </Field>
+        </Section>
+
+        {/* Header-Bild */}
+        <Section label="Header-Bild">
+          {(defaultValues?.image_url as string | undefined) && (
+            <div className="mb-3">
+              <img src={defaultValues!.image_url as string} alt="Vorschau" className="h-32 object-cover w-full" />
+              <input type="hidden" name="image_url" value={defaultValues!.image_url as string} />
+            </div>
+          )}
+          <Field label="Bild hochladen">
+            <input name="image_file" type="file" accept="image/*" className={inputClass} />
+          </Field>
+        </Section>
+
+        {/* Boost */}
+        <Section label="Boost">
+          <div className="flex items-center gap-3">
+            <input
+              type="checkbox"
+              name="is_featured"
+              id="is_featured"
+              defaultChecked={defaultValues?.is_featured as boolean ?? false}
+              className="w-4 h-4 accent-secondary"
+            />
+            <label htmlFor="is_featured" className="text-sm font-bold text-primary cursor-pointer">
+              Stelle boosten (erscheint ganz oben)
+            </label>
+          </div>
+          <Field label="Boost aktiv bis">
+            <input
+              name="featured_until"
+              type="date"
+              defaultValue={defaultValues?.featured_until ? (defaultValues.featured_until as string).slice(0, 10) : ""}
+              className={`${inputClass} max-w-xs`}
+            />
           </Field>
         </Section>
 

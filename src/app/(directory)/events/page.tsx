@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { EventCard } from "@/components/ui/EventCard";
-import { EventSubmitModal } from "@/components/ui/EventSubmitModal";
 import { TownTag } from "@/components/ui/TownTag";
 import { supabase } from "@/lib/supabase";
 import { toDisplayTown } from "@/lib/towns";
@@ -181,7 +180,14 @@ export default async function EventsPage({
         </div>
       </section>
 
-      <EventSubmitModal />
+      {/* FAB — Veranstaltung einreichen */}
+      <Link
+        href="/events/einreichen"
+        className="fixed bottom-6 right-6 z-50 signature-gradient text-on-secondary px-5 py-3 shadow-lg flex items-center gap-2 font-black uppercase text-[11px] tracking-widest hover:brightness-110 transition-all"
+      >
+        <span className="material-symbols-outlined text-lg">event</span>
+        Einreichen
+      </Link>
 
     </main>
   );

@@ -193,7 +193,7 @@ export default async function BusinessDetailPage({
             </div>
 
             <Link
-              href={`/gewerbe/einreichen?name=${encodeURIComponent(business.name)}&town=${encodeURIComponent(business.town)}&category=${encodeURIComponent(business.category ?? "")}&address=${encodeURIComponent(business.address ?? "")}&upgrade=1`}
+              href={`/gewerbe/einreichen?name=${encodeURIComponent(business.name)}&town=${encodeURIComponent(business.town)}&category=${encodeURIComponent(business.category ?? "")}&address=${encodeURIComponent(business.address ?? "")}&upgrade=1&existing_id=${encodeURIComponent(business.id)}`}
               className="signature-gradient text-on-secondary text-[11px] font-black uppercase tracking-widest px-6 py-3 hover:brightness-110 transition-all inline-block"
             >
               Jetzt upgraden
@@ -359,7 +359,7 @@ export default async function BusinessDetailPage({
                   <p className="font-bold text-primary text-sm mb-1">Eintrag aktualisieren</p>
                   <p className="text-on-surface-variant text-xs leading-relaxed mb-3">Als Premium Partner können Sie Öffnungszeiten, Fotos und Angebote direkt via Telegram einreichen.</p>
                   <Link
-                    href={`/gewerbe/einreichen?name=${encodeURIComponent(business.name)}&town=${encodeURIComponent(business.town)}&category=${encodeURIComponent(business.category ?? "")}&address=${encodeURIComponent(business.address ?? "")}&upgrade=1`}
+                    href={`/gewerbe/einreichen?name=${encodeURIComponent(business.name)}&town=${encodeURIComponent(business.town)}&category=${encodeURIComponent(business.category ?? "")}&address=${encodeURIComponent(business.address ?? "")}&upgrade=1&existing_id=${encodeURIComponent(business.id)}`}
                     className="signature-gradient text-on-secondary text-[10px] font-bold uppercase tracking-widest px-4 py-2.5 hover:brightness-110 transition-all block text-center"
                   >
                     Jetzt upgraden
@@ -440,8 +440,8 @@ function ContactSidebar({
   );
 }
 
-function UpsellCTA({ business }: { business: { name: string; town: string; category?: string | null; address?: string | null } }) {
-  const upgradeHref = `/gewerbe/einreichen?name=${encodeURIComponent(business.name)}&town=${encodeURIComponent(business.town)}&category=${encodeURIComponent(business.category ?? "")}&address=${encodeURIComponent(business.address ?? "")}&upgrade=1`;
+function UpsellCTA({ business }: { business: { id: string; name: string; town: string; category?: string | null; address?: string | null } }) {
+  const upgradeHref = `/gewerbe/einreichen?name=${encodeURIComponent(business.name)}&town=${encodeURIComponent(business.town)}&category=${encodeURIComponent(business.category ?? "")}&address=${encodeURIComponent(business.address ?? "")}&upgrade=1&existing_id=${encodeURIComponent(business.id)}`;
   return (
     <div className="bg-surface-container-low border border-outline-variant/10 p-5 lg:p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4">
       <span className="material-symbols-outlined text-secondary text-2xl flex-shrink-0">send</span>

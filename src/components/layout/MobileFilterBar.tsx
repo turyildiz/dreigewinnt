@@ -38,6 +38,7 @@ function getSection(pathname: string) {
   if (pathname.startsWith("/gewerbe")) return "/gewerbe";
   if (pathname.startsWith("/events")) return "/events";
   if (pathname.startsWith("/news")) return "/news";
+  if (pathname.startsWith("/jobs")) return "/jobs";
   return "/gewerbe";
 }
 
@@ -46,6 +47,8 @@ function isDetailPage(pathname: string) {
     /^\/gewerbe\/[^/]+/.test(pathname) ||
     /^\/events\/[^/]+/.test(pathname) ||
     /^\/news\/[^/]+/.test(pathname) ||
+    /^\/jobs\/[^/]+/.test(pathname) ||
+    pathname === "/jobs/einreichen" ||
     pathname.startsWith("/suche")
   );
 }
