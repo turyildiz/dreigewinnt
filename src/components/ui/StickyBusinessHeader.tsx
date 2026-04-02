@@ -31,47 +31,47 @@ export function StickyBusinessHeader({ businessName, town, slug, activeTab, titl
         <p className="text-sm font-black text-primary tracking-tight truncate">{businessName}</p>
         <p className="text-[11px] font-bold text-on-surface-variant flex-shrink-0">· {town}</p>
       </div>
-      <div className="grid grid-cols-2 gap-2">
+      <div className="bg-surface-container-high/50 p-1.5 rounded-2xl flex gap-1">
         <Link
           href={`/gewerbe/${slug}?tab=aktuelles`}
-          className={`flex items-center gap-3 px-4 py-3 transition-colors border-b-2 ${
+          className={`flex-1 flex items-center justify-center gap-2.5 py-3 rounded-xl transition-all duration-300 ${
             activeTab === "aktuelles"
-              ? "bg-white border-primary"
-              : "bg-surface-container border-transparent hover:bg-white"
+              ? "bg-white shadow-sm text-primary"
+              : "text-on-surface-variant/60 hover:text-on-surface-variant hover:bg-white/40"
           }`}
         >
           <span
-            className={`material-symbols-outlined text-xl flex-shrink-0 ${activeTab === "aktuelles" ? "text-primary" : "text-on-surface-variant/50"}`}
-            style={{ fontVariationSettings: "'FILL' 1" }}
+            className="material-symbols-outlined text-xl flex-shrink-0"
+            style={{ fontVariationSettings: activeTab === "aktuelles" ? "'FILL' 1" : "" }}
           >
             campaign
           </span>
-          <div>
-            <p className={`text-[11px] font-black uppercase tracking-widest ${activeTab === "aktuelles" ? "text-primary" : "text-on-surface-variant"}`}>
+          <div className="text-left">
+            <p className="text-[11px] font-black uppercase tracking-widest leading-none">
               Aktuelles
             </p>
-            <p className="text-[10px] text-on-surface-variant/60 font-medium hidden sm:block">Angebote & Updates</p>
+            <p className="text-[9px] font-bold opacity-60 hidden sm:block mt-0.5">Angebote & Updates</p>
           </div>
         </Link>
         <Link
           href={`/gewerbe/${slug}?tab=info`}
-          className={`flex items-center gap-3 px-4 py-3 transition-colors border-b-2 ${
+          className={`flex-1 flex items-center justify-center gap-2.5 py-3 rounded-xl transition-all duration-300 ${
             activeTab === "info"
-              ? "bg-white border-primary"
-              : "bg-surface-container border-transparent hover:bg-white"
+              ? "bg-white shadow-sm text-primary"
+              : "text-on-surface-variant/60 hover:text-on-surface-variant hover:bg-white/40"
           }`}
         >
           <span
-            className={`material-symbols-outlined text-xl flex-shrink-0 ${activeTab === "info" ? "text-primary" : "text-on-surface-variant/50"}`}
-            style={{ fontVariationSettings: "'FILL' 1" }}
+            className="material-symbols-outlined text-xl flex-shrink-0"
+            style={{ fontVariationSettings: activeTab === "info" ? "'FILL' 1" : "" }}
           >
-            store
+            info
           </span>
-          <div>
-            <p className={`text-[11px] font-black uppercase tracking-widest ${activeTab === "info" ? "text-primary" : "text-on-surface-variant"}`}>
+          <div className="text-left">
+            <p className="text-[11px] font-black uppercase tracking-widest leading-none">
               Info
             </p>
-            <p className="text-[10px] text-on-surface-variant/60 font-medium hidden sm:block">Kontakt & Öffnungszeiten</p>
+            <p className="text-[9px] font-bold opacity-60 hidden sm:block mt-0.5">Kontakt & Öffnungszeiten</p>
           </div>
         </Link>
       </div>

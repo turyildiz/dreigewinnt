@@ -238,15 +238,18 @@ export default async function BusinessDetailPage({
 
         {/* ── Business name + tier ── */}
         <div className="mb-6 lg:mb-8">
-          <div className="flex items-center gap-2 flex-wrap mb-3">
-            <span className={`text-[10px] font-bold px-2 py-0.5 uppercase tracking-widest ${tier.classes}`}>
+          <div className="flex items-center gap-3 flex-wrap mb-4">
+            <span className={`text-[9px] font-black px-2.5 py-1 uppercase tracking-[0.1em] rounded-md ${tier.classes}`}>
               {tier.label}
             </span>
-            <span className="text-on-surface-variant text-xs uppercase tracking-widest font-bold">
-              {business.category}
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-outline-variant/30" />
+              <span className="text-on-surface-variant text-[10px] uppercase tracking-widest font-black opacity-60">
+                {business.category}
+              </span>
+            </div>
           </div>
-          <h1 id="business-title" className="text-3xl sm:text-4xl lg:text-5xl font-headline font-black tracking-tighter text-primary leading-tight">
+          <h1 id="business-title" className="text-3xl sm:text-4xl lg:text-4.5xl font-headline font-black tracking-tighter text-primary leading-[1.1]">
             {business.name}
           </h1>
         </div>
@@ -304,9 +307,12 @@ export default async function BusinessDetailPage({
             {tab === "aktuelles" && (
               <>
                 {!posts || posts.length === 0 ? (
-                  <div className="bg-surface-container-low p-12 text-center">
-                    <span className="material-symbols-outlined text-4xl text-on-surface-variant/20 mb-3 block" style={{ fontVariationSettings: "'FILL' 1" }}>feed</span>
-                    <p className="text-on-surface-variant text-sm">Noch keine Beiträge von diesem Unternehmen.</p>
+                  <div className="bg-surface-container-lowest/80 border-2 border-dashed border-outline-variant/10 rounded-3xl p-16 text-center shadow-sm">
+                    <div className="w-16 h-16 bg-surface-container rounded-full flex items-center justify-center mx-auto mb-6">
+                      <span className="material-symbols-outlined text-2xl text-on-surface-variant/30" style={{ fontVariationSettings: "'FILL' 1" }}>campaign</span>
+                    </div>
+                    <h3 className="text-primary font-black text-lg tracking-tight mb-2">Noch keine Updates</h3>
+                    <p className="text-on-surface-variant/60 text-sm max-w-xs mx-auto leading-relaxed">Dieses Unternehmen hat zurzeit keine aktuellen Beiträge oder Angebote veröffentlicht.</p>
                   </div>
                 ) : (
                   <div className="flex flex-col gap-3">
@@ -387,56 +393,71 @@ function ContactSidebar({
   openingHours: { day: string; hours: string }[];
   displayTown: string;
 }) {
+  const cardClass = "bg-white border border-outline-variant/10 p-5 lg:p-6 rounded-2xl shadow-sm";
+  const labelClass = "text-[9px] font-black uppercase tracking-[0.15em] text-on-surface-variant/40 mb-4 block";
+
   return (
     <>
-      <div className="bg-surface-container-lowest border border-outline-variant/10 p-5 lg:p-6">
-        <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-3">Adresse</p>
-        <div className="flex items-start gap-3">
-          <span className="material-symbols-outlined text-secondary text-xl flex-shrink-0">location_on</span>
+      <div className={cardClass}>
+        <span className={labelClass}>Adresse</span>
+        <div className="flex items-start gap-4">
+          <div className="w-10 h-10 bg-secondary/5 rounded-xl flex items-center justify-center flex-shrink-0">
+            <span className="material-symbols-outlined text-secondary text-xl">location_on</span>
+          </div>
           <div>
-            <p className="font-bold text-primary text-sm">{displayTown}</p>
-            {business.address && <p className="text-on-surface-variant text-xs mt-0.5">{business.address}</p>}
+            <p className="font-black text-primary text-sm tracking-tight">{displayTown}</p>
+            {business.address && <p className="text-on-surface-variant/80 text-xs mt-0.5 leading-relaxed">{business.address}</p>}
           </div>
         </div>
       </div>
 
       {(business.phone || business.email || business.website) && (
-        <div className="bg-surface-container-lowest border border-outline-variant/10 p-5 lg:p-6 flex flex-col gap-3">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1">Kontakt</p>
-          {business.phone && (
-            <a href={`tel:${business.phone}`} className="flex items-center gap-3 group">
-              <span className="material-symbols-outlined text-secondary text-xl flex-shrink-0">call</span>
-              <span className="text-sm font-bold text-primary group-hover:text-secondary transition-colors">{business.phone}</span>
-            </a>
-          )}
-          {business.email && (
-            <a href={`mailto:${business.email}`} className="flex items-center gap-3 group">
-              <span className="material-symbols-outlined text-secondary text-xl flex-shrink-0">mail</span>
-              <span className="text-sm text-on-surface-variant group-hover:text-primary transition-colors truncate">{business.email}</span>
-            </a>
-          )}
-          {business.website && (
-            <a href={ensureHttp(business.website)} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 group">
-              <span className="material-symbols-outlined text-secondary text-xl flex-shrink-0">language</span>
-              <span className="text-sm text-on-surface-variant group-hover:text-primary transition-colors truncate">{business.website}</span>
-            </a>
-          )}
+        <div className={`${cardClass} flex flex-col gap-5`}>
+          <span className={labelClass}>Kontakt</span>
+          <div className="flex flex-col gap-4">
+            {business.phone && (
+              <a href={`tel:${business.phone}`} className="flex items-center gap-4 group">
+                <div className="w-10 h-10 bg-secondary/5 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-secondary/10 transition-colors">
+                  <span className="material-symbols-outlined text-secondary text-xl">call</span>
+                </div>
+                <span className="text-sm font-black text-primary group-hover:text-secondary transition-colors tracking-tight">{business.phone}</span>
+              </a>
+            )}
+            {business.email && (
+              <a href={`mailto:${business.email}`} className="flex items-center gap-4 group">
+                <div className="w-10 h-10 bg-secondary/5 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-secondary/10 transition-colors">
+                  <span className="material-symbols-outlined text-secondary text-xl">mail</span>
+                </div>
+                <span className="text-sm font-medium text-on-surface-variant group-hover:text-primary transition-colors truncate">{business.email}</span>
+              </a>
+            )}
+            {business.website && (
+              <a href={ensureHttp(business.website)} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 group">
+                <div className="w-10 h-10 bg-secondary/5 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-secondary/10 transition-colors">
+                  <span className="material-symbols-outlined text-secondary text-xl">language</span>
+                </div>
+                <span className="text-sm font-medium text-on-surface-variant group-hover:text-primary transition-colors truncate">{business.website}</span>
+              </a>
+            )}
+          </div>
         </div>
       )}
 
       {openingHours.length > 0 && (
-        <div className="bg-surface-container-lowest border border-outline-variant/10 p-5 lg:p-6 rounded-2xl shadow-sm">
-          <div className="flex items-center gap-2 mb-4">
-            <span className="material-symbols-outlined text-secondary text-base">schedule</span>
-            <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Öffnungszeiten</p>
+        <div className={cardClass}>
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 bg-secondary/5 rounded-xl flex items-center justify-center flex-shrink-0">
+              <span className="material-symbols-outlined text-secondary text-xl">schedule</span>
+            </div>
+            <span className={labelClass.replace("mb-4 block", "mb-0")}>Öffnungszeiten</span>
           </div>
           <div className="flex flex-col gap-3">
             {openingHours.map((row, idx) => (
               <div key={idx} className="flex justify-between items-start gap-4 pb-2 last:pb-0 border-b border-outline-variant/5 last:border-0">
                 {row.day && (
-                  <span className="text-[11px] font-black uppercase tracking-tight text-primary flex-shrink-0 w-20">{row.day}</span>
+                  <span className="text-[10px] font-black uppercase tracking-tight text-primary flex-shrink-0 w-20">{row.day}</span>
                 )}
-                <span className={`text-[11px] leading-relaxed text-on-surface-variant/80 ${!row.day ? "text-left w-full" : "text-right flex-1 font-medium"}`}>
+                <span className={`text-[10px] leading-relaxed text-on-surface-variant/80 ${!row.day ? "text-left w-full" : "text-right flex-1 font-bold"}`}>
                   {row.hours}
                 </span>
               </div>
