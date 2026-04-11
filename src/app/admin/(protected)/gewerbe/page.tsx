@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { AdminSearch } from "@/components/admin/AdminSearch";
+import { getCategoryLabel } from "@/lib/constants";
 
 export default async function AdminGewerbePage({
   searchParams,
@@ -115,7 +116,7 @@ export default async function AdminGewerbePage({
                   </div>
                   <div className="flex items-center gap-2 flex-wrap">
                     <p className="text-[10px] text-on-surface-variant/60 font-bold uppercase tracking-widest">
-                      {b.category}
+                      {getCategoryLabel(b.category)}
                     </p>
                     <span className="w-1 h-1 rounded-full bg-outline-variant/30" />
                     <p className="text-[10px] text-on-surface-variant/60 font-bold uppercase tracking-widest">

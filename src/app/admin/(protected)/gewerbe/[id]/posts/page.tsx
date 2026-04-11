@@ -49,7 +49,7 @@ export default async function BusinessPostsPage({
             <span className="w-5 h-[2px] bg-secondary flex-shrink-0" />
             New Post
           </h2>
-          <form action={createAction} className="flex flex-col gap-4" encType="multipart/form-data">
+          <form action={createAction} className="flex flex-col gap-4">
             <div className="flex flex-col gap-1.5">
               <label className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
                 Content <span className="text-error">*</span>
@@ -175,7 +175,7 @@ export default async function BusinessPostsPage({
 
                     {isEditing ? (
                       /* Edit form */
-                      <form action={updateAction} className="flex flex-col gap-3" encType="multipart/form-data">
+                      <form action={updateAction} className="flex flex-col gap-3">
                         <textarea
                           name="content"
                           required

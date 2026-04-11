@@ -5,10 +5,11 @@ import { toDisplayTown } from "@/lib/towns";
 export default async function SuchePage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string }>;
+  searchParams: Promise<{ q?: string; town?: string }>;
 }) {
-  const { q } = await searchParams;
+  const { q, town } = await searchParams;
   const query = q?.trim() ?? "";
+  const townFilter = town?.trim().toLowerCase();
 
   if (!query) {
     return (
@@ -21,25 +22,37 @@ export default async function SuchePage({
 
   const like = `%${query}%`;
 
-  const [{ data: businesses }, { data: events }, { data: news }] = await Promise.all([
-    supabase
+  let bizQuery = supabase
       .from("businesses")
       .select("id, slug, name, category, town, tier")
       .eq("status", "active")
       .ilike("name", like)
-      .limit(10),
-    supabase
+      .limit(10);
+      
+  let evtQuery = supabase
       .from("events")
       .select("id, slug, title, town, date_start, category")
       .eq("status", "active")
       .ilike("title", like)
-      .limit(10),
-    supabase
+      .limit(10);
+      
+  let newsQuery = supabase
       .from("articles")
       .select("id, slug, title, towns, published_at")
       .eq("status", "published")
       .or(`title.ilike.${like},excerpt.ilike.${like}`)
-      .limit(10),
+      .limit(10);
+
+  if (townFilter) {
+    bizQuery = bizQuery.eq("town", townFilter);
+    evtQuery = evtQuery.eq("town", townFilter);
+    newsQuery = newsQuery.contains("towns", [townFilter]);
+  }
+
+  const [{ data: businesses }, { data: events }, { data: news }] = await Promise.all([
+    bizQuery,
+    evtQuery,
+    newsQuery,
   ]);
 
   const total = (businesses?.length ?? 0) + (events?.length ?? 0) + (news?.length ?? 0);

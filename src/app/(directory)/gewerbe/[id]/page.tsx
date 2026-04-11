@@ -7,6 +7,8 @@ import { supabase } from "@/lib/supabase";
 import { toDisplayTown } from "@/lib/towns";
 import { ensureHttp } from "@/lib/utils";
 
+import { getCategoryLabel } from "@/lib/constants";
+
 export async function generateMetadata({
   params,
 }: {
@@ -153,7 +155,7 @@ export default async function BusinessDetailPage({
               Basiseintrag
             </span>
             <span className="text-on-surface-variant text-xs uppercase tracking-widest font-bold">
-              {business.category}
+              {getCategoryLabel(business.category)}
             </span>
           </div>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-headline font-black tracking-tighter text-primary leading-tight mb-8">
@@ -239,13 +241,13 @@ export default async function BusinessDetailPage({
         {/* ── Business name + tier ── */}
         <div className="mb-6 lg:mb-8">
           <div className="flex items-center gap-3 flex-wrap mb-4">
-            <span className={`text-[9px] font-black px-2.5 py-1 uppercase tracking-[0.1em] rounded-md ${tier.classes}`}>
+            <span className={`text-[9px] font-black px-2.5 py-1 uppercase tracking-[0.1em] rounded-none ${tier.classes}`}>
               {tier.label}
             </span>
             <div className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-outline-variant/30" />
               <span className="text-on-surface-variant text-[10px] uppercase tracking-widest font-black opacity-60">
-                {business.category}
+                {getCategoryLabel(business.category)}
               </span>
             </div>
           </div>
@@ -270,16 +272,29 @@ export default async function BusinessDetailPage({
 
             {tab === "info" && (
               <div className="flex flex-col gap-8 lg:gap-12">
-                <div>
-                  {business.description && (
-                    <p className="text-on-surface-variant text-base sm:text-lg leading-relaxed mb-3">
-                      {business.description}
-                    </p>
-                  )}
-                  {business.full_description && (
-                    <p className="text-on-surface-variant text-sm sm:text-base leading-relaxed">
-                      {business.full_description}
-                    </p>
+                <div className="bg-white border border-outline-variant/10 p-6 sm:p-8 rounded-none shadow-sm">
+                  {business.description || business.full_description ? (
+                    <div className="flex flex-col gap-4">
+                      {business.description && (
+                        <p className="text-on-surface-variant/70 text-[13px] sm:text-[15px] leading-relaxed">
+                          {business.description}
+                        </p>
+                      )}
+                      {business.full_description && (
+                        <p className="text-on-surface-variant/70 text-[13px] sm:text-[15px] leading-relaxed whitespace-pre-line">
+                          {business.full_description}
+                        </p>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="py-8 text-center">
+                      <span className="material-symbols-outlined text-4xl text-on-surface-variant/20 mb-3 block" style={{ fontVariationSettings: "'FILL' 1" }}>
+                        info
+                      </span>
+                      <p className="text-on-surface-variant/60 text-sm italic">
+                        Keine ausführliche Beschreibung für dieses Unternehmen hinterlegt.
+                      </p>
+                    </div>
                   )}
                 </div>
 
@@ -299,7 +314,9 @@ export default async function BusinessDetailPage({
                 </div>
 
                 {business.tier !== "premium" && (
-                  <UpsellCTA business={business} />
+                  <div className="lg:hidden">
+                    <UpsellCTA business={business} />
+                  </div>
                 )}
               </div>
             )}
@@ -307,8 +324,8 @@ export default async function BusinessDetailPage({
             {tab === "aktuelles" && (
               <>
                 {!posts || posts.length === 0 ? (
-                  <div className="bg-surface-container-lowest/80 border-2 border-dashed border-outline-variant/10 rounded-3xl p-16 text-center shadow-sm">
-                    <div className="w-16 h-16 bg-surface-container rounded-full flex items-center justify-center mx-auto mb-6">
+                  <div className="bg-surface-container-lowest/80 border-2 border-dashed border-outline-variant/10 rounded-none p-16 text-center shadow-sm">
+                    <div className="w-16 h-16 bg-surface-container rounded-none flex items-center justify-center mx-auto mb-6">
                       <span className="material-symbols-outlined text-2xl text-on-surface-variant/30" style={{ fontVariationSettings: "'FILL' 1" }}>campaign</span>
                     </div>
                     <h3 className="text-primary font-black text-lg tracking-tight mb-2">Noch keine Updates</h3>
@@ -393,15 +410,17 @@ function ContactSidebar({
   openingHours: { day: string; hours: string }[];
   displayTown: string;
 }) {
-  const cardClass = "bg-white border border-outline-variant/10 p-5 lg:p-6 rounded-2xl shadow-sm";
+  const cardClass = "bg-white border border-outline-variant/10 p-5 lg:p-6 rounded-none shadow-sm";
   const labelClass = "text-[9px] font-black uppercase tracking-[0.15em] text-on-surface-variant/40 mb-4 block";
+
+
 
   return (
     <>
       <div className={cardClass}>
         <span className={labelClass}>Adresse</span>
         <div className="flex items-start gap-4">
-          <div className="w-10 h-10 bg-secondary/5 rounded-xl flex items-center justify-center flex-shrink-0">
+          <div className="w-10 h-10 bg-secondary/5 rounded-none flex items-center justify-center flex-shrink-0">
             <span className="material-symbols-outlined text-secondary text-xl">location_on</span>
           </div>
           <div>
@@ -417,7 +436,7 @@ function ContactSidebar({
           <div className="flex flex-col gap-4">
             {business.phone && (
               <a href={`tel:${business.phone}`} className="flex items-center gap-4 group">
-                <div className="w-10 h-10 bg-secondary/5 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-secondary/10 transition-colors">
+                <div className="w-10 h-10 bg-secondary/5 rounded-none flex items-center justify-center flex-shrink-0 group-hover:bg-secondary/10 transition-colors">
                   <span className="material-symbols-outlined text-secondary text-xl">call</span>
                 </div>
                 <span className="text-sm font-black text-primary group-hover:text-secondary transition-colors tracking-tight">{business.phone}</span>
@@ -425,7 +444,7 @@ function ContactSidebar({
             )}
             {business.email && (
               <a href={`mailto:${business.email}`} className="flex items-center gap-4 group">
-                <div className="w-10 h-10 bg-secondary/5 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-secondary/10 transition-colors">
+                <div className="w-10 h-10 bg-secondary/5 rounded-none flex items-center justify-center flex-shrink-0 group-hover:bg-secondary/10 transition-colors">
                   <span className="material-symbols-outlined text-secondary text-xl">mail</span>
                 </div>
                 <span className="text-sm font-medium text-on-surface-variant group-hover:text-primary transition-colors truncate">{business.email}</span>
@@ -433,7 +452,7 @@ function ContactSidebar({
             )}
             {business.website && (
               <a href={ensureHttp(business.website)} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 group">
-                <div className="w-10 h-10 bg-secondary/5 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-secondary/10 transition-colors">
+                <div className="w-10 h-10 bg-secondary/5 rounded-none flex items-center justify-center flex-shrink-0 group-hover:bg-secondary/10 transition-colors">
                   <span className="material-symbols-outlined text-secondary text-xl">language</span>
                 </div>
                 <span className="text-sm font-medium text-on-surface-variant group-hover:text-primary transition-colors truncate">{business.website}</span>
@@ -445,19 +464,24 @@ function ContactSidebar({
 
       {openingHours.length > 0 && (
         <div className={cardClass}>
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 bg-secondary/5 rounded-xl flex items-center justify-center flex-shrink-0">
-              <span className="material-symbols-outlined text-secondary text-xl">schedule</span>
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-secondary/5 rounded-none flex items-center justify-center flex-shrink-0">
+                <span className="material-symbols-outlined text-secondary text-xl">schedule</span>
+              </div>
+              <span className={labelClass.replace("mb-4 block", "mb-0")}>Öffnungszeiten</span>
             </div>
-            <span className={labelClass.replace("mb-4 block", "mb-0")}>Öffnungszeiten</span>
+            
+
           </div>
-          <div className="flex flex-col gap-3">
+
+          <div className="flex flex-col gap-3.5">
             {openingHours.map((row, idx) => (
-              <div key={idx} className="flex justify-between items-start gap-4 pb-2 last:pb-0 border-b border-outline-variant/5 last:border-0">
-                {row.day && (
-                  <span className="text-[10px] font-black uppercase tracking-tight text-primary flex-shrink-0 w-20">{row.day}</span>
-                )}
-                <span className={`text-[10px] leading-relaxed text-on-surface-variant/80 ${!row.day ? "text-left w-full" : "text-right flex-1 font-bold"}`}>
+              <div key={idx} className="flex justify-between items-baseline gap-4 group">
+                <span className="text-[11px] font-bold uppercase tracking-wide text-primary/70 group-hover:text-primary transition-colors min-w-[110px]">
+                  {row.day}
+                </span>
+                <span className="text-[11px] font-medium text-on-surface-variant/90 text-right flex-1">
                   {row.hours}
                 </span>
               </div>

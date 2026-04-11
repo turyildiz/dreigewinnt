@@ -58,7 +58,7 @@ export function TopNavbar() {
 
   return (
     <>
-      <nav className="fixed top-0 w-full z-50 bg-surface/80 nav-blur border-b border-outline-variant/15 shadow-[0_40px_40px_rgba(2,5,17,0.06)]">
+      <nav className="fixed top-0 w-full z-50 bg-surface border-b border-outline-variant/15 shadow-[0_40px_40px_rgba(2,5,17,0.06)]">
         {/* Content container */}
         <div className="max-w-[1440px] mx-auto h-20 flex items-center relative">
 

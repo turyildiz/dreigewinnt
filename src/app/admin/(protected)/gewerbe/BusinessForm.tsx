@@ -2,18 +2,12 @@
 
 import Link from "next/link";
 import { useState, useRef } from "react";
+import { BUSINESS_CATEGORIES } from "@/lib/constants";
 
 const towns = [
   { value: "raunheim", label: "Raunheim" },
   { value: "kelsterbach", label: "Kelsterbach" },
   { value: "ruesselsheim", label: "Rüsselsheim" },
-];
-
-const categories = [
-  "Gastronomie", "Handwerk", "Einzelhandel", "Gesundheit",
-  "Dienstleistung", "Auto & Mobilität", "IT & Digital", "Fitness",
-  "Sport & Freizeit", "Transport & Logistik", "Finanzen",
-  "Hotel & Gastgewerbe", "Kultur", "Sonstiges",
 ];
 
 const tiers = [
@@ -71,9 +65,16 @@ export function BusinessForm({ action, deleteAction, defaultValues }: BusinessFo
               </select>
             </Field>
             <Field label="Kategorie *">
-              <select name="category" required defaultValue={defaultValues?.category ?? ""} className={inputClass}>
+              <select 
+                name="category" 
+                required 
+                defaultValue={defaultValues?.category?.toLowerCase() ?? ""} 
+                className={inputClass}
+              >
                 <option value="">Bitte wählen</option>
-                {categories.map((c) => <option key={c} value={c}>{c}</option>)}
+                {BUSINESS_CATEGORIES.map((c) => (
+                  <option key={c.value} value={c.value}>{c.label}</option>
+                ))}
               </select>
             </Field>
           </div>

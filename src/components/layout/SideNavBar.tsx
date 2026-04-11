@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { GewerbeSearch } from "@/components/ui/GewerbeSearch";
+import { BUSINESS_CATEGORIES } from "@/lib/constants";
 
 const towns = [
   { label: "Raunheim", value: "raunheim", icon: "location_city" },
@@ -10,19 +11,7 @@ const towns = [
   { label: "Rüsselsheim", value: "ruesselsheim", icon: "corporate_fare" },
 ];
 
-const categories = [
-  { label: "Handwerk", value: "handwerk", icon: "build" },
-  { label: "Auto & Mobilität", value: "auto", icon: "directions_car" },
-  { label: "Gastronomie", value: "gastronomie", icon: "restaurant" },
-  { label: "Gesundheit", value: "gesundheit", icon: "medical_services" },
-  { label: "Einzelhandel", value: "einzelhandel", icon: "shopping_bag" },
-  { label: "IT & Digital", value: "digital", icon: "computer" },
-  { label: "Fitness", value: "fitness", icon: "fitness_center" },
-  { label: "Dienstleistung", value: "dienstleistung", icon: "business_center" },
-  { label: "Finanzen", value: "finanzen", icon: "payments" },
-  { label: "Kultur", value: "kultur", icon: "theater_comedy" },
-  { label: "Sonstiges", value: "sonstiges", icon: "more_horiz" },
-];
+const categories = BUSINESS_CATEGORIES;
 
 function getSection(pathname: string) {
   if (pathname.startsWith("/gewerbe")) return "/gewerbe";

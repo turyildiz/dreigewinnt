@@ -1,12 +1,15 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const cities = ["Alle Städte", "Raunheim", "Kelsterbach", "Rüsselsheim"];
 
 export function SearchBar() {
+  const router = useRouter();
   const [selectedCity, setSelectedCity] = useState("Alle Städte");
   const [isOpen, setIsOpen] = useState(false);
+  const [query, setQuery] = useState("");
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Close on outside click
@@ -19,6 +22,16 @@ export function SearchBar() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  function handleSearch() {
+    if (!query.trim()) return;
+    const params = new URLSearchParams();
+    params.set("q", query.trim());
+    if (selectedCity && selectedCity !== "Alle Städte") {
+      params.set("town", selectedCity.toLowerCase());
+    }
+    router.push(`/suche?${params.toString()}`);
+  }
 
   return (
     <div className="w-full relative z-10 glass-morphism bg-surface/85 p-2 rounded-lg shadow-[0_40px_40px_rgba(2,5,17,0.06)] border border-outline-variant/20">
@@ -70,6 +83,9 @@ export function SearchBar() {
         <div className="flex-[2] flex items-center px-4 md:px-6 py-4 bg-surface-container-low rounded-sm">
           <span className="material-symbols-outlined text-outline mr-3 md:mr-4 text-sm">category</span>
           <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
             className="bg-transparent border-none outline-none focus:ring-0 text-primary font-bold w-full placeholder:text-outline/60 uppercase text-[10px] md:text-xs tracking-widest"
             placeholder="WONACH SUCHST DU?"
             type="text"
@@ -77,7 +93,11 @@ export function SearchBar() {
         </div>
 
         {/* Search button */}
-        <button className="signature-gradient text-on-secondary px-8 md:px-10 py-5 rounded-sm font-black uppercase text-xs md:text-sm tracking-[0.2em] shadow-lg hover:brightness-110 transition-all text-center">
+        <button 
+          onClick={handleSearch}
+          disabled={!query.trim()}
+          className="signature-gradient text-on-secondary px-8 md:px-10 py-5 rounded-sm font-black uppercase text-xs md:text-sm tracking-[0.2em] shadow-lg hover:brightness-110 transition-all text-center disabled:opacity-40"
+        >
           Suchen
         </button>
       </div>

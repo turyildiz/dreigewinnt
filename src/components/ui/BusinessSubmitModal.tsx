@@ -2,12 +2,10 @@
 
 import { useState, useEffect, useTransition } from "react";
 import { submitBusinessAction } from "@/app/(directory)/gewerbe/einreichen/actions";
+import { BUSINESS_CATEGORIES } from "@/lib/constants";
 
 const towns = ["Raunheim", "Kelsterbach", "Rüsselsheim"];
-const categories = [
-  "Gastronomie", "Handwerk", "Einzelhandel", "Gesundheit & Beauty",
-  "Dienstleistungen", "Sport & Freizeit", "Kultur & Bildung", "Sonstiges",
-];
+const categories = BUSINESS_CATEGORIES;
 const tiers = [
   { id: "free", label: "Basis", price: "Kostenlos", features: "Name, Kategorie, Ort, Telefon, Website" },
   { id: "standard", label: "Standard", price: "€9,99 / Monat", features: "+ Beschreibung, Öffnungszeiten, 5 Fotos" },
@@ -144,10 +142,9 @@ export function BusinessSubmitModal() {
                     </select>
                   </div>
                   <div>
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant block mb-2">Kategorie <span className="text-error">*</span></label>
                     <select name="category" required className="w-full bg-surface-container-low px-4 py-3 text-sm text-primary outline-none focus:ring-1 focus:ring-secondary/30 appearance-none">
                       <option value="">Bitte wählen</option>
-                      {categories.map((c) => <option key={c}>{c}</option>)}
+                      {categories.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
                     </select>
                   </div>
                 </div>

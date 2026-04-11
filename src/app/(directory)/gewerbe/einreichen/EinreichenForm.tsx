@@ -3,6 +3,7 @@
 import { useRef, useState, useTransition, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { submitBusinessAction } from "./actions";
+import { BUSINESS_CATEGORIES } from "@/lib/constants";
 
 function CustomSelect({
   value,
@@ -75,12 +76,7 @@ const towns = [
   { value: "ruesselsheim", label: "Rüsselsheim" },
 ];
 
-const categories = [
-  "Gastronomie", "Handwerk", "Einzelhandel", "Gesundheit",
-  "Dienstleistung", "Auto & Mobilität", "IT & Digital", "Fitness",
-  "Sport & Freizeit", "Transport & Logistik", "Finanzen",
-  "Hotel & Gastgewerbe", "Kultur", "Sonstiges",
-];
+const categories = BUSINESS_CATEGORIES;
 
 const tiers = [
   {
@@ -138,7 +134,7 @@ export function EinreichenForm({ initialValues, isUpgrade = false, existingId }:
   const [error, setError] = useState<string | null>(null);
 
   const initTown = towns.some((t) => t.value === initialValues?.town) ? (initialValues?.town ?? "") : "";
-  const initCategory = categories.includes(initialValues?.category ?? "") ? (initialValues?.category ?? "") : "";
+  const initCategory = categories.some((c) => c.value === initialValues?.category) ? (initialValues?.category ?? "") : "";
 
   const [form, setForm] = useState<FormState>({
     name: initialValues?.name ?? "",
@@ -281,7 +277,7 @@ export function EinreichenForm({ initialValues, isUpgrade = false, existingId }:
               <CustomSelect
                 value={form.category}
                 onChange={(v) => setField("category", v)}
-                options={categories.map((c) => ({ value: c, label: c }))}
+                options={categories}
               />
             </div>
           </div>

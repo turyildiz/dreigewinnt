@@ -2,28 +2,9 @@ import Link from "next/link";
 import { TownTag } from "@/components/ui/TownTag";
 import { supabase } from "@/lib/supabase";
 import { toDisplayTown } from "@/lib/towns";
+import { BUSINESS_CATEGORIES, getCategoryIcon, getCategoryLabel } from "@/lib/constants";
 
 const PAGE_SIZE = 50;
-
-function categoryIcon(category: string): string {
-  const c = category.toLowerCase();
-  if (c.includes("restaurant") || c.includes("gastronomie") || c.includes("essen")) return "restaurant";
-  if (c.includes("bäcker") || c.includes("konditor")) return "bakery_dining";
-  if (c.includes("lebensmittel") || c.includes("supermarkt")) return "local_grocery_store";
-  if (c.includes("gesundheit") || c.includes("arzt") || c.includes("medizin") || c.includes("praxis")) return "medical_services";
-  if (c.includes("beauty") || c.includes("kosmetik") || c.includes("friseur") || c.includes("spa")) return "spa";
-  if (c.includes("sport") || c.includes("fitness") || c.includes("wellness")) return "fitness_center";
-  if (c.includes("handwerk") || c.includes("sanitär") || c.includes("heizung") || c.includes("elektro")) return "build";
-  if (c.includes("auto") || c.includes("kfz") || c.includes("fahrzeug")) return "directions_car";
-  if (c.includes("immobilien") || c.includes("makler")) return "home";
-  if (c.includes("recht") || c.includes("anwalt") || c.includes("steuer")) return "gavel";
-  if (c.includes("einzelhandel") || c.includes("mode") || c.includes("kleidung")) return "shopping_bag";
-  if (c.includes("bildung") || c.includes("schule") || c.includes("kita") || c.includes("kinder")) return "school";
-  if (c.includes("kultur") || c.includes("kunst") || c.includes("musik")) return "theater_comedy";
-  if (c.includes("dienstleistung")) return "business_center";
-  if (c.includes("sonstiges")) return "more_horiz";
-  return "storefront";
-}
 
 export default async function GewerbePage({
   searchParams,
@@ -92,7 +73,7 @@ export default async function GewerbePage({
           )}
           {category && (
             <span className="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase">
-              {category}
+              {getCategoryLabel(category)}
             </span>
           )}
           <span className="text-on-surface-variant font-medium text-xs tracking-widest uppercase">
@@ -145,7 +126,7 @@ export default async function GewerbePage({
                 </div>
                 <div className="p-6 lg:p-8">
                   <span className="text-secondary font-bold text-[10px] tracking-widest uppercase">
-                    {business.category}
+                    {getCategoryLabel(business.category)}
                   </span>
                   <h3 className="text-xl lg:text-2xl font-black tracking-tight text-primary mt-1 mb-3 group-hover:text-secondary transition-colors">
                     {business.name}
@@ -196,7 +177,7 @@ export default async function GewerbePage({
                 {business.hero_image_url && business.tier !== "free" ? (
                   <img src={business.hero_image_url} alt={business.name} className="w-full h-full object-cover" />
                 ) : (
-                  <span className="material-symbols-outlined text-on-surface-variant text-xl lg:text-2xl">{categoryIcon(business.category)}</span>
+                  <span className="material-symbols-outlined text-on-surface-variant text-xl lg:text-2xl">{getCategoryIcon(business.category)}</span>
                 )}
               </div>
               <div className="flex-1 min-w-0 grid grid-cols-2 sm:grid-cols-4 items-center gap-2">
@@ -205,7 +186,7 @@ export default async function GewerbePage({
                     {business.name}
                   </h4>
                   <p className="text-[10px] sm:text-xs text-on-surface-variant uppercase tracking-wider mt-0.5">
-                    {business.category}
+                    {getCategoryLabel(business.category)}
                   </p>
                 </div>
                 <div className="hidden sm:block">

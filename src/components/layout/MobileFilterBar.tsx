@@ -5,6 +5,7 @@ import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import { GewerbeSearch } from "@/components/ui/GewerbeSearch";
 import { supabase } from "@/lib/supabase";
+import { BUSINESS_CATEGORIES } from "@/lib/constants";
 
 const towns = [
   { label: "Raunheim", value: "raunheim" },
@@ -12,22 +13,7 @@ const towns = [
   { label: "Rüsselsheim", value: "ruesselsheim" },
 ];
 
-const categories = [
-  { label: "Handwerk", value: "handwerk" },
-  { label: "Auto & Mobilität", value: "auto" },
-  { label: "Gastronomie", value: "gastronomie" },
-  { label: "Gesundheit", value: "gesundheit" },
-  { label: "Einzelhandel", value: "einzelhandel" },
-  { label: "Transport & Logistik", value: "transport" },
-  { label: "IT & Digital", value: "digital" },
-  { label: "Fitness", value: "fitness" },
-  { label: "Sport & Freizeit", value: "sport" },
-  { label: "Dienstleistung", value: "dienstleistung" },
-  { label: "Finanzen", value: "finanzen" },
-  { label: "Hotel & Gastgewerbe", value: "hotel" },
-  { label: "Kultur", value: "kultur" },
-  { label: "Sonstiges", value: "sonstiges" },
-];
+const categories = BUSINESS_CATEGORIES;
 
 const townActiveClass = {
   raunheim: "bg-primary-fixed text-on-primary-fixed",

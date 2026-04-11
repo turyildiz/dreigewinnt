@@ -121,7 +121,11 @@ export default async function AdminLayout({
       </aside>
 
       {/* Content */}
-      <main className="flex-1 lg:ml-64 min-h-screen pt-14 lg:pt-0">{children}</main>
+      <main className="flex-1 lg:ml-64 min-h-screen pt-14 lg:pt-0">
+        <div className="w-full max-w-[1440px] mx-auto">
+          {children}
+        </div>
+      </main>
     </div>
   );
 }

@@ -31,10 +31,10 @@ export function StickyBusinessHeader({ businessName, town, slug, activeTab, titl
         <p className="text-sm font-black text-primary tracking-tight truncate">{businessName}</p>
         <p className="text-[11px] font-bold text-on-surface-variant flex-shrink-0">· {town}</p>
       </div>
-      <div className="bg-surface-container-high/50 p-1.5 rounded-2xl flex gap-1">
+      <div className="bg-surface-container-high/50 p-1.5 rounded-none flex gap-1">
         <Link
           href={`/gewerbe/${slug}?tab=aktuelles`}
-          className={`flex-1 flex items-center justify-center gap-2.5 py-3 rounded-xl transition-all duration-300 ${
+          className={`flex-1 flex items-center justify-center gap-2.5 py-3 rounded-none transition-all duration-300 ${
             activeTab === "aktuelles"
               ? "bg-white shadow-sm text-primary"
               : "text-on-surface-variant/60 hover:text-on-surface-variant hover:bg-white/40"
@@ -55,7 +55,7 @@ export function StickyBusinessHeader({ businessName, town, slug, activeTab, titl
         </Link>
         <Link
           href={`/gewerbe/${slug}?tab=info`}
-          className={`flex-1 flex items-center justify-center gap-2.5 py-3 rounded-xl transition-all duration-300 ${
+          className={`flex-1 flex items-center justify-center gap-2.5 py-3 rounded-none transition-all duration-300 ${
             activeTab === "info"
               ? "bg-white shadow-sm text-primary"
               : "text-on-surface-variant/60 hover:text-on-surface-variant hover:bg-white/40"
