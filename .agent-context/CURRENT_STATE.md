@@ -17,6 +17,7 @@ Last updated: 2026-05-11 16:25 UTC by Hermes
 - TypeScript strict
 - Tailwind v4
 - Supabase/PostgreSQL
+- Cloudflare for image/media hosting
 - Target hosting from roadmap: Vercel for site, VPS for bots
 
 ## Verification baseline

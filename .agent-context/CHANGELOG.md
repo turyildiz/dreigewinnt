@@ -1,5 +1,10 @@
 # Dreigewinnt — Agent Changelog
 
+## 2026-05-11 17:01 UTC — Hermes
+- Locked product decision: Dreigewinnt images/media should be hosted on Cloudflare.
+- Documented that Supabase/PostgreSQL remains the primary application database for now; Cloudflare image hosting is not a database migration.
+- Added Cloudflare image/media wiring as a pre-launch task.
+
 ## 2026-05-11 16:32 UTC — Hermes
 - Investigated business import blocker; expected source `/var/www/html/dreigewinnt/businesses.json` is not present on this machine.
 - Added `scripts/import-businesses.mjs`, a dry-run-first importer that normalizes common business JSON fields and only writes to Supabase when run with `--apply`.

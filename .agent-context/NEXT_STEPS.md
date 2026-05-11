@@ -12,6 +12,7 @@ Last updated: 2026-05-11 16:25 UTC by Hermes
 - [x] Jobs page is connected to Supabase `jobs` table.
 - [x] Add `.ics` export/calendar download on event detail pages.
 - [ ] Legal pages: Impressum + Datenschutz exist as drafts, but address placeholders must be replaced before launch.
+- [ ] Wire uploaded/media image handling to Cloudflare-hosted storage/CDN.
 - [ ] Wire newsletter signup to Resend.
 - [ ] Create Turgay's superadmin account.
 - [ ] Deploy to Vercel.
