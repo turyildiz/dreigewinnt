@@ -9,9 +9,9 @@ Last updated: 2026-05-11 16:25 UTC by Hermes
 
 ## Pre-launch checklist from roadmap
 - [ ] Import ~594 businesses from `/var/www/html/dreigewinnt/businesses.json`.
-- [ ] Connect Jobs page to DB; roadmap says it is currently static.
-- [ ] Add `.ics` export/calendar download on event detail pages.
-- [ ] Add legal pages: Impressum + Datenschutz.
+- [x] Jobs page is connected to Supabase `jobs` table.
+- [x] Add `.ics` export/calendar download on event detail pages.
+- [ ] Legal pages: Impressum + Datenschutz exist as drafts, but address placeholders must be replaced before launch.
 - [ ] Wire newsletter signup to Resend.
 - [ ] Create Turgay's superadmin account.
 - [ ] Deploy to Vercel.

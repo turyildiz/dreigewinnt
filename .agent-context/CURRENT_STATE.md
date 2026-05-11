@@ -25,6 +25,7 @@ As of 2026-05-11:
 - `./node_modules/.bin/tsc --noEmit --incremental false` passes.
 - Production build passes in a clean temp copy at `/tmp/dreigewinnt-build` with physical `node_modules` copy.
 - Smoke-tested production routes returned HTTP 200: `/`, `/gewerbe`, `/events`, `/jobs`, `/news`, `/suche?q=test`, `/admin/login`.
+- Event `.ics` downloads are implemented at `/api/events/[slug]/calendar.ics` and smoke-tested with an active event slug.
 
 ## Environment notes
 - The repo has local permission/artifact issues around `.next`/`tsconfig.tsbuildinfo`; use `--incremental false` for typecheck and clean temp copy for build if needed.

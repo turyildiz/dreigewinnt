@@ -31,9 +31,9 @@
 ## Pre-Launch (must finish before going live)
 
 - [ ] Import ~594 businesses from `/var/www/html/dreigewinnt/businesses.json`
-- [ ] Jobs page — connect to DB (currently static)
-- [ ] .ics export — calendar download on event detail pages
-- [ ] Legal pages — Impressum + Datenschutz (DSGVO required)
+- [x] Jobs page — connected to Supabase `jobs` table
+- [x] .ics export — calendar download on event detail pages
+- [ ] Legal pages — Impressum + Datenschutz exist as drafts; replace placeholder address before launch
 - [ ] Newsletter signup — homepage form → Resend
 - [ ] Create Turgay's superadmin account
 - [ ] Deploy to Vercel
