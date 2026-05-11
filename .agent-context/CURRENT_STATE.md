@@ -1,6 +1,6 @@
 # Dreigewinnt — Current State
 
-Last updated: 2026-05-11 16:25 UTC by Hermes
+Last updated: 2026-05-11 17:01 UTC by Hermes
 
 ## Repository
 - Path: `/home/repos/dreigewinnt`
@@ -17,7 +17,7 @@ Last updated: 2026-05-11 16:25 UTC by Hermes
 - TypeScript strict
 - Tailwind v4
 - Supabase/PostgreSQL
-- Cloudflare for image/media hosting
+- Cloudflare R2 for image/media hosting via `images.dreigewinnt.com`
 - Target hosting from roadmap: Vercel for site, VPS for bots
 
 ## Verification baseline
@@ -28,6 +28,7 @@ As of 2026-05-11:
 - Smoke-tested production routes returned HTTP 200: `/`, `/gewerbe`, `/events`, `/jobs`, `/news`, `/suche?q=test`, `/admin/login`.
 - Event `.ics` downloads are implemented at `/api/events/[slug]/calendar.ics` and smoke-tested with an active event slug.
 - Business import source `/var/www/html/dreigewinnt/businesses.json` is currently missing on this machine; a dry-run-first importer exists at `scripts/import-businesses.mjs`.
+- Media uploads now prefer Cloudflare R2 when `CLOUDFLARE_R2_*` env vars are configured, with Supabase Storage fallback for unconfigured local environments.
 
 ## Environment notes
 - The repo has local permission/artifact issues around `.next`/`tsconfig.tsbuildinfo`; use `--incremental false` for typecheck and clean temp copy for build if needed.

@@ -2,7 +2,8 @@
 
 ## Tech Stack
 - Next.js 16.2.1 + React 19 + Tailwind v4
-- Supabase (PostgreSQL + Storage)
+- Supabase (PostgreSQL + Auth/Admin data)
+- Cloudflare R2 (`images.dreigewinnt.com`) for images/media
 - Grammy (Telegram bot framework)
 - Claude API (intent parsing + vision)
 - Stripe (payments — deferred)
@@ -34,6 +35,7 @@
 - [x] Jobs page — connected to Supabase `jobs` table
 - [x] .ics export — calendar download on event detail pages
 - [ ] Legal pages — Impressum + Datenschutz exist as drafts; replace placeholder address before launch
+- [x] Cloudflare R2 upload helper — media uploads use R2 when R2 env vars are configured, with Supabase Storage fallback for local/unconfigured environments
 - [ ] Newsletter signup — homepage form → Resend
 - [ ] Create Turgay's superadmin account
 - [ ] Deploy to Vercel
@@ -95,3 +97,4 @@
 - Bot access free for invited beta businesses at launch
 - Site on Vercel, bots on VPS
 - AI provider abstracted in bot — swappable without rewrite
+- Images/media hosted on Cloudflare R2; Supabase remains the application database/auth/admin backend

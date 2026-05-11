@@ -1,6 +1,6 @@
 # Dreigewinnt — Next Steps
 
-Last updated: 2026-05-11 16:25 UTC by Hermes
+Last updated: 2026-05-11 17:01 UTC by Hermes
 
 ## Immediate
 1. Keep commits small and push regularly to `turyildiz/dreigewinnt` only.
@@ -12,7 +12,8 @@ Last updated: 2026-05-11 16:25 UTC by Hermes
 - [x] Jobs page is connected to Supabase `jobs` table.
 - [x] Add `.ics` export/calendar download on event detail pages.
 - [ ] Legal pages: Impressum + Datenschutz exist as drafts, but address placeholders must be replaced before launch.
-- [ ] Wire uploaded/media image handling to Cloudflare-hosted storage/CDN.
+- [x] Wire uploaded/media image handling to Cloudflare-hosted storage/CDN.
+- [ ] Configure actual Cloudflare R2 credentials and custom domain in deployment env; do not commit secret values.
 - [ ] Wire newsletter signup to Resend.
 - [ ] Create Turgay's superadmin account.
 - [ ] Deploy to Vercel.

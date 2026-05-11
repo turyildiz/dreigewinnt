@@ -1,9 +1,13 @@
 # Dreigewinnt — Agent Changelog
 
 ## 2026-05-11 17:01 UTC — Hermes
-- Locked product decision: Dreigewinnt images/media should be hosted on Cloudflare.
+- Locked product decision: Dreigewinnt images/media should be hosted on Cloudflare R2 via `images.dreigewinnt.com`.
+- Implemented R2-first upload support in `src/lib/storage.ts` without adding dependencies; it uses R2 when `CLOUDFLARE_R2_*` env vars are configured and falls back to Supabase Storage otherwise.
+- Added `.env.example` with Supabase and Cloudflare R2 variable names only; no secret values.
+- Rewrote `README.md` with Dreigewinnt-specific setup, verification, and media architecture notes.
 - Documented that Supabase/PostgreSQL remains the primary application database for now; Cloudflare image hosting is not a database migration.
-- Added Cloudflare image/media wiring as a pre-launch task.
+- Marked Cloudflare image/media wiring as done; actual deployment credentials/domain config remain pending.
+- Verified lint, TypeScript, and production build in `/tmp/dreigewinnt-r2-build` pass.
 
 ## 2026-05-11 16:32 UTC — Hermes
 - Investigated business import blocker; expected source `/var/www/html/dreigewinnt/businesses.json` is not present on this machine.
