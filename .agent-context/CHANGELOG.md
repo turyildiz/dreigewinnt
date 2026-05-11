@@ -1,5 +1,12 @@
 # Dreigewinnt — Agent Changelog
 
+## 2026-05-11 16:32 UTC — Hermes
+- Investigated business import blocker; expected source `/var/www/html/dreigewinnt/businesses.json` is not present on this machine.
+- Added `scripts/import-businesses.mjs`, a dry-run-first importer that normalizes common business JSON fields and only writes to Supabase when run with `--apply`.
+- Added `npm run import:businesses` defaulting to `--dry-run`.
+- Tested importer against `/tmp/dreigewinnt-businesses-sample.json`; it parsed 2/2 sample rows successfully.
+- Verified lint and TypeScript still pass.
+
 ## 2026-05-11 16:29 UTC — Hermes
 - Added `/api/events/[slug]/calendar.ics` Route Handler for event calendar downloads.
 - Verified lint and TypeScript still pass.

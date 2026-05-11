@@ -30,7 +30,7 @@
 
 ## Pre-Launch (must finish before going live)
 
-- [ ] Import ~594 businesses from `/var/www/html/dreigewinnt/businesses.json`
+- [ ] Import ~594 businesses from `/var/www/html/dreigewinnt/businesses.json` once source file is restored/copied; dry-run importer exists at `scripts/import-businesses.mjs`
 - [x] Jobs page — connected to Supabase `jobs` table
 - [x] .ics export — calendar download on event detail pages
 - [ ] Legal pages — Impressum + Datenschutz exist as drafts; replace placeholder address before launch

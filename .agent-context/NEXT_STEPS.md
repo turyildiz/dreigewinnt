@@ -8,7 +8,7 @@ Last updated: 2026-05-11 16:25 UTC by Hermes
 3. Review remaining pre-launch blockers from `_docs/ROADMAP.md`.
 
 ## Pre-launch checklist from roadmap
-- [ ] Import ~594 businesses from `/var/www/html/dreigewinnt/businesses.json`.
+- [ ] Import ~594 businesses from `/var/www/html/dreigewinnt/businesses.json` once the source file is restored or copied to this machine. Use `npm run import:businesses -- --source <path>` for dry-run first, then add `--apply` only after checking the output.
 - [x] Jobs page is connected to Supabase `jobs` table.
 - [x] Add `.ics` export/calendar download on event detail pages.
 - [ ] Legal pages: Impressum + Datenschutz exist as drafts, but address placeholders must be replaced before launch.
