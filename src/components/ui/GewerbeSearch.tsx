@@ -9,7 +9,7 @@ interface Result {
   slug: string;
   name: string;
   town: string;
-  category: string;
+  category: string | null;
 }
 
 export function GewerbeSearch() {
@@ -127,7 +127,7 @@ export function GewerbeSearch() {
 
       {open && query && !loading && results.length === 0 && (
         <div className="absolute left-0 right-0 top-full mt-1 bg-surface border border-outline-variant/20 shadow-lg z-50 px-4 py-3">
-          <p className="text-sm text-on-surface-variant">Keine Ergebnisse für „{query}"</p>
+          <p className="text-sm text-on-surface-variant">Keine Ergebnisse für „{query}“</p>
         </div>
       )}
     </div>

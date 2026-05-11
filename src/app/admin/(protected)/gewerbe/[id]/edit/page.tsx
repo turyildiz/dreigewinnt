@@ -42,7 +42,7 @@ export default async function EditBusinessPage({
           </Link>
         </div>
 
-        <BusinessForm action={updateAction} deleteAction={deleteAction} defaultValues={business} />
+        <BusinessForm action={updateAction} deleteAction={deleteAction} defaultValues={{ ...business, category: business.category ?? undefined, opening_hours: business.opening_hours as { day: string; hours: string }[] | null }} />
 
         {/* Gallery — Standard (5 photos) and Premium (unlimited) only */}
         {photoLimit > 0 && (

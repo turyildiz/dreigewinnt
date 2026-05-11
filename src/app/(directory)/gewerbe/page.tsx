@@ -2,7 +2,7 @@ import Link from "next/link";
 import { TownTag } from "@/components/ui/TownTag";
 import { supabase } from "@/lib/supabase";
 import { toDisplayTown } from "@/lib/towns";
-import { BUSINESS_CATEGORIES, getCategoryIcon, getCategoryLabel } from "@/lib/constants";
+import { getCategoryIcon, getCategoryLabel } from "@/lib/constants";
 
 const PAGE_SIZE = 50;
 

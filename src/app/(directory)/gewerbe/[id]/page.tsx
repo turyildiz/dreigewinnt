@@ -105,7 +105,7 @@ export default async function BusinessDetailPage({
 
   const galleryImages = photos?.map((p) => p.url) ?? [];
   const tier = tierLabels[business.tier];
-  const openingHours: { day: string; hours: string }[] = business.opening_hours ?? [];
+  const openingHours = (business.opening_hours ?? []) as { day: string; hours: string }[];
 
   const isFree = business.tier === "free";
   const displayTown = toDisplayTown(business.town);

@@ -8,7 +8,8 @@ export async function approveItem(formData: FormData) {
   const id = formData.get("id") as string;
   const table = formData.get("table") as string; // "businesses" | "events"
 
-  await supabaseAdmin.from(table).update({ status: "active" }).eq("id", id);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  await (supabaseAdmin.from(table as any) as any).update({ status: "active" }).eq("id", id);
 
   revalidatePath("/admin/queue");
   const pathMap: Record<string, string> = { businesses: "/gewerbe", events: "/events", jobs: "/jobs" };
@@ -20,7 +21,8 @@ export async function reinstateItem(formData: FormData) {
   const id = formData.get("id") as string;
   const table = formData.get("table") as string;
 
-  await supabaseAdmin.from(table).update({ status: "pending" }).eq("id", id);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  await (supabaseAdmin.from(table as any) as any).update({ status: "pending" }).eq("id", id);
 
   revalidatePath("/admin/queue");
   redirect("/admin/queue");
@@ -30,7 +32,8 @@ export async function rejectItem(formData: FormData) {
   const id = formData.get("id") as string;
   const table = formData.get("table") as string;
 
-  await supabaseAdmin.from(table).update({ status: "rejected" }).eq("id", id);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  await (supabaseAdmin.from(table as any) as any).update({ status: "rejected" }).eq("id", id);
 
   revalidatePath("/admin/queue");
   redirect("/admin/queue?rejected=1");

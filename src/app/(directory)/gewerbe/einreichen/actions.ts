@@ -15,7 +15,6 @@ export async function submitBusinessAction(
 ): Promise<{ success: true } | { success: false; error: string }> {
   const tier = (formData.get("tier") as string) || "free";
   const isPaid = tier !== "free";
-  const isPremium = tier === "premium";
   const name = formData.get("name") as string;
   const slug = toSlug(name) + "-" + Date.now().toString(36);
 
@@ -73,7 +72,7 @@ export async function submitBusinessAction(
   // Insert gallery photos
   if (galleryUrls.length > 0) {
     await supabaseAdmin.from("business_photos").insert(
-      galleryUrls.map((url, i) => ({ business_id: bizId, photo_url: url, sort_order: i }))
+      galleryUrls.map((url, i) => ({ business_id: bizId, url, sort_order: i }))
     );
   }
 

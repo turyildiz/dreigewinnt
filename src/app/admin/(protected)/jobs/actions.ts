@@ -37,7 +37,7 @@ export async function createJobAction(formData: FormData) {
     category: (formData.get("category") as string) || null,
     description: (formData.get("description") as string) || null,
     salary_range: (formData.get("salary_range") as string) || null,
-    contact_email: (formData.get("contact_email") as string) || null,
+    contact_email: formData.get("contact_email") as string,
     contact_phone: (formData.get("contact_phone") as string) || null,
     website_url: (formData.get("website_url") as string) || null,
     image_url: imageUrl,

@@ -108,8 +108,6 @@ const tiers = [
 const inputClass =
   "w-full bg-surface-container-low px-4 py-3 text-sm text-primary placeholder:text-outline/50 outline-none border border-outline-variant/0 focus:border-secondary/30 focus:bg-surface-container transition-colors";
 
-const selectClass = `${inputClass} appearance-none cursor-pointer`;
-
 // Steps: 1=Details, 2=Paket, 3=Fotos (paid only), 4=Kontakt & Absenden
 // Free tier: 1=Details, 2=Paket, 3=Kontakt & Absenden (skip photos)
 
@@ -153,13 +151,7 @@ export function EinreichenForm({ initialValues, isUpgrade = false, existingId }:
   const galleryInputRef = useRef<HTMLInputElement>(null);
 
   const isPaid = form.tier !== "free";
-  const isPremium = form.tier === "premium";
   const totalSteps = isPaid ? 4 : 3;
-
-  // Logical step index (1=Details, 2=Paket, 3=Fotos|Submit, 4=Submit)
-  function displayStep() {
-    return step;
-  }
 
   function next() {
     setStep((s) => {

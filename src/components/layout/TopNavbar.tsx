@@ -34,8 +34,6 @@ export function TopNavbar() {
   useEffect(() => {
     if (isSearchOpen) {
       setTimeout(() => inputRef.current?.focus(), 50);
-    } else {
-      setQuery("");
     }
   }, [isSearchOpen]);
 
@@ -50,8 +48,12 @@ export function TopNavbar() {
 
   // Close mobile menu on route change
   useEffect(() => {
-    setIsMobileMenuOpen(false);
-    setIsSearchOpen(false);
+    const frame = requestAnimationFrame(() => {
+      setIsMobileMenuOpen(false);
+      setIsSearchOpen(false);
+      setQuery("");
+    });
+    return () => cancelAnimationFrame(frame);
   }, [pathname]);
 
   if (pathname?.startsWith("/admin")) return null;

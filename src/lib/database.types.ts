@@ -67,6 +67,7 @@ export interface Database {
           opening_hours?: Json | null;
           created_at?: string;
         };
+        Relationships: [];
       };
       business_photos: {
         Row: {
@@ -87,6 +88,7 @@ export interface Database {
           url?: string;
           sort_order?: number;
         };
+        Relationships: [];
       };
       business_posts: {
         Row: {
@@ -119,6 +121,15 @@ export interface Database {
           created_at?: string;
           expires_at?: string | null;
         };
+        Relationships: [
+          {
+            foreignKeyName: "business_posts_business_id_fkey";
+            columns: ["business_id"];
+            isOneToOne: false;
+            referencedRelation: "businesses";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       events: {
         Row: {
@@ -175,6 +186,7 @@ export interface Database {
           image_url?: string | null;
           created_at?: string;
         };
+        Relationships: [];
       };
       articles: {
         Row: {
@@ -219,6 +231,7 @@ export interface Database {
           meta_title?: string | null;
           meta_description?: string | null;
         };
+        Relationships: [];
       };
       admin_users: {
         Row: {
@@ -242,6 +255,7 @@ export interface Database {
           role?: string;
           created_at?: string;
         };
+        Relationships: [];
       };
       jobs: {
         Row: {
@@ -307,6 +321,7 @@ export interface Database {
           address?: string | null;
           created_at?: string;
         };
+        Relationships: [];
       };
       queue_items: {
         Row: {
@@ -321,10 +336,12 @@ export interface Database {
           id?: string;
           status?: string | null;
         };
+        Relationships: [];
       };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;
     Enums: Record<string, never>;
+    PostgrestVersion: "12";
   };
 }

@@ -62,7 +62,7 @@ export default async function SuchePage({
       <div className="mb-6">
         <p className="text-[10px] font-bold uppercase tracking-widest text-secondary mb-1">Suchergebnisse</p>
         <h1 className="text-2xl sm:text-3xl font-headline font-black tracking-tighter text-primary mb-1">
-          „{query}"
+          „{query}“
         </h1>
         <p className="text-on-surface-variant text-sm">{total} Ergebnis{total !== 1 ? "se" : ""} gefunden</p>
       </div>
@@ -70,7 +70,7 @@ export default async function SuchePage({
       {total === 0 && (
         <div className="bg-surface-container-lowest p-12 text-center">
           <span className="material-symbols-outlined text-4xl text-on-surface-variant/30 mb-3 block">search_off</span>
-          <p className="text-on-surface-variant text-sm">Keine Ergebnisse für „{query}".</p>
+          <p className="text-on-surface-variant text-sm">Keine Ergebnisse für „{query}“.</p>
         </div>
       )}
 
