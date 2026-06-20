@@ -15,7 +15,7 @@ export default async function EventsPage({
   // Featured events
   let featuredQuery = supabase
     .from("events")
-    .select("id, slug, title, description, town, date_start, image_url, is_featured, category")
+    .select("id, slug, title, description, town, date_start, image_url, is_featured, category, venue")
     .eq("status", "active")
     .eq("is_featured", true)
     .gte("date_start", new Date().toISOString())
@@ -91,6 +91,8 @@ export default async function EventsPage({
                 imageUrl={event.image_url ?? ""}
                 isFeatured={true}
                 variant="directory"
+                venue={event.venue ?? ""}
+                category={event.category ?? ""}
               />
             ))}
           </div>
@@ -107,6 +109,8 @@ export default async function EventsPage({
                 imageUrl={event.image_url ?? ""}
                 isFeatured={true}
                 variant="directory"
+                venue={event.venue ?? ""}
+                category={event.category ?? ""}
               />
             ))}
           </div>

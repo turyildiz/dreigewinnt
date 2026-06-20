@@ -1,3 +1,36 @@
+export const SPORT_CATEGORIES = [
+  { label: "Fußball", value: "fussball", icon: "sports_soccer" },
+  { label: "Volleyball", value: "volleyball", icon: "sports_volleyball" },
+  { label: "Handball", value: "handball", icon: "sports_handball" },
+  { label: "Basketball", value: "basketball", icon: "sports_basketball" },
+  { label: "Tennis", value: "tennis", icon: "sports_tennis" },
+  { label: "Schwimmen", value: "schwimmen", icon: "pool" },
+  { label: "Wassersport", value: "wassersport", icon: "rowing" },
+  { label: "Leichtathletik", value: "leichtathletik", icon: "directions_run" },
+  { label: "Turnen", value: "turnen", icon: "fitness_center" },
+  { label: "Kampfsport", value: "kampfsport", icon: "sports_martial_arts" },
+  { label: "Radsport", value: "radsport", icon: "pedal_bike" },
+  { label: "Reitsport", value: "reitsport", icon: "emoji_nature" },
+  { label: "Tanzen", value: "tanzen", icon: "nightlife" },
+  { label: "Schießsport", value: "schiesssport", icon: "track_changes" },
+  { label: "Tischtennis", value: "tischtennis", icon: "sports_cricket" },
+  { label: "Angeln", value: "angeln", icon: "phishing" },
+  { label: "Mehrsport", value: "mehrsport", icon: "sports" },
+  { label: "Sonstiges", value: "sonstiges_sport", icon: "emoji_events" },
+];
+
+export function getSportLabel(sportValue: string | null | undefined): string {
+  if (!sportValue) return "";
+  const found = SPORT_CATEGORIES.find(c => c.value === sportValue.toLowerCase());
+  return found ? found.label : sportValue;
+}
+
+export function getSportIcon(sportValue: string | null | undefined): string {
+  if (!sportValue) return "sports";
+  const found = SPORT_CATEGORIES.find(c => c.value === sportValue.toLowerCase());
+  return found ? found.icon : "sports";
+}
+
 export const BUSINESS_CATEGORIES = [
   { label: "Gastronomie", value: "gastronomie", icon: "restaurant" },
   { label: "Handwerk", value: "handwerk", icon: "build" },

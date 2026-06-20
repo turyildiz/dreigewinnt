@@ -43,8 +43,8 @@ export function ScrollableRow({ children }: { children: React.ReactNode }) {
           onClick={() => scroll("left")}
           disabled={!canScrollLeft}
           aria-label="Zurück"
-          className={`absolute left-2 top-1/2 -translate-y-1/2 z-10 w-12 h-12 flex items-center justify-center bg-secondary text-white shadow-2xl transition-all duration-300 hover:bg-primary hover:scale-110 ${
-            canScrollLeft ? "opacity-100" : "opacity-30 cursor-not-allowed"
+          className={`absolute left-2 top-1/2 -translate-y-1/2 z-10 w-12 h-12 hidden md:flex items-center justify-center bg-secondary text-white shadow-2xl transition-all duration-300 hover:bg-primary hover:scale-110 ${
+            canScrollLeft ? "opacity-100 cursor-pointer" : "opacity-30 cursor-not-allowed"
           }`}
         >
           <span className="material-symbols-outlined text-2xl font-bold">chevron_left</span>
@@ -65,8 +65,8 @@ export function ScrollableRow({ children }: { children: React.ReactNode }) {
           onClick={() => scroll("right")}
           disabled={!canScrollRight}
           aria-label="Weiter"
-          className={`absolute right-2 top-1/2 -translate-y-1/2 z-10 w-12 h-12 flex items-center justify-center bg-primary text-white shadow-2xl transition-all duration-300 hover:bg-secondary hover:scale-110 ${
-            canScrollRight ? "opacity-100" : "opacity-30 cursor-not-allowed"
+          className={`absolute right-2 top-1/2 -translate-y-1/2 z-10 w-12 h-12 hidden md:flex items-center justify-center bg-primary text-white shadow-2xl transition-all duration-300 hover:bg-secondary hover:scale-110 ${
+            canScrollRight ? "opacity-100 cursor-pointer" : "opacity-30 cursor-not-allowed"
           }`}
         >
           <span className="material-symbols-outlined text-2xl font-bold">chevron_right</span>

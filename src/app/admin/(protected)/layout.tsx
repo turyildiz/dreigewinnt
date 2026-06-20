@@ -7,8 +7,9 @@ import { AdminMobileHeader } from "./AdminMobileHeader";
 
 const navItems = [
   { href: "/admin/dashboard", label: "Übersicht", icon: "dashboard" },
-  { href: "/admin/gewerbe", label: "Gewerbe", icon: "storefront" },
   { href: "/admin/events", label: "Veranstaltungen", icon: "event" },
+  { href: "/admin/gewerbe", label: "Gewerbe", icon: "storefront" },
+  { href: "/admin/sport", label: "Sport", icon: "sports" },
   { href: "/admin/articles", label: "Nachrichten", icon: "newspaper" },
   { href: "/admin/jobs", label: "Stellenanzeigen", icon: "work" },
   { href: "/admin/queue", label: "Warteschlange", icon: "pending_actions" },

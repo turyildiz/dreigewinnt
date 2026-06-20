@@ -1,4 +1,11 @@
-# Dreigewinnt — Roadmap
+# Dreigewinnt — Roadmap (SUPERSEDED)
+
+> **⚠️ This roadmap is outdated.** The product direction changed on 2026-06-18.
+> See `PRD_v2.md` for the current product spec and `BATTLEPLAN.md` for the phased plan.
+
+---
+
+# Original Roadmap (for reference only)
 
 ## Tech Stack
 - Next.js 16.2.1 + React 19 + Tailwind v4

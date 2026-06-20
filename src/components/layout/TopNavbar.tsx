@@ -9,10 +9,10 @@ const quickLinks = [
   { label: "Raunheim", href: "/gewerbe?town=raunheim", icon: "location_city" },
   { label: "Kelsterbach", href: "/gewerbe?town=kelsterbach", icon: "apartment" },
   { label: "Rüsselsheim", href: "/gewerbe?town=ruesselsheim", icon: "corporate_fare" },
-  { label: "Gewerbe", href: "/gewerbe", icon: "storefront" },
   { label: "Events", href: "/events", icon: "event" },
+  { label: "Gewerbe", href: "/gewerbe", icon: "storefront" },
+  { label: "Sport", href: "/sport", icon: "sports" },
   { label: "News", href: "/news", icon: "newspaper" },
-  { label: "Jobs", href: "/jobs", icon: "work" },
 ];
 
 export function TopNavbar() {
@@ -102,7 +102,7 @@ export function TopNavbar() {
               <button
                 type="button"
                 onClick={() => { setIsSearchOpen(!isSearchOpen); setIsMobileMenuOpen(false); }}
-                className={`p-2 rounded-full transition-colors flex items-center justify-center ${isSearchOpen ? "bg-primary text-on-primary" : "text-primary hover:bg-surface-container-low"}`}
+                className={`cursor-pointer p-2 rounded-full transition-colors flex items-center justify-center ${isSearchOpen ? "bg-primary text-on-primary" : "text-primary hover:bg-surface-container-low"}`}
                 aria-label="Suche öffnen"
               >
                 <span className="material-symbols-outlined">{isSearchOpen ? "close" : "search"}</span>
@@ -116,7 +116,7 @@ export function TopNavbar() {
               <div className="lg:hidden">
                 <button
                   type="button"
-                  className="text-primary p-2 active:bg-surface-container-low rounded-full transition-colors flex items-center justify-center"
+                  className="cursor-pointer text-primary p-2 active:bg-surface-container-low rounded-full transition-colors flex items-center justify-center"
                   onClick={() => { setIsMobileMenuOpen(!isMobileMenuOpen); setIsSearchOpen(false); }}
                 >
                   <span className="material-symbols-outlined">{isMobileMenuOpen ? "close" : "menu"}</span>
@@ -128,10 +128,10 @@ export function TopNavbar() {
           {/* Desktop nav links */}
           <div className="absolute left-1/2 -translate-x-1/2 hidden lg:flex items-center gap-8 font-headline tracking-tight font-bold text-base">
             <Link
-              className={`transition-colors duration-200 ${pathname?.startsWith("/gewerbe") ? "text-primary border-b-2 border-primary pb-1" : "text-on-surface-variant hover:text-primary"}`}
-              href="/gewerbe"
+              className={`transition-colors duration-200 ${pathname?.startsWith("/aktuelles") ? "text-primary border-b-2 border-primary pb-1" : "text-on-surface-variant hover:text-primary"}`}
+              href="/aktuelles"
             >
-              Gewerbe
+              Aktuelles
             </Link>
             <Link
               className={`transition-colors duration-200 ${pathname?.startsWith("/events") ? "text-primary border-b-2 border-primary pb-1" : "text-on-surface-variant hover:text-primary"}`}
@@ -140,16 +140,22 @@ export function TopNavbar() {
               Events
             </Link>
             <Link
+              className={`transition-colors duration-200 ${pathname?.startsWith("/gewerbe") ? "text-primary border-b-2 border-primary pb-1" : "text-on-surface-variant hover:text-primary"}`}
+              href="/gewerbe"
+            >
+              Gewerbe
+            </Link>
+            <Link
+              className={`transition-colors duration-200 ${pathname?.startsWith("/sport") ? "text-primary border-b-2 border-primary pb-1" : "text-on-surface-variant hover:text-primary"}`}
+              href="/sport"
+            >
+              Sport
+            </Link>
+            <Link
               className={`transition-colors duration-200 ${pathname?.startsWith("/news") ? "text-primary border-b-2 border-primary pb-1" : "text-on-surface-variant hover:text-primary"}`}
               href="/news"
             >
               News
-            </Link>
-            <Link
-              className={`transition-colors duration-200 ${pathname?.startsWith("/jobs") ? "text-primary border-b-2 border-primary pb-1" : "text-on-surface-variant hover:text-primary"}`}
-              href="/jobs"
-            >
-              Jobs
             </Link>
           </div>
         </div>
@@ -162,10 +168,10 @@ export function TopNavbar() {
         >
           <div className="flex flex-col gap-6 px-6 py-8">
             <Link
-              className={`transition-colors duration-200 text-2xl font-headline tracking-tight font-bold flex justify-between items-center ${pathname?.startsWith("/gewerbe") ? "text-primary" : "text-on-surface-variant"}`}
-              href="/gewerbe"
+              className={`transition-colors duration-200 text-2xl font-headline tracking-tight font-bold flex justify-between items-center ${pathname?.startsWith("/aktuelles") ? "text-primary" : "text-on-surface-variant"}`}
+              href="/aktuelles"
             >
-              Gewerbe
+              Aktuelles
               <span className="material-symbols-outlined text-outline">arrow_forward_ios</span>
             </Link>
             <Link
@@ -176,17 +182,24 @@ export function TopNavbar() {
               <span className="material-symbols-outlined text-outline">arrow_forward_ios</span>
             </Link>
             <Link
+              className={`transition-colors duration-200 text-2xl font-headline tracking-tight font-bold flex justify-between items-center ${pathname?.startsWith("/gewerbe") ? "text-primary" : "text-on-surface-variant"}`}
+              href="/gewerbe"
+            >
+              Gewerbe
+              <span className="material-symbols-outlined text-outline">arrow_forward_ios</span>
+            </Link>
+            <Link
+              className={`transition-colors duration-200 text-2xl font-headline tracking-tight font-bold flex justify-between items-center ${pathname?.startsWith("/sport") ? "text-primary" : "text-on-surface-variant"}`}
+              href="/sport"
+            >
+              Sport
+              <span className="material-symbols-outlined text-outline">arrow_forward_ios</span>
+            </Link>
+            <Link
               className={`transition-colors duration-200 text-2xl font-headline tracking-tight font-bold flex justify-between items-center ${pathname?.startsWith("/news") ? "text-primary" : "text-on-surface-variant"}`}
               href="/news"
             >
               News
-              <span className="material-symbols-outlined text-outline">arrow_forward_ios</span>
-            </Link>
-            <Link
-              className={`transition-colors duration-200 text-2xl font-headline tracking-tight font-bold flex justify-between items-center ${pathname?.startsWith("/jobs") ? "text-primary" : "text-on-surface-variant"}`}
-              href="/jobs"
-            >
-              Jobs
               <span className="material-symbols-outlined text-outline">arrow_forward_ios</span>
             </Link>
             <hr className="border-outline-variant/20 my-2" />
@@ -225,7 +238,7 @@ export function TopNavbar() {
                   className="flex-1 bg-transparent border-none outline-none text-primary font-bold text-sm sm:text-base placeholder:text-outline/50 placeholder:font-normal"
                 />
                 {query && (
-                  <button onClick={() => setQuery("")} className="material-symbols-outlined text-outline hover:text-primary transition-colors text-xl">
+                  <button onClick={() => setQuery("")} className="cursor-pointer material-symbols-outlined text-outline hover:text-primary transition-colors text-xl">
                     close
                   </button>
                 )}
@@ -233,7 +246,7 @@ export function TopNavbar() {
               <button
                 onClick={handleSearch}
                 disabled={!query.trim()}
-                className="hidden sm:block signature-gradient text-on-secondary px-6 py-4 font-black uppercase text-xs tracking-widest hover:brightness-110 transition-all disabled:opacity-40"
+                className="cursor-pointer hidden sm:block signature-gradient text-on-secondary px-6 py-4 font-black uppercase text-xs tracking-widest hover:brightness-110 transition-all disabled:opacity-40 disabled:cursor-default"
               >
                 Suchen
               </button>

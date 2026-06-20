@@ -10,6 +10,8 @@ export interface EventCardProps {
   imageUrl?: string;
   isFeatured?: boolean;
   variant?: "landing" | "directory";
+  venue?: string;
+  category?: string;
 }
 
 export function EventCard({
@@ -21,6 +23,8 @@ export function EventCard({
   imageUrl,
   isFeatured = false,
   variant = "landing",
+  venue,
+  category,
 }: EventCardProps) {
   
   const dateNum = dateStr.slice(0, 2);
@@ -59,15 +63,22 @@ export function EventCard({
             </div>
 
             <div className="pt-5 sm:pt-6">
+              <div className="flex items-center gap-2 mb-2 flex-wrap">
+                <TownTag town={town} />
+                {category && (
+                  <span className="text-secondary font-bold text-[9px] sm:text-[10px] tracking-widest uppercase">{category}</span>
+                )}
+              </div>
               <h3 className="text-lg sm:text-xl lg:text-2xl font-headline font-bold text-primary mb-2 group-hover:text-secondary transition-colors leading-tight">
                 {title}
               </h3>
-              <p className="text-on-surface-variant text-xs sm:text-sm mb-4 sm:mb-6 line-clamp-2">{description}</p>
-              <button className="w-full flex items-center justify-center gap-2 border border-outline-variant/30 py-2.5 sm:py-3 text-[9px] sm:text-[11px] font-bold uppercase tracking-wider hover:bg-surface-container-high transition-colors">
-                <span className="material-symbols-outlined text-base sm:text-[18px]">calendar_today</span>
-                <span className="hidden sm:inline">Zum Kalender hinzufügen</span>
-                <span className="sm:hidden">Kalender</span>
-              </button>
+              <p className="text-on-surface-variant text-xs sm:text-sm mb-3 line-clamp-2">{description}</p>
+              {venue && (
+                <div className="flex items-center gap-2 text-on-surface-variant/70">
+                  <span className="material-symbols-outlined text-sm">location_on</span>
+                  <span className="text-[11px] font-medium">{venue}</span>
+                </div>
+              )}
             </div>
           </div>
         </Link>

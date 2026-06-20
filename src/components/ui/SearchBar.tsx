@@ -96,7 +96,7 @@ export function SearchBar() {
         <button 
           onClick={handleSearch}
           disabled={!query.trim()}
-          className="signature-gradient text-on-secondary px-8 md:px-10 py-5 rounded-sm font-black uppercase text-xs md:text-sm tracking-[0.2em] shadow-lg hover:brightness-110 transition-all text-center disabled:opacity-40"
+          className="cursor-pointer signature-gradient text-on-secondary px-8 md:px-10 py-5 rounded-sm font-black uppercase text-xs md:text-sm tracking-[0.2em] shadow-lg hover:brightness-110 transition-all text-center disabled:opacity-40 disabled:cursor-default"
         >
           Suchen
         </button>

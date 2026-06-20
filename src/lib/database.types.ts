@@ -323,6 +323,140 @@ export interface Database {
         };
         Relationships: [];
       };
+      clubs: {
+        Row: {
+          id: string;
+          slug: string;
+          name: string;
+          sport: string | null;
+          town: string;
+          tier: string;
+          status: string;
+          description: string | null;
+          full_description: string | null;
+          address: string | null;
+          phone: string | null;
+          email: string | null;
+          website: string | null;
+          hero_image_url: string | null;
+          logo_url: string | null;
+          is_spotlight: boolean;
+          founded_year: number | null;
+          members_count: number | null;
+          social_instagram: string | null;
+          social_facebook: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          slug: string;
+          name: string;
+          sport?: string | null;
+          town: string;
+          tier?: string;
+          status?: string;
+          description?: string | null;
+          full_description?: string | null;
+          address?: string | null;
+          phone?: string | null;
+          email?: string | null;
+          website?: string | null;
+          hero_image_url?: string | null;
+          logo_url?: string | null;
+          is_spotlight?: boolean;
+          founded_year?: number | null;
+          members_count?: number | null;
+          social_instagram?: string | null;
+          social_facebook?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          slug?: string;
+          name?: string;
+          sport?: string | null;
+          town?: string;
+          tier?: string;
+          status?: string;
+          description?: string | null;
+          full_description?: string | null;
+          address?: string | null;
+          phone?: string | null;
+          email?: string | null;
+          website?: string | null;
+          hero_image_url?: string | null;
+          logo_url?: string | null;
+          is_spotlight?: boolean;
+          founded_year?: number | null;
+          members_count?: number | null;
+          social_instagram?: string | null;
+          social_facebook?: string | null;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      club_photos: {
+        Row: {
+          id: string;
+          club_id: string;
+          url: string;
+          sort_order: number;
+        };
+        Insert: {
+          id?: string;
+          club_id: string;
+          url: string;
+          sort_order?: number;
+        };
+        Update: {
+          id?: string;
+          club_id?: string;
+          url?: string;
+          sort_order?: number;
+        };
+        Relationships: [];
+      };
+      club_posts: {
+        Row: {
+          id: string;
+          club_id: string;
+          content: string;
+          image_url: string | null;
+          images: string[] | null;
+          source: string;
+          created_at: string;
+          expires_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          club_id: string;
+          content: string;
+          image_url?: string | null;
+          images?: string[] | null;
+          source?: string;
+          created_at?: string;
+          expires_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          club_id?: string;
+          content?: string;
+          image_url?: string | null;
+          images?: string[] | null;
+          source?: string;
+          created_at?: string;
+          expires_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "club_posts_club_id_fkey";
+            columns: ["club_id"];
+            isOneToOne: false;
+            referencedRelation: "clubs";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       queue_items: {
         Row: {
           id: string;

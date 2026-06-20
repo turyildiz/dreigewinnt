@@ -17,10 +17,10 @@ function toSlug(name: string) {
 }
 
 function uploadImage(file: File, folder: string) {
-  return uploadToStorage(file, "business-images", folder);
+  return uploadToStorage(file, "club-images", folder);
 }
 
-export async function createBusinessAction(formData: FormData) {
+export async function createClubAction(formData: FormData) {
   const name = formData.get("name") as string;
   const slug = toSlug(name) + "-" + Date.now().toString(36);
 
@@ -30,12 +30,18 @@ export async function createBusinessAction(formData: FormData) {
     heroUrl = await uploadImage(heroFile, `hero/${slug}`);
   }
 
-  const { error } = await supabaseAdmin.from("businesses").insert({
+  const logoFile = formData.get("logo_file") as File | null;
+  let logoUrl = (formData.get("logo_url") as string) || null;
+  if (logoFile && logoFile.size > 0) {
+    logoUrl = await uploadImage(logoFile, `logo/${slug}`);
+  }
+
+  const { error } = await supabaseAdmin.from("clubs").insert({
     slug,
     name,
-    category: formData.get("category") as string,
+    sport: (formData.get("sport") as string) || null,
     town: formData.get("town") as string,
-    tier: formData.get("tier") as string,
+    tier: (formData.get("tier") as string) || "free",
     status: formData.get("status") as string,
     description: (formData.get("description") as string) || null,
     full_description: (formData.get("full_description") as string) || null,
@@ -44,31 +50,39 @@ export async function createBusinessAction(formData: FormData) {
     email: (formData.get("email") as string) || null,
     website: (formData.get("website") as string) || null,
     hero_image_url: heroUrl,
-    opening_hours: formData.get("opening_hours") ? JSON.parse(formData.get("opening_hours") as string) : null,
+    logo_url: logoUrl,
+    founded_year: formData.get("founded_year") ? parseInt(formData.get("founded_year") as string, 10) : null,
+    members_count: formData.get("members_count") ? parseInt(formData.get("members_count") as string, 10) : null,
+    social_instagram: (formData.get("social_instagram") as string) || null,
+    social_facebook: (formData.get("social_facebook") as string) || null,
   });
   if (error) throw new Error(error.message);
 
-  revalidatePath("/admin/gewerbe");
-  revalidatePath("/gewerbe");
-  redirect("/admin/gewerbe");
+  revalidatePath("/admin/sport");
+  revalidatePath("/sport");
+  redirect("/admin/sport");
 }
 
-export async function updateBusinessAction(id: string, formData: FormData) {
-  const name = formData.get("name") as string;
-
+export async function updateClubAction(id: string, formData: FormData) {
   const heroFile = formData.get("hero_image_file") as File | null;
   let heroUrl = (formData.get("hero_image_url") as string) || null;
   if (heroFile && heroFile.size > 0) {
     heroUrl = await uploadImage(heroFile, `hero/${id}`);
   }
 
+  const logoFile = formData.get("logo_file") as File | null;
+  let logoUrl = (formData.get("logo_url") as string) || null;
+  if (logoFile && logoFile.size > 0) {
+    logoUrl = await uploadImage(logoFile, `logo/${id}`);
+  }
+
   const { error } = await supabaseAdmin
-    .from("businesses")
+    .from("clubs")
     .update({
-      name,
-      category: formData.get("category") as string,
+      name: formData.get("name") as string,
+      sport: (formData.get("sport") as string) || null,
       town: formData.get("town") as string,
-      tier: formData.get("tier") as string,
+      tier: (formData.get("tier") as string) || "free",
       status: formData.get("status") as string,
       is_spotlight: formData.get("is_spotlight") === "on",
       description: (formData.get("description") as string) || null,
@@ -78,94 +92,73 @@ export async function updateBusinessAction(id: string, formData: FormData) {
       email: (formData.get("email") as string) || null,
       website: (formData.get("website") as string) || null,
       hero_image_url: heroUrl,
-      opening_hours: formData.get("opening_hours") ? JSON.parse(formData.get("opening_hours") as string) : null,
+      logo_url: logoUrl,
+      founded_year: formData.get("founded_year") ? parseInt(formData.get("founded_year") as string, 10) : null,
+      members_count: formData.get("members_count") ? parseInt(formData.get("members_count") as string, 10) : null,
+      social_instagram: (formData.get("social_instagram") as string) || null,
+      social_facebook: (formData.get("social_facebook") as string) || null,
     })
     .eq("id", id);
   if (error) throw new Error(error.message);
 
-  revalidatePath("/admin/gewerbe");
-  revalidatePath("/gewerbe");
-  redirect("/admin/gewerbe");
+  revalidatePath("/admin/sport");
+  revalidatePath("/sport");
+  redirect("/admin/sport");
 }
 
-export async function deleteBusinessAction(id: string) {
-  const { error } = await supabaseAdmin.from("businesses").delete().eq("id", id);
+export async function deleteClubAction(id: string) {
+  const { error } = await supabaseAdmin.from("clubs").delete().eq("id", id);
   if (error) throw new Error(error.message);
 
-  revalidatePath("/admin/gewerbe");
-  revalidatePath("/gewerbe");
-  redirect("/admin/gewerbe");
+  revalidatePath("/admin/sport");
+  revalidatePath("/sport");
+  redirect("/admin/sport");
 }
 
 // ── Gallery photo actions ──────────────────────────────────────────
 
-const PHOTO_LIMITS: Record<string, number> = {
-  free: 0,
-  standard: 5,
-  premium: Infinity,
-};
-
-export async function uploadGalleryPhotoAction(businessId: string, formData: FormData) {
+export async function uploadClubGalleryPhotoAction(clubId: string, formData: FormData) {
   const file = formData.get("photo") as File | null;
   if (!file || file.size === 0) return { error: "Kein Bild ausgewählt." };
 
-  // Check tier limit
-  const { data: business } = await supabaseAdmin
-    .from("businesses")
-    .select("tier")
-    .eq("id", businessId)
-    .single();
-
-  const limit = PHOTO_LIMITS[business?.tier ?? "free"] ?? 0;
-  if (limit === 0) return { error: "Dieses Paket unterstützt keine Galerie." };
-
-  if (limit !== Infinity) {
-    const { count } = await supabaseAdmin
-      .from("business_photos")
-      .select("id", { count: "exact", head: true })
-      .eq("business_id", businessId);
-    if ((count ?? 0) >= limit) return { error: `Maximale Anzahl (${limit}) erreicht.` };
-  }
-
-  const url = await uploadImage(file, `gallery/${businessId}`);
+  const url = await uploadImage(file, `gallery/${clubId}`);
   const { data: existing } = await supabaseAdmin
-    .from("business_photos")
+    .from("club_photos")
     .select("sort_order")
-    .eq("business_id", businessId)
+    .eq("club_id", clubId)
     .order("sort_order", { ascending: false })
     .limit(1);
 
   const nextOrder = ((existing?.[0]?.sort_order as number | undefined) ?? -1) + 1;
 
-  const { error } = await supabaseAdmin.from("business_photos").insert({
-    business_id: businessId,
+  const { error } = await supabaseAdmin.from("club_photos").insert({
+    club_id: clubId,
     url,
     sort_order: nextOrder,
   });
   if (error) return { error: error.message };
 
-  revalidatePath(`/admin/gewerbe/${businessId}/edit`);
-  revalidatePath(`/gewerbe`);
+  revalidatePath(`/admin/sport/${clubId}/edit`);
+  revalidatePath(`/sport`);
   return null;
 }
 
-export async function deleteGalleryPhotoAction(photoId: string, businessId: string) {
+export async function deleteClubGalleryPhotoAction(photoId: string, clubId: string) {
   const { data: photo } = await supabaseAdmin
-    .from("business_photos")
+    .from("club_photos")
     .select("url")
     .eq("id", photoId)
     .single();
 
-  await supabaseAdmin.from("business_photos").delete().eq("id", photoId);
+  await supabaseAdmin.from("club_photos").delete().eq("id", photoId);
 
-  // Only delete from Supabase Storage for legacy Supabase-hosted URLs
   if (photo?.url && !photo.url.startsWith(process.env.CLOUDFLARE_R2_PUBLIC_BASE_URL ?? "__none__")) {
-    const match = photo.url.match(/\/business-images\/(.+)$/);
+    const match = photo.url.match(/\/club-images\/(.+)$/);
     if (match) {
-      await supabaseAdmin.storage.from("business-images").remove([match[1]]);
+      await supabaseAdmin.storage.from("club-images").remove([match[1]]);
     }
   }
 
-  revalidatePath(`/admin/gewerbe/${businessId}/edit`);
-  revalidatePath(`/gewerbe`);
+  revalidatePath(`/admin/sport/${clubId}/edit`);
+  revalidatePath(`/sport`);
 }

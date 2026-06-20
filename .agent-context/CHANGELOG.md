@@ -1,5 +1,26 @@
 # Dreigewinnt — Agent Changelog
 
+## 2026-06-18 14:00 UTC — Claude
+
+- **Major strategy pivot** directed by Turgay. Events are now the hero feature. Sports clubs (Sportvereine) added as a new core entity. Two Telegram bots planned (admin + public). Jobs dropped from V1. No fixed launch date.
+- Wrote `_docs/PRD_v2.md` — full product spec for the new direction.
+- Wrote `_docs/BATTLEPLAN.md` — 5-phase plan: (1) sports clubs + site restructure, (2) admin Telegram bot, (3) public Telegram bot, (4) content seeding, (5) production launch + outreach.
+- Updated all `.agent-context/` files to reflect the new direction.
+- Updated root `/home/repos/AGENTS.md` current priority.
+- Revenue model changed: ticketing (commission) + merch shop are V2. No SaaS subscriptions.
+- Town press department outreach planned as partnership play.
+
+## 2026-06-13 13:30 UTC — Claude
+
+- DNS migrated from all-inkl to Cloudflare (nameservers: miguel + oaklyn.ns.cloudflare.com). All 6 records transferred including DKIM. Propagated same day.
+- R2 bucket `dreigewinnt-images` created. Custom domain `images.dreigewinnt.com` connected and active.
+- Added `dreigewinnt-images` to existing `bereket-r2-production` API token (same Account ID/keys as Bereket).
+- `.env.local` updated: added all 5 `CLOUDFLARE_R2_*` vars + `SUPABASE_SERVICE_ROLE_KEY`.
+- Fixed bug in `deleteGalleryPhotoAction` (`src/app/admin/(protected)/gewerbe/actions.ts`): was always trying to delete from Supabase Storage even for R2-hosted files. Now skips Supabase delete for R2 URLs.
+- `dreigewinnt.service` restarted to pick up new env vars. Running healthy on port 3005.
+- Confirmed superadmin: turgay@berlin.com in `admin_users` with role `superadmin`. Password reset.
+- Product strategy decision: do NOT import old scraped businesses.json (~594 entries). New approach documented in NEXT_STEPS.
+
 ## 2026-05-11 17:01 UTC — Hermes
 - Locked product decision: Dreigewinnt images/media should be hosted on Cloudflare R2 via `images.dreigewinnt.com`.
 - Implemented R2-first upload support in `src/lib/storage.ts` without adding dependencies; it uses R2 when `CLOUDFLARE_R2_*` env vars are configured and falls back to Supabase Storage otherwise.

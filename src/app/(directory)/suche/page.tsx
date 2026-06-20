@@ -28,14 +28,21 @@ export default async function SuchePage({
       .eq("status", "active")
       .ilike("name", like)
       .limit(10);
-      
+
   let evtQuery = supabase
       .from("events")
       .select("id, slug, title, town, date_start, category")
       .eq("status", "active")
       .ilike("title", like)
       .limit(10);
-      
+
+  let clubQuery = supabase
+      .from("clubs")
+      .select("id, slug, name, sport, town")
+      .eq("status", "approved")
+      .ilike("name", like)
+      .limit(10);
+
   let newsQuery = supabase
       .from("articles")
       .select("id, slug, title, towns, published_at")
@@ -46,16 +53,18 @@ export default async function SuchePage({
   if (townFilter) {
     bizQuery = bizQuery.eq("town", townFilter);
     evtQuery = evtQuery.eq("town", townFilter);
+    clubQuery = clubQuery.eq("town", townFilter);
     newsQuery = newsQuery.contains("towns", [townFilter]);
   }
 
-  const [{ data: businesses }, { data: events }, { data: news }] = await Promise.all([
+  const [{ data: businesses }, { data: events }, { data: clubs }, { data: news }] = await Promise.all([
     bizQuery,
     evtQuery,
+    clubQuery,
     newsQuery,
   ]);
 
-  const total = (businesses?.length ?? 0) + (events?.length ?? 0) + (news?.length ?? 0);
+  const total = (businesses?.length ?? 0) + (events?.length ?? 0) + (clubs?.length ?? 0) + (news?.length ?? 0);
 
   return (
     <main className="px-4 sm:px-8 lg:px-12 py-8 sm:py-12 w-full">
@@ -118,6 +127,32 @@ export default async function SuchePage({
                   <p className="text-[10px] text-on-surface-variant uppercase tracking-wider mt-0.5">
                     {toDisplayTown(e.town)}
                     {e.date_start && ` · ${new Date(e.date_start).toLocaleDateString("de-DE")}`}
+                  </p>
+                </div>
+                <span className="material-symbols-outlined text-on-surface-variant text-lg flex-shrink-0">arrow_forward</span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {(clubs?.length ?? 0) > 0 && (
+        <section className="mb-6">
+          <h2 className="text-[11px] font-black uppercase tracking-widest text-on-surface-variant mb-3 flex items-center gap-2">
+            <span className="material-symbols-outlined text-sm">sports</span>
+            Sport ({clubs!.length})
+          </h2>
+          <div className="flex flex-col gap-0">
+            {clubs!.map((c) => (
+              <Link
+                key={c.id}
+                href={`/sport/${c.slug}`}
+                className="flex items-center gap-4 px-5 py-4 bg-surface-container-lowest border-b border-outline-variant/10 last:border-b-0 hover:bg-surface-container-low transition-colors"
+              >
+                <div className="flex-1 min-w-0">
+                  <p className="font-bold text-primary text-sm truncate">{c.name}</p>
+                  <p className="text-[10px] text-on-surface-variant uppercase tracking-wider mt-0.5">
+                    {c.sport} · {toDisplayTown(c.town)}
                   </p>
                 </div>
                 <span className="material-symbols-outlined text-on-surface-variant text-lg flex-shrink-0">arrow_forward</span>
