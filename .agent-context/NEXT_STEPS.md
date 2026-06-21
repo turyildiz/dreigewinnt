@@ -6,6 +6,13 @@ Last updated: 2026-06-20 by Claude
 
 ---
 
+## Quick fixes (before next phase)
+- [x] Rename "Events" → "Veranstaltungen" in all nav components — done 2026-06-21
+- [x] Rename "News" → "Magazin" in all nav components — done 2026-06-21
+- [x] Update section headers on homepage and listing pages to match — done 2026-06-21
+
+---
+
 ## NOW: Phase 3 — Telegram Code System (June 20–24)
 
 ### Database

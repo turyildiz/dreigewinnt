@@ -32,7 +32,7 @@ export function EventCard({
 
   if (variant === "directory") {
     return (
-      <div className="group relative bg-surface-container-lowest border border-tertiary-container/20 overflow-hidden hover:shadow-2xl transition-all duration-500">
+      <div className="group relative bg-surface-container-lowest border border-outline-variant/10 overflow-hidden hover:shadow-lg transition-all duration-500">
         {isFeatured && (
           <div className="absolute top-3 right-3 z-10 bg-primary text-white px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider">
             Featured Boost
@@ -45,7 +45,7 @@ export function EventCard({
               <img
                 src={imageUrl}
                 alt={title}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                className="w-full h-full object-cover grayscale group-hover:grayscale-0 scale-105 group-hover:scale-100 transition-all duration-500"
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center">

@@ -2,6 +2,8 @@
 
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { uploadToStorage } from "@/lib/storage";
+import { generateTelegramCode } from "@/lib/telegram-codes";
+import { sendApprovalEmail } from "@/lib/email";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -64,6 +66,15 @@ export async function createClubAction(formData: FormData) {
 }
 
 export async function updateClubAction(id: string, formData: FormData) {
+  const name = formData.get("name") as string;
+  const newStatus = formData.get("status") as string;
+
+  const { data: current } = await supabaseAdmin
+    .from("clubs")
+    .select("status, email, slug, telegram_code, town")
+    .eq("id", id)
+    .single();
+
   const heroFile = formData.get("hero_image_file") as File | null;
   let heroUrl = (formData.get("hero_image_url") as string) || null;
   if (heroFile && heroFile.size > 0) {
@@ -79,11 +90,11 @@ export async function updateClubAction(id: string, formData: FormData) {
   const { error } = await supabaseAdmin
     .from("clubs")
     .update({
-      name: formData.get("name") as string,
+      name,
       sport: (formData.get("sport") as string) || null,
       town: formData.get("town") as string,
       tier: (formData.get("tier") as string) || "free",
-      status: formData.get("status") as string,
+      status: newStatus,
       is_spotlight: formData.get("is_spotlight") === "on",
       description: (formData.get("description") as string) || null,
       full_description: (formData.get("full_description") as string) || null,
@@ -100,6 +111,25 @@ export async function updateClubAction(id: string, formData: FormData) {
     })
     .eq("id", id);
   if (error) throw new Error(error.message);
+
+  if (current && current.status !== "approved" && newStatus === "approved" && current.email) {
+    const slug = current.slug;
+    let code = current.telegram_code;
+    if (!code) {
+      code = await generateTelegramCode(current.town, "clubs");
+      await supabaseAdmin.from("clubs").update({ telegram_code: code }).eq("id", id);
+    }
+    try {
+      await sendApprovalEmail({
+        to: current.email,
+        partnerName: name,
+        profileUrl: `https://dreigewinnt.com/sport/${slug}`,
+        telegramCode: code,
+      });
+    } catch (err) {
+      console.error("Approval email failed:", err);
+    }
+  }
 
   revalidatePath("/admin/sport");
   revalidatePath("/sport");
@@ -161,4 +191,24 @@ export async function deleteClubGalleryPhotoAction(photoId: string, clubId: stri
 
   revalidatePath(`/admin/sport/${clubId}/edit`);
   revalidatePath(`/sport`);
+}
+
+export async function generateClubTelegramCode(clubId: string) {
+  const { data: club } = await supabaseAdmin
+    .from("clubs")
+    .select("town, telegram_code")
+    .eq("id", clubId)
+    .single();
+
+  if (!club) throw new Error("Club not found");
+  if (club.telegram_code) return club.telegram_code;
+
+  const code = await generateTelegramCode(club.town, "clubs");
+  await supabaseAdmin
+    .from("clubs")
+    .update({ telegram_code: code })
+    .eq("id", clubId);
+
+  revalidatePath(`/admin/sport/${clubId}/edit`);
+  return code;
 }

@@ -27,6 +27,11 @@ export interface Database {
           hero_image_url: string | null;
           is_spotlight: boolean;
           opening_hours: Json | null;
+          telegram_code: string | null;
+          telegram_chat_id: string | null;
+          telegram_linked_at: string | null;
+          social_instagram: string | null;
+          social_facebook: string | null;
           created_at: string;
         };
         Insert: {
@@ -46,6 +51,11 @@ export interface Database {
           hero_image_url?: string | null;
           is_spotlight?: boolean;
           opening_hours?: Json | null;
+          telegram_code?: string | null;
+          telegram_chat_id?: string | null;
+          telegram_linked_at?: string | null;
+          social_instagram?: string | null;
+          social_facebook?: string | null;
           created_at?: string;
         };
         Update: {
@@ -65,6 +75,11 @@ export interface Database {
           hero_image_url?: string | null;
           is_spotlight?: boolean;
           opening_hours?: Json | null;
+          telegram_code?: string | null;
+          telegram_chat_id?: string | null;
+          telegram_linked_at?: string | null;
+          social_instagram?: string | null;
+          social_facebook?: string | null;
           created_at?: string;
         };
         Relationships: [];
@@ -345,6 +360,9 @@ export interface Database {
           members_count: number | null;
           social_instagram: string | null;
           social_facebook: string | null;
+          telegram_code: string | null;
+          telegram_chat_id: string | null;
+          telegram_linked_at: string | null;
           created_at: string;
         };
         Insert: {
@@ -368,6 +386,9 @@ export interface Database {
           members_count?: number | null;
           social_instagram?: string | null;
           social_facebook?: string | null;
+          telegram_code?: string | null;
+          telegram_chat_id?: string | null;
+          telegram_linked_at?: string | null;
           created_at?: string;
         };
         Update: {
@@ -391,6 +412,9 @@ export interface Database {
           members_count?: number | null;
           social_instagram?: string | null;
           social_facebook?: string | null;
+          telegram_code?: string | null;
+          telegram_chat_id?: string | null;
+          telegram_linked_at?: string | null;
           created_at?: string;
         };
         Relationships: [];

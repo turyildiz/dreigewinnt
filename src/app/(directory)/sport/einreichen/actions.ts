@@ -1,6 +1,7 @@
 "use server";
 
 import { supabaseAdmin } from "@/lib/supabase-admin";
+import { notifyAdmins } from "@/lib/telegram-notify";
 
 function toSlug(name: string) {
   return name
@@ -29,5 +30,16 @@ export async function submitClubAction(
   });
 
   if (error) return { success: false, error: error.message };
+
+  const town = formData.get("town") as string;
+  const sport = (formData.get("sport") as string) || "";
+  await notifyAdmins(
+    `⚽ <b>Neuer Verein eingereicht</b>\n\n` +
+    `<b>${name}</b>\n` +
+    `Stadt: ${town}\n` +
+    (sport ? `Sportart: ${sport}\n` : "") +
+    `\n→ Admin: https://dreigewinnt.heyturgay.com/admin/sport`
+  );
+
   return { success: true };
 }

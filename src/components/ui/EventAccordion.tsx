@@ -65,8 +65,8 @@ export function EventAccordion({ events }: { events: Event[] }) {
                 <img
                   src={event.image_url}
                   alt={event.title}
-                  className="w-full h-full object-cover transition-transform duration-700"
-                  style={{ transform: isHovered ? "scale(1)" : "scale(1.05)" }}
+                  className="w-full h-full object-cover transition-all duration-700"
+                  style={{ transform: isHovered ? "scale(1)" : "scale(1.05)", filter: isHovered ? "grayscale(0)" : "grayscale(1)" }}
                 />
               ) : (
                 <div className="w-full h-full bg-surface-container-high" />

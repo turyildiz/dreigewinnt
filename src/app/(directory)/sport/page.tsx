@@ -16,24 +16,22 @@ export default async function VereinePage({
   const from = (page - 1) * PAGE_SIZE;
   const to = from + PAGE_SIZE - 1;
 
-  // Spotlight clubs — always show all, no pagination
-  let spotlightQuery = supabase
+  // Featured clubs — 6 random for page 1
+  let featuredQuery = supabase
     .from("clubs")
     .select("id, slug, name, sport, town, tier, description, hero_image_url, logo_url")
     .eq("status", "approved")
-    .eq("is_spotlight", true)
-    .order("name");
+    .limit(6);
 
-  if (town) spotlightQuery = spotlightQuery.eq("town", town);
-  if (sport) spotlightQuery = spotlightQuery.ilike("sport", `%${sport}%`);
-  if (search) spotlightQuery = spotlightQuery.ilike("name", `%${search}%`);
+  if (town) featuredQuery = featuredQuery.eq("town", town);
+  if (sport) featuredQuery = featuredQuery.ilike("sport", `%${sport}%`);
+  if (search) featuredQuery = featuredQuery.ilike("name", `%${search}%`);
 
-  // Paginated non-spotlight clubs
+  // All clubs — paginated
   let othersQuery = supabase
     .from("clubs")
     .select("id, slug, name, sport, town, tier, description, hero_image_url, logo_url", { count: "exact" })
     .eq("status", "approved")
-    .eq("is_spotlight", false)
     .order("name")
     .range(from, to);
 
@@ -41,10 +39,13 @@ export default async function VereinePage({
   if (sport) othersQuery = othersQuery.ilike("sport", `%${sport}%`);
   if (search) othersQuery = othersQuery.ilike("name", `%${search}%`);
 
-  const [{ data: spotlight }, { data: others, count: totalOthers }] = await Promise.all([
-    spotlightQuery,
+  const [{ data: featuredRaw }, { data: others, count: totalOthers }] = await Promise.all([
+    featuredQuery,
     othersQuery,
   ]);
+
+  // Shuffle featured clubs for randomness
+  const spotlight = featuredRaw ? [...featuredRaw].sort(() => Math.random() - 0.5) : [];
 
   const totalPages = Math.ceil((totalOthers ?? 0) / PAGE_SIZE);
   const townLabel = town ? toDisplayTown(town) : null;
@@ -90,26 +91,23 @@ export default async function VereinePage({
       </header>
 
       {/* ── Spotlight Clubs ── */}
-      {page === 1 && (spotlight?.length ?? 0) > 0 && (
+      {page === 1 && spotlight.length > 0 && (
         <section className="px-4 sm:px-8 lg:px-12 mb-16 lg:mb-20">
           <div className="flex items-center gap-4 mb-6 lg:mb-8">
-            <h2 className="text-[12px] font-black tracking-[0.1em] text-tertiary uppercase flex items-center gap-2 flex-shrink-0">
-              <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-              Spotlight Clubs
+            <h2 className="text-[12px] font-black tracking-[0.1em] text-secondary uppercase flex items-center gap-2 flex-shrink-0">
+              <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>sports</span>
+              Entdecke Vereine
             </h2>
-            <div className="flex-grow h-[1px] bg-tertiary-container/30" />
+            <div className="flex-grow h-[1px] bg-secondary/20" />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
-            {spotlight!.map((club) => (
+            {spotlight.map((club) => (
               <Link
                 key={club.slug}
                 href={`/sport/${club.slug}`}
-                className="group relative bg-surface-container-lowest border border-tertiary-container/40 hover:bg-surface-bright transition-all duration-300 block"
+                className="group bg-surface-container-lowest border border-outline-variant/10 hover:shadow-lg transition-all duration-300 block"
               >
-                <div className="absolute -top-3 right-6 bg-tertiary text-white text-[10px] font-bold px-3 py-1 tracking-widest uppercase z-10">
-                  SPOTLIGHT
-                </div>
                 <div className="h-44 sm:h-48 lg:h-52 overflow-hidden bg-surface-container-high">
                   {club.hero_image_url ? (
                     <img

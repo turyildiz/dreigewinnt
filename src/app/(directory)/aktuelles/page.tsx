@@ -67,8 +67,76 @@ export default async function AktuellesPage({
         </div>
       ) : (
         <>
-          <section className="px-4 sm:px-8 lg:px-12 flex flex-col gap-3">
-            {posts.map((post) => {
+          {/* Featured posts — top 6 as big cards */}
+          {page === 1 && (
+            <section className="px-4 sm:px-8 lg:px-12 mb-16 lg:mb-20">
+              <div className="flex items-center gap-4 mb-6 lg:mb-8">
+                <h2 className="text-[12px] font-black tracking-[0.1em] text-secondary uppercase flex items-center gap-2 flex-shrink-0">
+                  <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>bolt</span>
+                  Neueste Updates
+                </h2>
+                <div className="flex-grow h-[1px] bg-secondary/20" />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
+                {posts.slice(0, 6).map((post) => {
+                  const biz = Array.isArray(post.businesses) ? post.businesses[0] : post.businesses;
+                  if (!biz) return null;
+                  const truncated = post.content.length > 120 ? post.content.slice(0, 120).trimEnd() + "…" : post.content;
+                  const postImage = post.images?.[0] ?? post.image_url;
+                  return (
+                    <Link
+                      key={post.id}
+                      href={`/gewerbe/${biz.slug}?tab=aktuelles`}
+                      className="group bg-surface-container-lowest border border-outline-variant/10 hover:shadow-lg transition-all duration-300 block"
+                    >
+                      <div className="h-44 sm:h-48 lg:h-52 overflow-hidden bg-surface-container-high">
+                        {postImage ? (
+                          <img
+                            src={postImage}
+                            alt=""
+                            className="w-full h-full object-cover grayscale group-hover:grayscale-0 scale-105 group-hover:scale-100 transition-all duration-500"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center">
+                            <span className="material-symbols-outlined text-outline/20 text-5xl">feed</span>
+                          </div>
+                        )}
+                      </div>
+                      <div className="p-6 lg:p-8">
+                        <div className="flex items-center gap-2 mb-2 flex-wrap">
+                          {biz.town && <TownTag town={townLabels[biz.town] ?? biz.town as "Raunheim"} />}
+                          <span className="text-[9px] font-black uppercase tracking-widest text-on-surface-variant/50">
+                            {formatRelativeTime(post.created_at)}
+                          </span>
+                        </div>
+                        <h3 className="text-xl lg:text-2xl font-black tracking-tight text-primary mt-1 mb-3 group-hover:text-secondary transition-colors">
+                          {biz.name}
+                        </h3>
+                        <p className="text-on-surface-variant text-sm leading-relaxed line-clamp-3">
+                          {truncated}
+                        </p>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            </section>
+          )}
+
+          {/* All posts — compact list */}
+          <section className="px-4 sm:px-8 lg:px-12">
+            {page === 1 && posts.length > 6 && (
+              <div className="flex items-center gap-4 mb-6 lg:mb-8">
+                <h2 className="text-[12px] font-black tracking-[0.1em] text-primary uppercase flex items-center gap-3 flex-shrink-0">
+                  <span className="w-5 h-[2px] bg-outline-variant flex-shrink-0" />
+                  Alle Updates
+                </h2>
+                <div className="flex-grow h-[1px] bg-outline-variant/15" />
+              </div>
+            )}
+            <div className="flex flex-col gap-3">
+            {(page === 1 ? posts.slice(6) : posts).map((post) => {
               const biz = Array.isArray(post.businesses) ? post.businesses[0] : post.businesses;
               if (!biz) return null;
               const truncated = post.content.length > 200 ? post.content.slice(0, 200).trimEnd() + "…" : post.content;
@@ -119,6 +187,7 @@ export default async function AktuellesPage({
                 </Link>
               );
             })}
+            </div>
           </section>
 
           {totalPages > 1 && (

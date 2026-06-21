@@ -78,38 +78,8 @@ const towns = [
 
 const categories = BUSINESS_CATEGORIES;
 
-const tiers = [
-  {
-    id: "free",
-    label: "Basis",
-    price: "Kostenlos",
-    icon: "storefront",
-    color: "text-on-surface-variant",
-    features: ["Name, Adresse, Telefon", "Kategorie & Ort", "Eintrag im Verzeichnis"],
-  },
-  {
-    id: "standard",
-    label: "Standard",
-    price: "€9,99 / Monat",
-    icon: "star",
-    color: "text-secondary",
-    features: ["Alles aus Basis", "Kurzbeschreibung", "Titelbild", "Bis zu 5 Galeriefotos"],
-  },
-  {
-    id: "premium",
-    label: "Premium",
-    price: "€29,99 / Monat",
-    icon: "workspace_premium",
-    color: "text-tertiary",
-    features: ["Alles aus Standard", "Featured Placement", "Spotlight auf Startseite", "Telegram Bot Beta"],
-  },
-];
-
 const inputClass =
   "w-full bg-surface-container-low px-4 py-3 text-sm text-primary placeholder:text-outline/50 outline-none border border-outline-variant/0 focus:border-secondary/30 focus:bg-surface-container transition-colors";
-
-// Steps: 1=Details, 2=Paket, 3=Fotos (paid only), 4=Kontakt & Absenden
-// Free tier: 1=Details, 2=Paket, 3=Kontakt & Absenden (skip photos)
 
 type FormState = {
   name: string;
@@ -150,22 +120,7 @@ export function EinreichenForm({ initialValues, isUpgrade = false, existingId }:
   const heroInputRef = useRef<HTMLInputElement>(null);
   const galleryInputRef = useRef<HTMLInputElement>(null);
 
-  const isPaid = form.tier !== "free";
-  const totalSteps = isPaid ? 4 : 3;
-
-  function next() {
-    setStep((s) => {
-      if (s === 2 && !isPaid) return 4; // free: skip photos
-      return s + 1;
-    });
-  }
-
-  function prev() {
-    setStep((s) => {
-      if (s === 4 && !isPaid) return 2; // free: skip back past photos
-      return s - 1;
-    });
-  }
+  const totalSteps = 3;
 
   function setField(field: keyof FormState, value: string) {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -203,8 +158,8 @@ export function EinreichenForm({ initialValues, isUpgrade = false, existingId }:
       const fd = new FormData();
       Object.entries(form).forEach(([k, v]) => fd.append(k, v));
       if (existingId) fd.append("existing_id", existingId);
-      if (isPaid && heroFile) fd.append("hero_image", heroFile);
-      if (isPaid) galleryFiles.forEach((f) => fd.append("gallery_images", f));
+      if (heroFile) fd.append("hero_image", heroFile);
+      galleryFiles.forEach((f) => fd.append("gallery_images", f));
 
       const result = await submitBusinessAction(fd);
       if (result.success) {
@@ -218,13 +173,10 @@ export function EinreichenForm({ initialValues, isUpgrade = false, existingId }:
   const step1Valid = form.name.trim() && form.town && form.category;
   const step3Valid = form.contact_email.trim();
 
-  // Visual step number for display (collapses photos step for free)
-  const visualStep = !isPaid && step === 4 ? 3 : step;
-  const progress = (visualStep / totalSteps) * 100;
+  const progress = (step / totalSteps) * 100;
 
   const stepLabel = step === 1 ? "Unternehmen"
-    : step === 2 ? "Paket"
-    : step === 3 ? "Fotos"
+    : step === 2 ? "Fotos"
     : "Kontakt & Absenden";
 
   return (
@@ -233,7 +185,7 @@ export function EinreichenForm({ initialValues, isUpgrade = false, existingId }:
       {/* Progress */}
       <div>
         <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-2">
-          <span>Schritt {visualStep} von {totalSteps}</span>
+          <span>Schritt {step} von {totalSteps}</span>
           <span>{stepLabel}</span>
         </div>
         <div className="h-1 bg-surface-container-low">
@@ -300,77 +252,20 @@ export function EinreichenForm({ initialValues, isUpgrade = false, existingId }:
               className={`${inputClass} resize-none`} />
           </div>
 
-          <button type="button" onClick={next} disabled={!step1Valid}
-            className="signature-gradient text-on-secondary py-4 font-black uppercase text-xs tracking-widest hover:brightness-110 transition-all disabled:opacity-40 mt-2">
+          <button type="button" onClick={() => setStep(2)} disabled={!step1Valid}
+            className="cursor-pointer signature-gradient text-on-secondary py-4 font-black uppercase text-xs tracking-widest hover:brightness-110 transition-all disabled:opacity-40 disabled:cursor-default mt-2">
             Weiter
           </button>
         </div>
       )}
 
-      {/* ── STEP 2: Paket ─────────────────────────────────────── */}
+      {/* ── STEP 2: Fotos ─────────────────────────────────────── */}
       {step === 2 && (
-        <div className="flex flex-col gap-6">
-          <div>
-            <h2 className="text-xl font-headline font-black text-primary mb-1">Paket wählen</h2>
-            <p className="text-sm text-on-surface-variant">Wählen Sie das passende Paket. Zahlung erfolgt per Rechnung nach Aktivierung.</p>
-          </div>
-
-          <div className="flex flex-col gap-3">
-            {tiers.filter((tier) => !(isUpgrade && tier.id === "free")).map((tier) => {
-              const isSelected = form.tier === tier.id;
-              return (
-                <button key={tier.id} type="button" onClick={() => setField("tier", tier.id)}
-                  className={`flex items-start gap-4 p-5 text-left border transition-all ${
-                    isSelected ? "border-secondary bg-secondary/5" : "border-outline-variant/20 hover:border-outline-variant/50 bg-surface-container-lowest"
-                  }`}>
-                  <span className={`material-symbols-outlined text-2xl mt-0.5 flex-shrink-0 ${isSelected ? tier.color : "text-on-surface-variant/50"}`}
-                    style={{ fontVariationSettings: isSelected ? "'FILL' 1" : "'FILL' 0" }}>
-                    {tier.icon}
-                  </span>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between gap-2 mb-2">
-                      <span className={`font-black text-base ${isSelected ? "text-primary" : "text-on-surface-variant"}`}>{tier.label}</span>
-                      <span className={`text-xs font-black flex-shrink-0 ${isSelected ? "text-secondary" : "text-on-surface-variant/60"}`}>{tier.price}</span>
-                    </div>
-                    <ul className="flex flex-col gap-1">
-                      {tier.features.map((f) => (
-                        <li key={f} className="flex items-center gap-2 text-[11px] text-on-surface-variant">
-                          <span className="material-symbols-outlined text-sm text-secondary" style={{ fontVariationSettings: "'FILL' 1" }}>check</span>
-                          {f}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div className={`w-4 h-4 rounded-full border-2 flex-shrink-0 mt-0.5 flex items-center justify-center transition-all ${
-                    isSelected ? "border-secondary bg-secondary" : "border-outline-variant"
-                  }`}>
-                    {isSelected && <span className="block w-1.5 h-1.5 rounded-full bg-on-secondary" />}
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-
-          <div className="flex gap-3 mt-2">
-            <button type="button" onClick={prev}
-              className="flex-shrink-0 px-6 py-4 border border-outline-variant/30 text-on-surface-variant font-bold uppercase text-xs tracking-widest hover:bg-surface-container-low transition-colors">
-              Zurück
-            </button>
-            <button type="button" onClick={next}
-              className="flex-1 signature-gradient text-on-secondary py-4 font-black uppercase text-xs tracking-widest hover:brightness-110 transition-all">
-              Weiter
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* ── STEP 3: Fotos (paid only) ─────────────────────────── */}
-      {step === 3 && isPaid && (
         <div className="flex flex-col gap-6">
           <div>
             <h2 className="text-xl font-headline font-black text-primary mb-1">Fotos hochladen</h2>
             <p className="text-sm text-on-surface-variant">
-              Titelbild + bis zu 5 Galeriefotos
+              Titelbild + bis zu 5 Galeriefotos (optional)
             </p>
           </div>
 
@@ -382,13 +277,13 @@ export function EinreichenForm({ initialValues, isUpgrade = false, existingId }:
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={heroPreview} alt="Vorschau" className="w-full h-48 object-cover" />
                 <button type="button" onClick={removeHero}
-                  className="absolute top-2 right-2 bg-surface/90 backdrop-blur text-primary p-1.5 hover:bg-surface transition-colors">
+                  className="cursor-pointer absolute top-2 right-2 bg-surface/90 backdrop-blur text-primary p-1.5 hover:bg-surface transition-colors">
                   <span className="material-symbols-outlined text-sm">delete</span>
                 </button>
               </div>
             ) : (
               <button type="button" onClick={() => heroInputRef.current?.click()}
-                className="w-full h-40 border-2 border-dashed border-outline-variant/30 flex flex-col items-center justify-center gap-2 hover:border-outline-variant/60 hover:bg-surface-container-low transition-all">
+                className="cursor-pointer w-full h-40 border-2 border-dashed border-outline-variant/30 flex flex-col items-center justify-center gap-2 hover:border-outline-variant/60 hover:bg-surface-container-low transition-all">
                 <span className="material-symbols-outlined text-3xl text-on-surface-variant/40">add_photo_alternate</span>
                 <span className="text-[11px] font-bold uppercase tracking-widest text-on-surface-variant/60">Titelbild auswählen</span>
                 <span className="text-[10px] text-on-surface-variant/40">JPG, PNG, WebP · max. 5 MB</span>
@@ -397,57 +292,55 @@ export function EinreichenForm({ initialValues, isUpgrade = false, existingId }:
             <input ref={heroInputRef} type="file" accept="image/*" onChange={handleHeroChange} className="hidden" />
           </div>
 
-          {/* Gallery (standard + premium) */}
-          {isPaid && (
-            <div>
-              <div className="flex items-center justify-between mb-3">
-                <label className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
-                  Galerie <span className="text-on-surface-variant/50">({galleryFiles.length}/5)</span>
-                </label>
-                {galleryFiles.length < 5 && (
-                  <button type="button" onClick={() => galleryInputRef.current?.click()}
-                    className="text-[10px] font-bold uppercase tracking-widest text-secondary hover:text-primary transition-colors">
-                    + Foto hinzufügen
-                  </button>
-                )}
-              </div>
-              <div className="grid grid-cols-3 gap-2">
-                {galleryPreviews.map((src, i) => (
-                  <div key={i} className="relative aspect-square">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={src} alt={`Galerie ${i + 1}`} className="w-full h-full object-cover" />
-                    <button type="button" onClick={() => removeGallery(i)}
-                      className="absolute top-1 right-1 bg-surface/90 p-1 hover:bg-surface transition-colors">
-                      <span className="material-symbols-outlined text-xs">close</span>
-                    </button>
-                  </div>
-                ))}
-                {galleryFiles.length < 5 && (
-                  <button type="button" onClick={() => galleryInputRef.current?.click()}
-                    className="aspect-square border-2 border-dashed border-outline-variant/30 flex items-center justify-center hover:border-outline-variant/60 hover:bg-surface-container-low transition-all">
-                    <span className="material-symbols-outlined text-on-surface-variant/40">add</span>
-                  </button>
-                )}
-              </div>
-              <input ref={galleryInputRef} type="file" accept="image/*" multiple onChange={handleGalleryChange} className="hidden" />
+          {/* Gallery */}
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <label className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
+                Galerie <span className="text-on-surface-variant/50">({galleryFiles.length}/5)</span>
+              </label>
+              {galleryFiles.length < 5 && (
+                <button type="button" onClick={() => galleryInputRef.current?.click()}
+                  className="cursor-pointer text-[10px] font-bold uppercase tracking-widest text-secondary hover:text-primary transition-colors">
+                  + Foto hinzufügen
+                </button>
+              )}
             </div>
-          )}
+            <div className="grid grid-cols-3 gap-2">
+              {galleryPreviews.map((src, i) => (
+                <div key={i} className="relative aspect-square">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={src} alt={`Galerie ${i + 1}`} className="w-full h-full object-cover" />
+                  <button type="button" onClick={() => removeGallery(i)}
+                    className="cursor-pointer absolute top-1 right-1 bg-surface/90 p-1 hover:bg-surface transition-colors">
+                    <span className="material-symbols-outlined text-xs">close</span>
+                  </button>
+                </div>
+              ))}
+              {galleryFiles.length < 5 && (
+                <button type="button" onClick={() => galleryInputRef.current?.click()}
+                  className="cursor-pointer aspect-square border-2 border-dashed border-outline-variant/30 flex items-center justify-center hover:border-outline-variant/60 hover:bg-surface-container-low transition-all">
+                  <span className="material-symbols-outlined text-on-surface-variant/40">add</span>
+                </button>
+              )}
+            </div>
+            <input ref={galleryInputRef} type="file" accept="image/*" multiple onChange={handleGalleryChange} className="hidden" />
+          </div>
 
           <div className="flex gap-3 mt-2">
-            <button type="button" onClick={prev}
-              className="flex-shrink-0 px-6 py-4 border border-outline-variant/30 text-on-surface-variant font-bold uppercase text-xs tracking-widest hover:bg-surface-container-low transition-colors">
+            <button type="button" onClick={() => setStep(1)}
+              className="cursor-pointer flex-shrink-0 px-6 py-4 border border-outline-variant/30 text-on-surface-variant font-bold uppercase text-xs tracking-widest hover:bg-surface-container-low transition-colors">
               Zurück
             </button>
-            <button type="button" onClick={next}
-              className="flex-1 signature-gradient text-on-secondary py-4 font-black uppercase text-xs tracking-widest hover:brightness-110 transition-all">
+            <button type="button" onClick={() => setStep(3)}
+              className="cursor-pointer flex-1 signature-gradient text-on-secondary py-4 font-black uppercase text-xs tracking-widest hover:brightness-110 transition-all">
               Weiter
             </button>
           </div>
         </div>
       )}
 
-      {/* ── STEP 4: Kontakt & Absenden ────────────────────────── */}
-      {step === 4 && (
+      {/* ── STEP 3: Kontakt & Absenden ────────────────────────── */}
+      {step === 3 && (
         <div className="flex flex-col gap-6">
           <div>
             <h2 className="text-xl font-headline font-black text-primary mb-1">Kontakt & Absenden</h2>
@@ -460,20 +353,20 @@ export function EinreichenForm({ initialValues, isUpgrade = false, existingId }:
             {[
               ["Unternehmen", form.name],
               ["Stadt", towns.find((t) => t.value === form.town)?.label ?? ""],
-              ["Paket", `${tiers.find((t) => t.id === form.tier)?.label} — ${tiers.find((t) => t.id === form.tier)?.price}`],
+              ["Kategorie", categories.find((c) => c.value === form.category)?.label ?? ""],
             ].map(([label, value]) => (
               <div key={label} className="flex justify-between text-sm">
                 <span className="text-on-surface-variant">{label}</span>
                 <span className="font-bold text-primary">{value}</span>
               </div>
             ))}
-            {isPaid && heroFile && (
+            {heroFile && (
               <div className="flex justify-between text-sm">
                 <span className="text-on-surface-variant">Titelbild</span>
                 <span className="font-bold text-secondary">✓</span>
               </div>
             )}
-            {isPaid && galleryFiles.length > 0 && (
+            {galleryFiles.length > 0 && (
               <div className="flex justify-between text-sm">
                 <span className="text-on-surface-variant">Galeriefotos</span>
                 <span className="font-bold text-secondary">{galleryFiles.length}</span>
@@ -491,19 +384,19 @@ export function EinreichenForm({ initialValues, isUpgrade = false, existingId }:
           {error && <p className="text-sm text-error bg-error/5 px-4 py-3">{error}</p>}
 
           <div className="flex gap-3">
-            <button type="button" onClick={prev}
-              className="flex-shrink-0 px-6 py-4 border border-outline-variant/30 text-on-surface-variant font-bold uppercase text-xs tracking-widest hover:bg-surface-container-low transition-colors">
+            <button type="button" onClick={() => setStep(2)}
+              className="cursor-pointer flex-shrink-0 px-6 py-4 border border-outline-variant/30 text-on-surface-variant font-bold uppercase text-xs tracking-widest hover:bg-surface-container-low transition-colors">
               Zurück
             </button>
             <button type="button" onClick={handleSubmit} disabled={!step3Valid || isPending}
-              className="flex-1 signature-gradient text-on-secondary py-4 font-black uppercase text-xs tracking-widest hover:brightness-110 transition-all disabled:opacity-40 flex items-center justify-center gap-2">
+              className="cursor-pointer flex-1 signature-gradient text-on-secondary py-4 font-black uppercase text-xs tracking-widest hover:brightness-110 transition-all disabled:opacity-40 disabled:cursor-default flex items-center justify-center gap-2">
               {isPending ? (
                 <>
                   <span className="material-symbols-outlined text-base animate-spin">progress_activity</span>
                   Wird gesendet…
                 </>
               ) : (
-                form.tier === "free" ? "Kostenlos einreichen" : "Kostenpflichtig einreichen"
+                "Kostenlos einreichen"
               )}
             </button>
           </div>

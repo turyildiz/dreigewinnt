@@ -2,6 +2,7 @@
 
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { uploadToStorage } from "@/lib/storage";
+import { notifyAdmins } from "@/lib/telegram-notify";
 
 function toSlug(name: string) {
   return name
@@ -13,8 +14,6 @@ function toSlug(name: string) {
 export async function submitBusinessAction(
   formData: FormData
 ): Promise<{ success: true } | { success: false; error: string }> {
-  const tier = (formData.get("tier") as string) || "free";
-  const isPaid = tier !== "free";
   const name = formData.get("name") as string;
   const slug = toSlug(name) + "-" + Date.now().toString(36);
 
@@ -24,7 +23,7 @@ export async function submitBusinessAction(
   const existingId = (formData.get("existing_id") as string) || null;
   const uploadSlug = existingId ?? slug;
 
-  if (isPaid) {
+  try {
     const heroFile = formData.get("hero_image") as File | null;
     if (heroFile && heroFile.size > 0) {
       heroImageUrl = await uploadToStorage(heroFile, "business-images", `submissions/${uploadSlug}`);
@@ -36,10 +35,12 @@ export async function submitBusinessAction(
         galleryUrls.push(url);
       }
     }
+  } catch (err) {
+    console.error("Image upload failed:", err);
   }
 
   const payload = {
-    tier,
+    tier: "standard" as const,
     status: "pending" as const,
     description: (formData.get("description") as string) || null,
     address: (formData.get("address") as string) || null,
@@ -75,6 +76,16 @@ export async function submitBusinessAction(
       galleryUrls.map((url, i) => ({ business_id: bizId, url, sort_order: i }))
     );
   }
+
+  const town = formData.get("town") as string;
+  const category = formData.get("category") as string;
+  await notifyAdmins(
+    `🏪 <b>Neuer Partner eingereicht</b>\n\n` +
+    `<b>${name}</b>\n` +
+    `Stadt: ${town}\n` +
+    `Kategorie: ${category}\n\n` +
+    `→ Admin: https://dreigewinnt.heyturgay.com/admin/gewerbe`
+  );
 
   return { success: true };
 }

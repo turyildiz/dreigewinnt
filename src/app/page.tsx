@@ -147,11 +147,11 @@ export default async function Home() {
                 <Link
                   key={post.id}
                   href={`/gewerbe/${biz.slug}?tab=aktuelles`}
-                  className="group bg-surface-container-low flex flex-col flex-shrink-0 w-[260px] sm:w-[300px] snap-start hover:bg-surface-container transition-colors"
+                  className="group bg-surface-container-low flex flex-col flex-shrink-0 w-[260px] sm:w-[300px] snap-start hover:shadow-lg transition-all duration-300"
                 >
                   <div className="h-40 bg-surface-container-high overflow-hidden flex-shrink-0">
                     {postImage ? (
-                      <img src={postImage} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                      <img src={postImage} alt="" className="w-full h-full object-cover grayscale group-hover:grayscale-0 scale-105 group-hover:scale-100 transition-all duration-500" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
                         <span className="material-symbols-outlined text-outline/20 text-4xl">feed</span>
@@ -206,8 +206,8 @@ export default async function Home() {
         <section className="py-16 md:py-20 px-6 md:px-12">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-12 gap-4">
             <div>
-              <span className="text-secondary font-black text-[10px] md:text-xs uppercase tracking-[0.3em] block mb-3 md:mb-4">Lokale Nachrichten</span>
-              <h2 className="text-4xl md:text-5xl font-headline font-black text-primary tracking-tighter">Neuigkeiten</h2>
+              <span className="text-secondary font-black text-[10px] md:text-xs uppercase tracking-[0.3em] block mb-3 md:mb-4">Lokal Kuratiert</span>
+              <h2 className="text-4xl md:text-5xl font-headline font-black text-primary tracking-tighter">Magazin</h2>
             </div>
             <Link href="/news" className="text-[10px] md:text-sm font-bold uppercase tracking-widest border-b-2 border-secondary pb-1 hover:text-secondary transition-colors">Alle Artikel lesen</Link>
           </div>
@@ -219,11 +219,11 @@ export default async function Home() {
                 <Link
                   key={article.id}
                   href={`/news/${article.slug}`}
-                  className="group bg-surface-container-low flex flex-col flex-shrink-0 w-[260px] sm:w-[300px] snap-start hover:bg-surface-container transition-colors"
+                  className="group bg-surface-container-low flex flex-col flex-shrink-0 w-[260px] sm:w-[300px] snap-start hover:shadow-lg transition-all duration-300"
                 >
                   <div className="h-40 bg-surface-container-high overflow-hidden flex-shrink-0">
                     {article.hero_image_url ? (
-                      <img src={article.hero_image_url} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                      <img src={article.hero_image_url} alt={article.title} className="w-full h-full object-cover grayscale group-hover:grayscale-0 scale-105 group-hover:scale-100 transition-all duration-500" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
                         <span className="material-symbols-outlined text-outline/20 text-4xl">newspaper</span>

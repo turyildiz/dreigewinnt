@@ -4,8 +4,8 @@ import { TownTag } from "@/components/ui/TownTag";
 import { supabase } from "@/lib/supabase";
 
 export const metadata: Metadata = {
-  title: "Lokale Nachrichten | DREIGEWINNT.COM",
-  description: "Aktuelle Nachrichten aus Raunheim, Kelsterbach und Rüsselsheim — kuratiert und geprüft.",
+  title: "Magazin | DREIGEWINNT.COM",
+  description: "Lokales Magazin aus Raunheim, Kelsterbach und Rüsselsheim — kuratiert und geprüft.",
 };
 
 const townLabels: Record<string, "Raunheim" | "Kelsterbach" | "Rüsselsheim"> = {
@@ -51,7 +51,7 @@ export default async function NewsPage({
         Alle
       </Link>
       <Link href={`/news?${town ? `town=${town}&` : ""}type=news`} className={`px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-widest transition-colors ${activeType === "news" ? "bg-primary text-on-primary" : "bg-surface-container text-on-surface-variant hover:bg-surface-container-high"}`}>
-        Nachrichten
+        Artikel
       </Link>
       <Link href={`/news?${town ? `town=${town}&` : ""}type=story`} className={`px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-widest transition-colors ${activeType === "story" ? "bg-secondary text-on-secondary" : "bg-surface-container text-on-surface-variant hover:bg-surface-container-high"}`}>
         Magazin
@@ -69,7 +69,7 @@ export default async function NewsPage({
         )}
         <span className="text-on-surface-variant/40 text-sm italic">— Lokal Kuratiert</span>
       </div>
-      <h1 className="text-4xl sm:text-5xl lg:text-6xl font-headline font-black tracking-tighter text-primary leading-none">Nachrichten</h1>
+      <h1 className="text-4xl sm:text-5xl lg:text-6xl font-headline font-black tracking-tighter text-primary leading-none">Magazin</h1>
       <p className="text-on-surface-variant mt-3 text-sm sm:text-base lg:text-lg leading-relaxed max-w-lg">
         {townLabel ? `Aktuelle Berichte aus ${townLabel}.` : "Geprüfte Berichte aus Raunheim, Kelsterbach und Rüsselsheim."}
       </p>
@@ -106,7 +106,7 @@ export default async function NewsPage({
                   <img
                     src={featured.hero_image_url}
                     alt={featured.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 scale-105 group-hover:scale-100 transition-all duration-500"
                   />
                 ) : (
                   <div className="w-full h-full bg-surface-container-high flex items-center justify-center">

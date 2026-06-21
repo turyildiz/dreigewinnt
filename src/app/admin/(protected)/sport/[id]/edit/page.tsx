@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { supabaseAdmin } from "@/lib/supabase-admin";
-import { updateClubAction, deleteClubAction, uploadClubGalleryPhotoAction, deleteClubGalleryPhotoAction } from "../../actions";
+import { updateClubAction, deleteClubAction, uploadClubGalleryPhotoAction, deleteClubGalleryPhotoAction, generateClubTelegramCode } from "../../actions";
 import { ClubForm } from "../../ClubForm";
 import { ClubGalleryManager } from "../../GalleryManager";
+import { TelegramCodeCard } from "@/components/admin/TelegramCodeCard";
 
 export default async function EditClubPage({
   params,
@@ -39,6 +40,12 @@ export default async function EditClubPage({
             Posts verwalten
           </Link>
         </div>
+
+        <TelegramCodeCard
+          code={club.telegram_code ?? null}
+          linked={!!club.telegram_chat_id}
+          generateAction={generateClubTelegramCode.bind(null, id)}
+        />
 
         <ClubForm
           action={updateAction}

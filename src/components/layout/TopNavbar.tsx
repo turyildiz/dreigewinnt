@@ -9,10 +9,10 @@ const quickLinks = [
   { label: "Raunheim", href: "/gewerbe?town=raunheim", icon: "location_city" },
   { label: "Kelsterbach", href: "/gewerbe?town=kelsterbach", icon: "apartment" },
   { label: "Rüsselsheim", href: "/gewerbe?town=ruesselsheim", icon: "corporate_fare" },
-  { label: "Events", href: "/events", icon: "event" },
+  { label: "Veranstaltungen", href: "/events", icon: "event" },
   { label: "Gewerbe", href: "/gewerbe", icon: "storefront" },
   { label: "Sport", href: "/sport", icon: "sports" },
-  { label: "News", href: "/news", icon: "newspaper" },
+  { label: "Magazin", href: "/news", icon: "newspaper" },
 ];
 
 export function TopNavbar() {
@@ -137,7 +137,7 @@ export function TopNavbar() {
               className={`transition-colors duration-200 ${pathname?.startsWith("/events") ? "text-primary border-b-2 border-primary pb-1" : "text-on-surface-variant hover:text-primary"}`}
               href="/events"
             >
-              Events
+              Veranstaltungen
             </Link>
             <Link
               className={`transition-colors duration-200 ${pathname?.startsWith("/gewerbe") ? "text-primary border-b-2 border-primary pb-1" : "text-on-surface-variant hover:text-primary"}`}
@@ -155,7 +155,7 @@ export function TopNavbar() {
               className={`transition-colors duration-200 ${pathname?.startsWith("/news") ? "text-primary border-b-2 border-primary pb-1" : "text-on-surface-variant hover:text-primary"}`}
               href="/news"
             >
-              News
+              Magazin
             </Link>
           </div>
         </div>
@@ -178,7 +178,7 @@ export function TopNavbar() {
               className={`transition-colors duration-200 text-2xl font-headline tracking-tight font-bold flex justify-between items-center ${pathname?.startsWith("/events") ? "text-primary" : "text-on-surface-variant"}`}
               href="/events"
             >
-              Events
+              Veranstaltungen
               <span className="material-symbols-outlined text-outline">arrow_forward_ios</span>
             </Link>
             <Link
@@ -199,7 +199,7 @@ export function TopNavbar() {
               className={`transition-colors duration-200 text-2xl font-headline tracking-tight font-bold flex justify-between items-center ${pathname?.startsWith("/news") ? "text-primary" : "text-on-surface-variant"}`}
               href="/news"
             >
-              News
+              Magazin
               <span className="material-symbols-outlined text-outline">arrow_forward_ios</span>
             </Link>
             <hr className="border-outline-variant/20 my-2" />
@@ -234,7 +234,7 @@ export function TopNavbar() {
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                  placeholder="Gewerbe, Events oder Nachrichten suchen…"
+                  placeholder="Gewerbe, Veranstaltungen oder Magazin suchen…"
                   className="flex-1 bg-transparent border-none outline-none text-primary font-bold text-sm sm:text-base placeholder:text-outline/50 placeholder:font-normal"
                 />
                 {query && (

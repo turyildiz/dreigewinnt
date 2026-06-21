@@ -2,6 +2,7 @@
 
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { uploadToStorage } from "@/lib/storage";
+import { notifyAdmins } from "@/lib/telegram-notify";
 
 function toSlug(name: string) {
   return name
@@ -44,5 +45,17 @@ export async function submitEventAction(
   });
 
   if (error) return { success: false, error: error.message };
+
+  const town = formData.get("town") as string;
+  const category = (formData.get("category") as string) || "";
+  await notifyAdmins(
+    `📅 <b>Neue Veranstaltung eingereicht</b>\n\n` +
+    `<b>${title}</b>\n` +
+    `Stadt: ${town}\n` +
+    (category ? `Kategorie: ${category}\n` : "") +
+    `Datum: ${dateStr}\n\n` +
+    `→ Admin: https://dreigewinnt.heyturgay.com/admin/events`
+  );
+
   return { success: true };
 }

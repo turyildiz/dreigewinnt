@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { supabaseAdmin } from "@/lib/supabase-admin";
-import { updateBusinessAction, deleteBusinessAction, uploadGalleryPhotoAction, deleteGalleryPhotoAction } from "../../actions";
+import { updateBusinessAction, deleteBusinessAction, uploadGalleryPhotoAction, deleteGalleryPhotoAction, generateBusinessTelegramCode } from "../../actions";
 import { BusinessForm } from "../../BusinessForm";
 import { GalleryManager } from "../../GalleryManager";
+import { TelegramCodeCard } from "@/components/admin/TelegramCodeCard";
 
 export default async function EditBusinessPage({
   params,
@@ -41,6 +42,12 @@ export default async function EditBusinessPage({
             Posts verwalten
           </Link>
         </div>
+
+        <TelegramCodeCard
+          code={business.telegram_code ?? null}
+          linked={!!business.telegram_chat_id}
+          generateAction={generateBusinessTelegramCode.bind(null, id)}
+        />
 
         <BusinessForm action={updateAction} deleteAction={deleteAction} defaultValues={{ ...business, category: business.category ?? undefined, opening_hours: business.opening_hours as { day: string; hours: string }[] | null }} />
 

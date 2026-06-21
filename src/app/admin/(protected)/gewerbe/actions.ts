@@ -2,6 +2,9 @@
 
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { uploadToStorage } from "@/lib/storage";
+import { generateTelegramCode } from "@/lib/telegram-codes";
+import { sendApprovalEmail } from "@/lib/email";
+import { notifyAdmins } from "@/lib/telegram-notify";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -55,6 +58,14 @@ export async function createBusinessAction(formData: FormData) {
 
 export async function updateBusinessAction(id: string, formData: FormData) {
   const name = formData.get("name") as string;
+  const newStatus = formData.get("status") as string;
+
+  // Check if this is an approval (status changing to active)
+  const { data: current } = await supabaseAdmin
+    .from("businesses")
+    .select("status, email, slug, telegram_code, town")
+    .eq("id", id)
+    .single();
 
   const heroFile = formData.get("hero_image_file") as File | null;
   let heroUrl = (formData.get("hero_image_url") as string) || null;
@@ -69,7 +80,7 @@ export async function updateBusinessAction(id: string, formData: FormData) {
       category: formData.get("category") as string,
       town: formData.get("town") as string,
       tier: formData.get("tier") as string,
-      status: formData.get("status") as string,
+      status: newStatus,
       is_spotlight: formData.get("is_spotlight") === "on",
       description: (formData.get("description") as string) || null,
       full_description: (formData.get("full_description") as string) || null,
@@ -82,6 +93,26 @@ export async function updateBusinessAction(id: string, formData: FormData) {
     })
     .eq("id", id);
   if (error) throw new Error(error.message);
+
+  // Send approval email if status changed to active
+  if (current && current.status !== "active" && newStatus === "active" && current.email) {
+    const slug = current.slug;
+    let code = current.telegram_code;
+    if (!code) {
+      code = await generateTelegramCode(current.town, "businesses");
+      await supabaseAdmin.from("businesses").update({ telegram_code: code }).eq("id", id);
+    }
+    try {
+      await sendApprovalEmail({
+        to: current.email,
+        partnerName: name,
+        profileUrl: `https://dreigewinnt.com/gewerbe/${slug}`,
+        telegramCode: code,
+      });
+    } catch (err) {
+      console.error("Approval email failed:", err);
+    }
+  }
 
   revalidatePath("/admin/gewerbe");
   revalidatePath("/gewerbe");
@@ -168,4 +199,24 @@ export async function deleteGalleryPhotoAction(photoId: string, businessId: stri
 
   revalidatePath(`/admin/gewerbe/${businessId}/edit`);
   revalidatePath(`/gewerbe`);
+}
+
+export async function generateBusinessTelegramCode(businessId: string) {
+  const { data: biz } = await supabaseAdmin
+    .from("businesses")
+    .select("town, telegram_code")
+    .eq("id", businessId)
+    .single();
+
+  if (!biz) throw new Error("Business not found");
+  if (biz.telegram_code) return biz.telegram_code;
+
+  const code = await generateTelegramCode(biz.town, "businesses");
+  await supabaseAdmin
+    .from("businesses")
+    .update({ telegram_code: code })
+    .eq("id", businessId);
+
+  revalidatePath(`/admin/gewerbe/${businessId}/edit`);
+  return code;
 }

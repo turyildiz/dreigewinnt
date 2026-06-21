@@ -106,7 +106,7 @@ export default async function GewerbePage({
               <Link
                 key={business.slug}
                 href={`/gewerbe/${business.slug}`}
-                className="group relative bg-surface-container-lowest border border-tertiary-container/40 hover:bg-surface-bright transition-all duration-300 block"
+                className="group relative bg-surface-container-lowest border border-tertiary-container/40 hover:shadow-lg transition-all duration-300 block"
               >
                 <div className="absolute -top-3 right-6 bg-tertiary text-white text-[10px] font-bold px-3 py-1 tracking-widest uppercase z-10">
                   TOP-PARTNER
